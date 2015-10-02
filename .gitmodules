@@ -1,0 +1,6 @@
+[submodule "3dparty/entityx"]
+	path = 3dparty/entityx
+	url = https://github.com/alecthomas/entityx.git
+[submodule "3dparty/sdl"]
+	path = 3dparty/sdl
+	url = https://github.com/spurious/SDL-mirror
