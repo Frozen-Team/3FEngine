@@ -7,7 +7,7 @@ include(CMakeDependentOption)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 # set(SDL_SOURCES_E "${CMAKE_SOURCE_DIR}/3dparty/sdl")
 # set(SDL_PREFIX_E "${CMAKE_SOURCE_DIR}/3dparty/sdl/build")
@@ -32,7 +32,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
 
-set(SDL2_BUILDING_LIBRARY "True")
+# set(SDL2_BUILDING_LIBRARY "True")
 
 find_package(SDL2 REQUIRED)
 
@@ -42,7 +42,7 @@ endif(SDL2_FOUND)
 
 message("Include dir:")
 message(STATUS ${SDL2_INCLUDE_DIR})
-message(STATUS ${SDL2_LIBRARY})
+message(STATUS ${SDL2MAIN_LIBRARY})
 
 
 
@@ -51,5 +51,6 @@ message(STATUS ${SDL2_LIBRARY})
 file(GLOB GAME_SOURCES  game-src/*.cpp game-src/*.h)
 
 add_executable(game ${GAME_SOURCES})
-target_link_libraries(game ${SDL2_LIBRARY})
-target_include_directories(game PUBLIC ${SDL2_INCLUDE_DIRS})
+target_link_libraries(game ${SDL2_LIBRARY}) 
+target_link_libraries(game ${SDL2MAIN_LIBRARY})
+target_include_directories(game PUBLIC ${SDL2_INCLUDE_DIR})
