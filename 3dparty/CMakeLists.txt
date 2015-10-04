@@ -9,6 +9,12 @@ project(3dparty)
 #   set(LIB_SUFFIX /x86)
 # endif()
 
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/builds/sdl/ CACHE PATH "Set install prefix for SDL" FORCE)
+
+
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/builds/ CACHE PATH "Set install prefix" FORCE)
 message(${CMAKE_INSTALL_PREFIX})
+
+# Add SDL2, ./sdl/CMakeLists.txt
+set(SDL_DIRECTX OFF CACHE BOOL "Don't use DirectX")
+set(SDL_RENDER_D3D OFF CACHE BOOL "Don't use DirectX render")
 add_subdirectory(./sdl)

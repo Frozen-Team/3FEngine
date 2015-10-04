@@ -26,7 +26,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 # 	) 
 
 
-#set(ENV{SDL2DIR} "${CMAKE_SOURCE_DIR}/3dparty/builds/sdl")
+set(ENV{SDL2DIR} "${CMAKE_SOURCE_DIR}/3dparty/builds/")
 #message("hello")
 #message($ENV{SDL2DIR})
 
