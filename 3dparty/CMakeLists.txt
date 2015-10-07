@@ -17,4 +17,7 @@ message(${CMAKE_INSTALL_PREFIX})
 # Add SDL2, ./sdl/CMakeLists.txt
 set(SDL_DIRECTX OFF CACHE BOOL "Don't use DirectX")
 set(SDL_RENDER_D3D OFF CACHE BOOL "Don't use DirectX render")
-add_subdirectory(./sdl)
+add_subdirectory(sdl)
+
+set(RAPIDJSON_HAS_STDSTRING ON CACHE BOOL "Enable sdt::string in RapidJson")
+add_subdirectory(rapidjson)
