@@ -1,15 +1,15 @@
 [submodule "3dparty/entityx"]
 	path = 3dparty/entityx
-	url = https://github.com/Frozen-Team/entityx.git
+	url = git@github.com/Frozen-Team/entityx.git
 [submodule "3dparty/sdl"]
 	path = 3dparty/sdl
-	url = https://github.com/Frozen-Team/SDL-mirror.git
+	url = git@github.com/Frozen-Team/SDL-mirror.git
 [submodule "3dparty/rapidjson"]
 	path = 3dparty/rapidjson
-	url = https://github.com/Frozen-Team/rapidjson.git
+	url = git@github.com/Frozen-Team/rapidjson.git
 [submodule "3dparty/easyloggingpp"]
 	path = 3dparty/easyloggingpp
-	url = https://github.com/Frozen-Team/easyloggingpp.git
+	url = git@github.com/Frozen-Team/easyloggingpp.git
 [submodule "3dparty/cppformat"]
 	path = 3dparty/cppformat
-	url = https://github.com/Frozen-Team/cppformat.git
+	url = git@github.com/Frozen-Team/cppformat.git
