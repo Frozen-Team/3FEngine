@@ -28,47 +28,19 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 # Set path to Engine's third party installation directory.
 set(ENGINE_3DPARTY_DIR "${CMAKE_SOURCE_DIR}/3dparty/builds/")
 
-# Find RapidJSON
+# Find RapidJSON, SDL2, EntityX, Easyloggingpp, Cppformat
 set(ENV{RAPIDJSONDIR} ${ENGINE_3DPARTY_DIR})
-find_package(RAPIDJSON REQUIRED)
-if(RAPIDJSON_FOUND)
-	message("RapidJSON is found.")
-else(RAPIDJSON_FOUND)
-	message("Cannot locate RapidJSON.")
-endif(RAPIDJSON_FOUND)
-
-# Find SDL2
 set(ENV{SDL2DIR} ${ENGINE_3DPARTY_DIR})
 # set(SDL2_BUILDING_LIBRARY "True")
-find_package(SDL2 REQUIRED)
-
-if(SDL2_FOUND)
-	message("SDL version: ${SDL2_VE}")
-else(SDL2_FOUND)
-	message("Cannot locate SDL.")
-endif(SDL2_FOUND)
-
-#Find EntityX
 set(ENV{ENTITYX_ROOT} ${ENGINE_3DPARTY_DIR})
-
-find_package(ENTITYX REQUIRED)
-
-if(ENTITYX_FOUND)
-	message("EntityX is found.")
-else(ENTITYX_FOUND)
-	message("Cannot locate EntityX.")
-endif(ENTITYX_FOUND)
-
-#Find Easyloggingpp
 set(ENV{EASYLOGGINGPP_ROOT} ${ENGINE_3DPARTY_DIR})
+set(ENV{CPPFORMAT_ROOT} ${ENGINE_3DPARTY_DIR})
 
+find_package(RAPIDJSON REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(ENTITYX REQUIRED)
 find_package(EASYLOGGINGPP REQUIRED)
-
-if(EASYLOGGINGPP_FOUND)
-	message("EntityX is found.")
-else(EASYLOGGINGPP_FOUND)
-	message("Cannot locate EntityX.")
-endif(EASYLOGGINGPP_FOUND)
+find_package(CPPFORMAT REQUIRED)
 
 # TODO: Add filters for game src
 file(GLOB GAME_SOURCES  game-src/*.cpp game-src/*.h)
@@ -76,8 +48,10 @@ file(GLOB GAME_SOURCES  game-src/*.cpp game-src/*.h)
 add_executable(game ${GAME_SOURCES})
 target_link_libraries(game ${SDL2_LIBRARY}) 
 target_link_libraries(game ${SDL2MAIN_LIBRARY})
+target_link_libraries(game ${CPPFORMAT_LIBRARY})
 
 target_include_directories(game PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(game PUBLIC ${RAPIDJSON_INCLUDE_DIR})
 target_include_directories(game PUBLIC ${ENTITYX_INCLUDE_DIR})
 target_include_directories(game PUBLIC ${EASYLOGGINGPP_INCLUDE_DIR})
+target_include_directories(game PUBLIC ${CPPFORMAT_INCLUDE_DIR})
