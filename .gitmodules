@@ -10,3 +10,6 @@
 [submodule "3dparty/easyloggingpp"]
 	path = 3dparty/easyloggingpp
 	url = https://github.com/Frozen-Team/easyloggingpp.git
+[submodule "3dparty/cppformat"]
+	path = 3dparty/cppformat
+	url = https://github.com/Frozen-Team/cppformat.git

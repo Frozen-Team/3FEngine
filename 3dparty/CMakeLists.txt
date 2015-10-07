@@ -28,3 +28,7 @@ add_subdirectory(entityx)
 
 # Add Easyloggingpp
 add_subdirectory(easyloggingpp)
+
+# Add cppformat
+set(FMT_DOC OFF CACHE BOOL "Don't generate doc")
+add_subdirectory(cppformat)
