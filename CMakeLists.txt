@@ -34,7 +34,7 @@ find_package(RAPIDJSON REQUIRED)
 if(RAPIDJSON_FOUND)
 	message("RapidJSON is found.")
 else(RAPIDJSON_FOUND)
-	message("Cannot locate RapidJSON")
+	message("Cannot locate RapidJSON.")
 endif(RAPIDJSON_FOUND)
 
 # Find SDL2
@@ -48,9 +48,23 @@ else(SDL2_FOUND)
 	message("Cannot locate SDL.")
 endif(SDL2_FOUND)
 
+#Find EntityX
+set(ENV{ENTITYX_ROOT} ${ENGINE_3DPARTY_DIR})
+
+find_package(ENTITYX REQUIRED)
+
+if(ENTITYX_FOUND)
+	message("EntityX is found.")
+else(ENTITYX_FOUND)
+	message("Cannot locate EntityX.")
+endif(ENTITYX_FOUND)
+
+
 message("Include dir:")
 message(STATUS ${SDL2_INCLUDE_DIR})
 message(STATUS ${SDL2MAIN_LIBRARY})
+message(STATUS ${RAPIDJSON_INCLUDE_DIR})
+message(STATUS ${ENTITYX_INCLUDE_DIR})
 
 
 
@@ -61,4 +75,7 @@ file(GLOB GAME_SOURCES  game-src/*.cpp game-src/*.h)
 add_executable(game ${GAME_SOURCES})
 target_link_libraries(game ${SDL2_LIBRARY}) 
 target_link_libraries(game ${SDL2MAIN_LIBRARY})
+
 target_include_directories(game PUBLIC ${SDL2_INCLUDE_DIR})
+target_include_directories(game PUBLIC ${RAPIDJSON_INCLUDE_DIR})
+target_include_directories(game PUBLIC ${ENTITYX_INCLUDE_DIR})

@@ -1,4 +1,4 @@
-#==============================================================================
+﻿#==============================================================================
 # Copyright (c) 2015 Frozen Team.
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -20,23 +20,32 @@
 # SOFTWARE.
 #==============================================================================
 #
-# Locate RapidJSON library
-# This module defines
-# RAPIDJSON_FOUND, if true, library is found
-# RAPIDJSON_INCLUDE_DIR, directory path where to find
-# 	rapidjson directory with all necessary headers.
-# 
-# $RAPIDJSONDIR is an environment variable that
-# would correspond to the installation path.
+# Look for a version of EntityX on the local machine
 #
-# TODO: Test it under OSX, Linux
+# By default, this will look in all common places. If EntityX is built or
+# installed in a custom location, you're able to either modify the
+# CMakeCache.txt file yourself or simply pass the path to CMake using either the
+# environment variable `ENTITYX_ROOT` or the CMake define with the same name.
 
-find_path(RAPIDJSON_INCLUDE_DIR rapidjson/rapidjson.h
-	HINTS
-	$ENV{RAPIDJSONDIR}
-	PATH_SUFFIXES rapidjson/include include
-)
 
-include(FindPackageHandleStandardArgs)
+set(ENTITYX_PATHS	${ENTITYX_ROOT}
+					$ENV{ENTITYX_ROOT}
+					~/Library/Frameworks
+					/Library/Frameworks
+					/usr/local
+					/usr
+					/sw
+					/opt/local
+					/opt/csw
+					/opt)
 
-find_package_handle_standard_args(RAPIDJSON REQUIRED_VARS RAPIDJSON_INCLUDE_DIR)
+find_path(ENTITYX_INCLUDE_DIR entityx/entityx.h PATH_SUFFIXES include PATHS ${ENTITYX_PATHS})
+find_library(ENTITYX_LIBRARY NAMES entityx PATH_SUFFIXES lib PATHS ${ENTITYX_PATHS})
+find_library(ENTITYX_LIBRARY_DEBUG NAMES entityx-d PATH_SUFFIXES lib PATHS ${ENTITYX_PATHS})
+mark_as_advanced(ENTITYX_INCLUDE_DIR ENTITYX_LIBRARY)
+
+if(ENTITYX_INCLUDE_DIR AND ENTITYX_LIBRARY)
+	set(ENTITYX_FOUND TRUE)
+else()
+	set(ENTITYX_FOUND FALSE)
+endif()
