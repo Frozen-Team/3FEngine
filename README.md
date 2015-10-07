@@ -4,7 +4,6 @@ In order to begin work:
  
     git clone https://github.com/Frozen-Team/3DEngine.git
     cd 3DEngine
-    git submodule init
     git submodule update --init --recursive
 
 ## How to get started

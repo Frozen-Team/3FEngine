@@ -1,9 +1,9 @@
 [submodule "3dparty/entityx"]
 	path = 3dparty/entityx
-	url = https://github.com/alecthomas/entityx.git
+	url = https://github.com/Frozen-Team/entityx.git
 [submodule "3dparty/sdl"]
 	path = 3dparty/sdl
-	url = https://github.com/spurious/SDL-mirror.git
+	url = https://github.com/Frozen-Team/SDL-mirror.git
 [submodule "3dparty/rapidjson"]
 	path = 3dparty/rapidjson
 	url = https://github.com/Frozen-Team/rapidjson.git
