@@ -19,5 +19,12 @@ set(SDL_DIRECTX OFF CACHE BOOL "Don't use DirectX")
 set(SDL_RENDER_D3D OFF CACHE BOOL "Don't use DirectX render")
 add_subdirectory(sdl)
 
+# Add RapidJson
 set(RAPIDJSON_HAS_STDSTRING ON CACHE BOOL "Enable sdt::string in RapidJson")
 add_subdirectory(rapidjson)
+
+# Add EntityX
+add_subdirectory(entityx)
+
+# Add Easyloggingpp
+add_subdirectory(easyloggingpp)

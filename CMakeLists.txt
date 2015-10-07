@@ -59,15 +59,16 @@ else(ENTITYX_FOUND)
 	message("Cannot locate EntityX.")
 endif(ENTITYX_FOUND)
 
+#Find Easyloggingpp
+set(ENV{EASYLOGGINGPP_ROOT} ${ENGINE_3DPARTY_DIR})
 
-message("Include dir:")
-message(STATUS ${SDL2_INCLUDE_DIR})
-message(STATUS ${SDL2MAIN_LIBRARY})
-message(STATUS ${RAPIDJSON_INCLUDE_DIR})
-message(STATUS ${ENTITYX_INCLUDE_DIR})
+find_package(EASYLOGGINGPP REQUIRED)
 
-
-
+if(EASYLOGGINGPP_FOUND)
+	message("EntityX is found.")
+else(EASYLOGGINGPP_FOUND)
+	message("Cannot locate EntityX.")
+endif(EASYLOGGINGPP_FOUND)
 
 # TODO: Add filters for game src
 file(GLOB GAME_SOURCES  game-src/*.cpp game-src/*.h)
@@ -79,3 +80,4 @@ target_link_libraries(game ${SDL2MAIN_LIBRARY})
 target_include_directories(game PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(game PUBLIC ${RAPIDJSON_INCLUDE_DIR})
 target_include_directories(game PUBLIC ${ENTITYX_INCLUDE_DIR})
+target_include_directories(game PUBLIC ${EASYLOGGINGPP_INCLUDE_DIR})

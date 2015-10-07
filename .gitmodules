@@ -7,3 +7,6 @@
 [submodule "3dparty/rapidjson"]
 	path = 3dparty/rapidjson
 	url = https://github.com/Frozen-Team/rapidjson.git
+[submodule "3dparty/easyloggingpp"]
+	path = 3dparty/easyloggingpp
+	url = https://github.com/Frozen-Team/easyloggingpp.git
