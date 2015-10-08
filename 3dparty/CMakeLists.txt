@@ -32,3 +32,6 @@ add_subdirectory(easyloggingpp)
 # Add cppformat
 set(FMT_DOC OFF CACHE BOOL "Don't generate doc")
 add_subdirectory(cppformat)
+
+# Add Eigen
+add_subdirectory(eigen)
