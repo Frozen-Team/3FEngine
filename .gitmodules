@@ -13,6 +13,10 @@
 [submodule "3dparty/cppformat"]
 	path = 3dparty/cppformat
 	url = git@github.com:Frozen-Team/cppformat.git
+[submodule "tools/styleguide"]
+	path = tools/styleguide
+	url = git@github.com:Frozen-Team/styleguide.git
 [submodule "3dparty/eigen"]
 	path = 3dparty/eigen
 	url = git@github.com:Frozen-Team/eigen.git
+
