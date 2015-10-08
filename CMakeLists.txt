@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(3DEngine)
+project(FEngine)
 
 include(ExternalProject)
 include(CMakeDependentOption)

@@ -1,4 +1,4 @@
-#<div style="text-align:center">3D Game Engine</div>
+#<div style="text-align:center">FEngine</div>
 
 In order to begin work: 
  
@@ -15,9 +15,16 @@ Generate the solution for 3D Engine after successful build of libs.
 **Limitation**:
 The solution can be generated for only one architecture: either x86 or x86-64.
 
+## [TODOs](https://github.com/Frozen-Team/3DEngine/blob/master/TODO.md) and Roadmap
+
 
 ## Dependencies
-### SDL
+	-- SDL
+	-- EntityX
+	-- RapidJSON
+	-- cppformat
+	-- easyloggingpp
+	-- Eigen
 
 ## Documentation
 You will need the doxygen tool to generate documentation. Install it, and set environment variable DOXYGEN_EXECUTABLE that point to Doxygen`s binary directory.
