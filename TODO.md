@@ -10,4 +10,6 @@ CMake:
 7. Add license.
 8. Print version info for each library.
 *9. Set build directory (debug, release)
-*10.
+
+Code convention:
+1. Set up checker tool.
