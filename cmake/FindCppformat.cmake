@@ -24,8 +24,13 @@ set(CPPFORMAT_PATHS	${CPPFORMAT_ROOT}
 					$ENV{CPPFORMAT_ROOT}
 )
 
-find_path(CPPFORMAT_INCLUDE_DIR cppformat/cppformat.h PATH_SUFFIXES include PATHS ${CPPFORMAT_PATHS})
-find_library(CPPFORMAT_LIBRARY NAMES cppformat PATH_SUFFIXES lib PATHS ${CPPFORMAT_PATHS})
+find_path(CPPFORMAT_INCLUDE_DIR cppformat/format.h 
+	PATH_SUFFIXES include PATHS ${CPPFORMAT_PATHS}
+)
+find_library(CPPFORMAT_LIBRARY NAMES cppformat 
+	PATH_SUFFIXES lib 
+	PATHS ${CPPFORMAT_PATHS}
+)
 
 include(FindPackageHandleStandardArgs)
 
