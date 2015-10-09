@@ -20,8 +20,8 @@
 # SOFTWARE.
 #==============================================================================
 #
-# Locate RapidJSON library
-# This module defines
+# Locate easylogging++ library
+# This module defines:
 # EASYLOGGINGPP_FOUND, if true, library is found
 # EASYLOGGINGPP_INCLUDE_DIR, directory path where to find
 # 	rapidjson directory with all necessary headers.
