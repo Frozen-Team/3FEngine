@@ -35,6 +35,7 @@ add_subdirectory(rapidjson)
 
 # Add EntityX
 set(ENTITYX_BUILD_TESTING OFF CACHE BOOL "Disable test building for EntityX")
+set(ENTITYX_BUILD_SHARED OFF CACHE BOOL "Disable building shared version of EntityX")
 add_subdirectory(entityx)
 
 # Add Easyloggingpp
@@ -47,4 +48,6 @@ add_subdirectory(cppformat)
 
 # Add Eigen
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/eigen/cmake")
+# Workaround for Eigen
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Set install prefix for includes" FORCE)
 add_subdirectory(eigen/Eigen)
