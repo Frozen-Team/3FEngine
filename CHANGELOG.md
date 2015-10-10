@@ -1,3 +1,7 @@
+### 11.10.2015  
+OTER:
+
+- Added GLI library submodule.  
 ### 10.10.2015  
 OTER:
 

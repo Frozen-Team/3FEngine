@@ -13,6 +13,6 @@
 
 ###Libraries:
 	
-- Add FreeImage or similar.  
+- Attach GLI to engine. 
 - Add FreeType or similar.  
 - Add recastnavigation.  
