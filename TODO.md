@@ -1,17 +1,17 @@
 **Important**  
 *Low priority*  
 
-CMake:
+###CMake:
 
 - Add filters for game src.  
 - *Print version info for each library.*  
 - *Test\get it done for OSX, Linux.*  
 
-Code convention:
+###Code convention:
 
 -Set up checker tool.  
 
-Libraries:
+###Libraries:
 	
 - Add FreeImage or similar.  
 - Add FreeType or similar.  
