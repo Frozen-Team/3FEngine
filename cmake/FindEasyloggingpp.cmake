@@ -24,16 +24,14 @@
 # This module defines:
 # EASYLOGGINGPP_FOUND, if true, library is found
 # EASYLOGGINGPP_INCLUDE_DIR, directory path where to find
-# 	rapidjson directory with all necessary headers.
+# 	easylogging++ directory with all necessary headers.
 # 
 # $EASYLOGGINGPP is an environment variable that
 # would correspond to the installation path.
 #
 # TODO: Test it under OSX, Linux
 
-set(EASYLOGGINGPP_PATHS	${EASYLOGGINGPP_ROOT}
-					$ENV{EASYLOGGINGPP_ROOT}
-)	
+set(EASYLOGGINGPP_PATHS	${EASYLOGGINGPP_ROOT} $ENV{EASYLOGGINGPP_ROOT})	
 
 find_path(EASYLOGGINGPP_INCLUDE_DIR 
 	easylogging++.h 

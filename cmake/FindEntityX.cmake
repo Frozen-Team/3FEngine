@@ -20,7 +20,7 @@
 # SOFTWARE.
 #==============================================================================
 #
-# Look for a version of EntityX on the local machine
+# Look for a EntityX on the local machineю
 #
 # By default, this will look in all common places. If EntityX is built or
 # installed in a custom location, you're able to either modify the
@@ -39,9 +39,27 @@ set(ENTITYX_PATHS	${ENTITYX_ROOT}
 					/opt/csw
 					/opt)
 
-find_path(ENTITYX_INCLUDE_DIR entityx/entityx.h PATH_SUFFIXES include PATHS ${ENTITYX_PATHS})
-find_library(ENTITYX_LIBRARY NAMES entityx PATH_SUFFIXES lib PATHS ${ENTITYX_PATHS})
-find_library(ENTITYX_LIBRARY_DEBUG NAMES entityx-d PATH_SUFFIXES lib PATHS ${ENTITYX_PATHS})
+if(NOT DEFINED DEBUG_LIB_SUFFIX)
+	set(DEBUG_LIB_SUFFIX -d)
+endif()
+
+find_path(ENTITYX_INCLUDE_DIR entityx/entityx.h 
+	PATH_SUFFIXES include 
+	PATHS ${ENTITYX_PATHS}
+)
+
+find_library(ENTITYX_LIBRARY 
+	NAMES entityx 
+	PATH_SUFFIXES lib 
+	PATHS ${ENTITYX_PATHS}
+)
+
+find_library(ENTITYX_LIBRARY_DEBUG 
+	NAMES entityx${DEBUG_LIB_SUFFIX}
+	PATH_SUFFIXES lib 
+	PATHS ${ENTITYX_PATHS}
+)
+
 mark_as_advanced(ENTITYX_INCLUDE_DIR ENTITYX_LIBRARY)
 
 include(FindPackageHandleStandardArgs)

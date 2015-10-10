@@ -42,6 +42,10 @@ elseif(MSVC14 OR MSVC_VERSION>1900)
     set(FBXSDK_LIBDIR "vs2015")
 endif()
 
+if(NOT DEFINED ENGINE_DEFAULT_FBX_VERSION)
+    set(ENGINE_DEFAULT_FBX_VERSION "2016.1.2")
+endif()
+
 if(APPLE)
     # do nothing
 elseif(CMAKE_CL_64)
