@@ -3,3 +3,4 @@ solution
 3dparty/solution
 3dparty/install
 *.log
+diagrams/.vpprefdata/*
