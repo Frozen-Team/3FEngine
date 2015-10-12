@@ -4,3 +4,6 @@ solution
 3dparty/install
 *.log
 diagrams/.vpprefdata/*
+diagrams/.lock
+diagrams/tmp/*
+diagrams/FEngine.vpp\~*
