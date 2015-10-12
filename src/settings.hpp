@@ -10,13 +10,14 @@
 #include <type_traits>
 
 
-#include "utils.h"
+#include "utils\utils.hpp"
 
 namespace FEngine {
 
 	class SettingInterface
 	{
-		~SettingInterface() = default;
+	public:
+		virtual ~SettingInterface() {};
 	};
 
 	template<typename T>
@@ -57,6 +58,8 @@ namespace FEngine {
 
 		virtual ~Settings() {}
 
+		virtual void LoadDefaultSettings();
+
 		 enum SettingsNames {
 			WindowHeight,
 			WindowWidth,
@@ -66,42 +69,34 @@ namespace FEngine {
 
 		using DefaultSettingsMap = std::map<SettingsNames, std::string>;
 
-		virtual void LoadDefaultSettings();
-
 		template<typename T>
 		struct SettingTraits {
-			static T setting(T t) {
-				return t;
+			static std::string setting(T t) {
+				return Utils::ToLower(t);
 			}
 		};
 
 		template<>
 		struct SettingTraits<SettingsNames> {
-			static std::string setting(SettingsNames t) {
-				return default_settings_.at(t);
+			static std::string setting(SettingsNames s) {
+				auto &found = default_settings_.find(s);
+				assert(found != default_settings_.end());
+				return found->second;
 			}
 		};
 
 		template<typename V, typename T>
-		void Set(T t, SettingField<V> value) noexcept {
-			values_[Utils::ToLower(SettingTraits<T>::setting(t))] = std::make_unique<SettingField<V>>(value);
+		void Set(T setting, SettingField<V> value) noexcept {
+			values_[Utils::ToLower(SettingTraits<T>::setting(setting))] = std::make_unique<SettingField<V>>(value);
 		}
 
-		template<typename T>
-		const T& Get(const std::string setting_name) {
-			auto &lower_case = Utils::ToLower(setting_name);
-			auto &found = values_.find(lower_case);
+		template<typename V, typename T>
+		const V& Get(T setting) {
+			auto s = SettingTraits<T>::setting(setting);
+			auto &found = values_.find(s);
 			assert(found != values_.end());
-			return static_cast<SettingField<T>*>(values_[lower_case].get())->value();
+			return static_cast<SettingField<V>*>(found->second.get())->value();
 		}
-
-		template<typename T>
-		const T& Get(SettingsNames setting) {
-			return Get<T>(GetSetting(setting));
-		}
-
-	private:
-		std::string GetSetting(SettingsNames setting);
 
 	private:
 		std::map<std::string, std::unique_ptr<SettingInterface>> values_;

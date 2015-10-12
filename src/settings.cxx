@@ -1,12 +1,11 @@
-#include "settings.h"
-#include "enum_iterator.h"
-#include "utils.h"
+#include "settings.hpp"
+#include "utils\utils.hpp"
 
 #include <string>
 
 namespace FEngine {
 
-#define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = #enum_name;}
+#define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = Utils::ToLower(#enum_name);}
 
 	const Settings::DefaultSettingsMap Settings::default_settings_ = [] {
 		Settings::DefaultSettingsMap ret_map;
@@ -25,12 +24,4 @@ namespace FEngine {
 		Set<int>(SettingsNames::WindowHeight, 768);
 		Set<std::string>(SettingsNames::WindowCaption, std::string("Sample window"));
 	}
-
-	std::string Settings::GetSetting(SettingsNames setting)
-	{
-		auto &found = default_settings_.find(setting);
-		assert(found != default_settings_.end());
-		return found->second;
-	}
-
 }
