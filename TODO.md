@@ -3,7 +3,6 @@
 
 ###CMake:
 
-- Add filters for game src.  
 - *Print version info for each library.*  
 - *Test\get it done for OSX, Linux.*  
 

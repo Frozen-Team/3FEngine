@@ -20,25 +20,25 @@
 # SOFTWARE.
 #==============================================================================
 #
-# Locate easylogging++ library
+# Locate GLI library
 # This module defines:
-# EASYLOGGINGPP_FOUND, if true, library is found
-# EASYLOGGINGPP_INCLUDE_DIR, directory path where to find
-# 	easylogging++ directory with all necessary headers.
+# GLI_FOUND, if true, library is found
+# GLI_INCLUDE_DIR, directory path where to find
+# 	GLI library directory with all necessary headers.
 # 
-# $EASYLOGGINGPP_ROOT is an environment variable that
+# $GLI_ROOT is an environment variable that
 # would correspond to the installation path.
 #
 # TODO: Test it under OSX, Linux
 
-set(EASYLOGGINGPP_PATHS	${EASYLOGGINGPP_ROOT} $ENV{EASYLOGGINGPP_ROOT})	
+set(GLI_PATHS ${GLI_ROOT} $ENV{GLI_ROOT})
 
-find_path(EASYLOGGINGPP_INCLUDE_DIR 
-	easylogging++.h 
-	PATH_SUFFIXES include
-	PATHS ${EASYLOGGINGPP_PATHS}
+find_path(GLI_INCLUDE_DIR 
+	gli.hpp
+	PATH_SUFFIXES include/gli
+	PATHS ${GLI_PATHS}
 )
 
 include(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(EASYLOGGINGPP REQUIRED_VARS EASYLOGGINGPP_INCLUDE_DIR)
+find_package_handle_standard_args(GLI REQUIRED_VARS GLI_INCLUDE_DIR)

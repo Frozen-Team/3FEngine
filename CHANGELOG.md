@@ -1,6 +1,9 @@
 ### 12.10.2015  
 OTER:
 
+- Filter sources files.
+- Attach GLI library. 
+- Add roadmap.
 - Add Utils namespace for utilite methods. Add ToLower method.
 - Add Settings class.
 - Work on UML class diagram. 

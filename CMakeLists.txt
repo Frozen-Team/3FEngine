@@ -57,7 +57,6 @@ endforeach()
 add_executable(game ${GAME_SOURCES})
 set_target_properties(game PROPERTIES DEBUG_POSTFIX -d)
 if(MSVC)
-	message(${MSVC})
 	set_target_properties(game PROPERTIES LINK_FLAGS_RELEASE ${ENGINE_WIN_SUBSYSTEM})
 	set_target_properties(game PROPERTIES LINK_FLAGS_DEBUG ${ENGINE_WIN_SUBSYSTEM})
 	set_target_properties(game PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${ENGINE_DEPLOY_DIR} )
@@ -68,5 +67,3 @@ endif()
 
 target_link_libraries(game 3FEngine)
 target_include_directories(game PUBLIC ${ENGINE_INCLUDE_DIR})
-
-message(${ENGINE_INCLUDE_DIR})

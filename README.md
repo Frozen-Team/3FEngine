@@ -1,5 +1,5 @@
 #<div style="text-align:center">3FEngine</div>
-## [TODOs](https://github.com/Frozen-Team/3FEngine/blob/master/TODO.md),  [Changelog](https://github.com/Frozen-Team/3FEngine/blob/master/CHANGELOG.md) and Roadmap
+## [TODOs](https://github.com/Frozen-Team/3FEngine/blob/master/TODO.md),  [Changelog](https://github.com/Frozen-Team/3FEngine/blob/master/CHANGELOG.md) and [Roadmap](https://github.com/Frozen-Team/3FEngine/blob/master/ROADMAP.md)
 ## Dependencies
 ### C\C++ Libraries
     - SDL
@@ -28,11 +28,10 @@ To set variable in Windows type in cmd:
 
 5) Run $ENGINE_ROOT/3dparty/make_all.bat to build 3dparty libraries. You can do this step manually (step 5a).  
 x86-64 architecture set by default. In order to change architecture change generator type in make_all.bat to either "Visual Studio 14 2015" or "Visual Studio 14 2015 Win64" for x86 or x86-64 respectively.  
+5a) Go to 3dparty directory and generate solution using CMake. Build a whole solution in both Debug and Release configurations. After each build make the install step (build INSTALL project).  
 6) Generate the solution for 3FEngine from root directory after successful build of libs.  
 **Limitation**:
 The solution can be generated for only one architecture: either x86 or x86-64.  
-
-5a) Go to 3dparty directory and generate solution using CMake. Build a whole solution in both Debug and Release configurations. After each build make the install step (build INSTALL project).
 
 **CMake Generator Visual Studio supported only for now.**
 

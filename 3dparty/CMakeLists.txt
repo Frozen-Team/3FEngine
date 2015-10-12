@@ -51,3 +51,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/eigen/cmake")
 # Workaround for Eigen
 set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Set install prefix for includes" FORCE)
 add_subdirectory(eigen/Eigen)
+
+# Add GLI
+add_subdirectory(gli)
