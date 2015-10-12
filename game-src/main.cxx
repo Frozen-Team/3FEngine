@@ -6,7 +6,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "settings.hpp"
+#include "settings\settings.hpp"
 
 #include "Eigen\Dense"
 
