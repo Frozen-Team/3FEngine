@@ -11,7 +11,6 @@
 -Set up checker tool.  
 
 ###Libraries:
-	
-- Attach GLI to engine. 
+
 - Add FreeType or similar.  
 - Add recastnavigation.  
