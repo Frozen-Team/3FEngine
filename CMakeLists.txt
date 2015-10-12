@@ -53,7 +53,6 @@ foreach(f ${GAME_SOURCES})
     source_group("${SRCGR}" FILES ${f})
 endforeach()
 
-
 add_executable(game ${GAME_SOURCES})
 set_target_properties(game PROPERTIES DEBUG_POSTFIX -d)
 if(MSVC)
