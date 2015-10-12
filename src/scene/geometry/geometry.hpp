@@ -2,6 +2,7 @@
 #define _3FENGINE_SRC_SCENE_GEOMETRY_GEOMETRY_HPP
 
 #include <vector>
+#include "../../utils/typedefs.hpp"
 
 namespace FEngine {
 	class Geometry
@@ -10,11 +11,11 @@ namespace FEngine {
 		Geometry() = default;
 		virtual ~Geometry() {}
 
-		inline std::vector<unsigned int>& indices() { return indices_; }
+		inline Indices3& indices() { return indices_; }
 	private:
-		std::vector<unsigned int> indices_;
-		std::vector<float> vertices_;
-		std::vector<float> uvs_;
+		Indices3 indices_;
+		Vertices3f vertices_;
+		UVsf uvs_;
 	};
 }
 

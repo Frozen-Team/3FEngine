@@ -39,13 +39,6 @@ namespace FEngine {
 	private:
 		Vector vertices_;
 	};
-
-
-	using Vertices3f = Vertices<float, 3>;
-	using Vertex3f = Vertices3f::Vertex;
-	
-	//template<class T>
-
 }
 
 
