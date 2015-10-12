@@ -1,5 +1,5 @@
 #include "settings.hpp"
-#include "utils\utils.hpp"
+#include "..\utils\utils.hpp"
 
 #include <string>
 
