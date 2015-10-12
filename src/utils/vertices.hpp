@@ -5,42 +5,47 @@
 #include <Eigen\Dense>
 
 namespace FEngine {
-	template<class T>
+	template<typename T, int base>
 	class Vertices {
 	public:
 		Vertices() = default;
+		~Vertices() = default;
 
 		Vertices(const T* const inVertices, int length) {
 			vertices_.reserve(length);
 			std::copy(inVertices, inVertices + length, vertices_.begin());
 		}
-		~Vertices() = default;
+		
+		using Vector = std::vector<T>;
+		using Vertex = Eigen::Matrix<T, base, 1>;
 
-		using Vertex = Eigen::Matrix<T, 3, 1>;
-
-		std::vector<T>& vertices() noexcept { return vertices_; }
+		Vector& vertices() noexcept { return vertices_; }
 
 		inline Vertex GetVerticeByIndex(int index) const {
 			//TODO: add error handler
 			auto verticesSize = vertices_.size();
-			assert(verticesSize % 3 == 0)
+			assert(verticesSize % base == 0)
 			if index < 0 || index >= verticesSize ||  { return; }
-			auto fromIndex = index * 3;
+			auto fromIndex = index * base;
 			
-			//in case of optimization use this crap code.
+			//for optimization purposes use this CRAP code.
 			Vertex result;
-			result(0) = vertices_.at(fromIndex);
-			result(1) = vertices_.at(fromIndex + 1);
-			result(2) = vertices_.at(fromIndex + 2);
+			for (int i = 0; i < base; i++) {
+				result(i) = vertices_.at(fromIndex + i);
+			}
 			return result;
 		}
 
 	private:
-		std::vector<T> vertices_;
+		Vector vertices_;
 	};
 
-	using Verticesf = Vertices<float>;
-	using Vertexf = Verticesf::Vertex;
+
+	using Vertices3f = Vertices<float, 3>;
+	using Vertex3f = Vertices3f::Vertex;
+	
+	//template<class T>
+
 }
 
 
