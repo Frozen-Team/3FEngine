@@ -7,10 +7,12 @@ OTER:
 - Add Utils namespace for utilite methods. Add ToLower method.
 - Add Settings class.
 - Work on UML class diagram. 
+
 ### 11.10.2015  
 OTER:
 
 - Added GLI library submodule.  
+
 ### 10.10.2015  
 OTER:
 
