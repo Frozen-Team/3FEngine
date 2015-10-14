@@ -6,12 +6,12 @@
 
 namespace FEngine {
 	template<typename T, int base>
-	class Vertices {
+	class FVertices {
 	public:
-		Vertices() = default;
-		~Vertices() = default;
+		FVertices() = default;
+		~FVertices() = default;
 
-		Vertices(const T* const inVertices, int length) {
+		FVertices(const T* const inVertices, int length) {
 			vertices_.reserve(length);
 			std::copy(inVertices, inVertices + length, vertices_.begin());
 		}

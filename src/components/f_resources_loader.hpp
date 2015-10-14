@@ -3,11 +3,11 @@
 
 #include "fbxsdk.h"
 
-#include "../utils/typedefs.hpp"
+#include "../utils/f_typedefs.hpp"
 #include "../utils/f_singleton.hpp"
 
 namespace FEngine {
-	class FResoucresLoader : public Utils::FSingleton<FResoucresLoader>
+	class FResoucresLoader : public FUtils::FSingleton<FResoucresLoader>
 	{
 		F_DISABLE_COPY(FResoucresLoader)
 	public:

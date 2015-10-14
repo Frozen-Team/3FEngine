@@ -1,3 +1,9 @@
+### 15.10.2015 
+OTER:
+
+ - Add prefix F to classes.
+ - Add FLogger class. Load loggers configuration from file.
+ 
 ### 13.10.2015 
 OlehGol260:
 

@@ -1,4 +1,6 @@
-deploy
+deploy/*.exe
+*.ilk
+*.pdb
 solution
 3dparty/solution
 3dparty/install
