@@ -1,14 +1,14 @@
-#include "settings.hpp"
-#include "..\utils\utils.hpp"
+#include "f_settings.hpp"
+#include "..\utils\f_utils.hpp"
 
 #include <string>
 
 namespace FEngine {
 
-#define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = Utils::ToLower(#enum_name);}
+#define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = FUtils::ToLower(#enum_name);}
 
-	const Settings::DefaultSettingsMap Settings::default_settings_ = [] {
-		Settings::DefaultSettingsMap ret_map;
+	const FSettings::DefaultSettingsMap FSettings::default_settings_ = [] {
+		FSettings::DefaultSettingsMap ret_map;
 
 		ADD_DEFAULT_SETTING(ret_map, WindowHeight);
 		ADD_DEFAULT_SETTING(ret_map, WindowWidth);
@@ -18,7 +18,7 @@ namespace FEngine {
 	}();
 
 
-	void Settings::LoadDefaultSettings()
+	void FSettings::LoadDefaultSettings()
 	{
 		Set<int>(SettingsNames::WindowWidth, 1024);
 		Set<int>(SettingsNames::WindowHeight, 768);

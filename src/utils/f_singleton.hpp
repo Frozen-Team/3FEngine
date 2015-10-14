@@ -3,17 +3,17 @@
 
 #include <assert.h>
 
-#include "../utils/typedefs.hpp"
+#include "../utils/f_typedefs.hpp"
 
 
 namespace FEngine {
-	namespace Utils {
+	namespace FUtils {
 		template<typename T>
 		class FSingleton {
 			F_DISABLE_COPY(FSingleton)
 		public:
 
-			~FSingleton() {}
+			virtual ~FSingleton() {}
 
 			static FShared<T> GetInstance() {
 				if (!instance) {

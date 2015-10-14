@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _3FENGINE_SRC_SETTINGS_F_SETTINGS_HPP_
+#define _3FENGINE_SRC_SETTINGS_F_SETTINGS_HPP_
+
 #include <map>
 #include <memory>
 #include <typeinfo>
@@ -8,37 +10,37 @@
 #include <iostream>
 #include <type_traits>
 
-#include "..\utils\utils.hpp"
+#include "..\utils\f_utils.hpp"
 
 namespace FEngine {
 
-	class SettingInterface
+	class FSettingInterface
 	{
 	public:
-		virtual ~SettingInterface() {};
+		virtual ~FSettingInterface() {};
 	};
 
 	template<typename T>
-	class SettingField : public SettingInterface
+	class FSettingField : public FSettingInterface
 	{
 
 	public:
 		
-		SettingField() : t_(typeid(T)) {}
-		SettingField(const T& value) : t_(typeid(T)) { set_value(value); }
-		SettingField(const SettingField& ref) : t_(ref.t_), value_(ref.value_) {}
-		~SettingField() {};
+		FSettingField() : t_(typeid(T)) {}
+		FSettingField(const T& value) : t_(typeid(T)) { set_value(value); }
+		FSettingField(const FSettingField& ref) : t_(ref.t_), value_(ref.value_) {}
+		~FSettingField() {};
 
 		const T& value() {
-			check_types();
+			CheckTypes();
 			return this->value_;
 		}
 		void set_value(const T& v) {
-			check_types();
+			CheckTypes();
 			this->value_ = v;
 		}
 	private:
-		void check_types() {
+		void CheckTypes() {
 			auto a = typeid(T) == t_;
 			if (!a) {
 				std::cout << "Incompatible types: holds(" << typeid(T).name() << ") and requests(" << t_.name() << ")." << std::endl;
@@ -49,12 +51,12 @@ namespace FEngine {
 		T value_;
 	};
 
-	class Settings
+	class FSettings
 	{
 	public:
-		Settings() {}
+		FSettings() {}
 
-		virtual ~Settings() {}
+		virtual ~FSettings() {}
 
 		virtual void LoadDefaultSettings();
 
@@ -70,7 +72,7 @@ namespace FEngine {
 		template<typename T>
 		struct SettingTraits {
 			static std::string setting(T t) {
-				return Utils::ToLower(t);
+				return FUtils::ToLower(t);
 			}
 		};
 
@@ -84,8 +86,8 @@ namespace FEngine {
 		};
 
 		template<typename V, typename T>
-		void Set(T setting, SettingField<V> value) noexcept {
-			values_[Utils::ToLower(SettingTraits<T>::setting(setting))] = std::make_unique<SettingField<V>>(value);
+		void Set(T setting, FSettingField<V> value) noexcept {
+			values_[FUtils::ToLower(SettingTraits<T>::setting(setting))] = std::make_unique<FSettingField<V>>(value);
 		}
 
 		template<typename V, typename T>
@@ -93,11 +95,13 @@ namespace FEngine {
 			auto s = SettingTraits<T>::setting(setting);
 			auto &found = values_.find(s);
 			assert(found != values_.end());
-			return static_cast<SettingField<V>*>(found->second.get())->value();
+			return static_cast<FSettingField<V>*>(found->second.get())->value();
 		}
 
 	private:
-		std::map<std::string, std::unique_ptr<SettingInterface>> values_;
+		std::map<std::string, std::unique_ptr<FSettingInterface>> values_;
 		static const DefaultSettingsMap default_settings_;
 	};
 }
+
+#endif // _3FENGINE_SRC_SETTINGS_F_SETTINGS_HPP_

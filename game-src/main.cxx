@@ -6,22 +6,34 @@
 #include <iostream>
 #include <assert.h>
 
-#include "settings\settings.hpp"
+#include "settings\f_settings.hpp"
 
 #include "Eigen\Dense"
 
+#include "utils\f_singleton.hpp"
 
+#include <memory>
+
+#include "engine.hpp"
 
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+namespace FE = FEngine;
+
 int main(int argc, char* args[])
 {
-	FEngine::Settings s;
+	auto engine = FEngine::Engine::GetInstance();
+
+	//auto& instinst = engine.GetInstance();
+	//FE::FLogger::
+
+
+	FEngine::FSettings s;
 	s.LoadDefaultSettings();
-	std::cout << s.Get<int>(FEngine::Settings::SettingsNames::WindowHeight) << std::endl;
-	std::cout << s.Get<int>(FEngine::Settings::SettingsNames::WindowWidth) << std::endl;
+	std::cout << s.Get<int>(FEngine::FSettings::SettingsNames::WindowHeight) << std::endl;
+	std::cout << s.Get<int>(FEngine::FSettings::SettingsNames::WindowWidth) << std::endl;
 
 	s.Set<int>("param1", 5006600);
 	std::cout << s.Get<int>("param1");	
