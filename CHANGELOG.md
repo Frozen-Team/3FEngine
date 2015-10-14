@@ -1,3 +1,12 @@
+### 13.10.2015 
+OlehGol260:
+
+ - Fix CMakeLists.txt in src folder.
+ 
+OTER:
+ 
+ - Add singleton class.
+ 
 ### 12.10.2015  
 OTER:
 
@@ -7,6 +16,12 @@ OTER:
 - Add Utils namespace for utilite methods. Add ToLower method.
 - Add Settings class.
 - Work on UML class diagram. 
+
+OlehGol260:
+
+- Add Vertices class
+- Add typedefs to Utils
+- Partially add blanks for scene and components according to UML
 
 ### 11.10.2015  
 OTER:
