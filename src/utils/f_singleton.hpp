@@ -36,7 +36,7 @@ namespace fengine {
 
 		template<typename T>
 		FShared<T> FSingleton<T>::instance = nullptr;
-	}
+	};
 }
 
 #endif // _3FENGINE_SRC_UTILS_F_SINGLETON_HPP_
