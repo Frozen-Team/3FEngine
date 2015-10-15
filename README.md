@@ -12,6 +12,7 @@
     - GLI
 ### Software
     - CMake
+[Use PowerVR?](http://community.imgtec.com/developers/powervr/offline-installers/)
 
 ## How to get started 
 1) Clone repository:

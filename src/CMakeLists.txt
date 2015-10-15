@@ -71,6 +71,8 @@ endforeach()
 
 add_library(3FEngine ${ENGINE_SOURCES})
 
+target_include_directories(3FEngine PUBLIC ${ENGINE_INCLUDE_DIR})
+
 # Make a list of sdl debug libraries
 set (SDL_LINK_LIST_DEBUG "")
 foreach(l ${SDL2_LIBRARY_DEBUG})
