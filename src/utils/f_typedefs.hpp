@@ -1,12 +1,12 @@
-#ifndef _3FENGINE_SRC_UTILS_TYPEDEFS_HPP_
-#define _3FENGINE_SRC_UTILS_TYPEDEFS_HPP_
+#ifndef _3FENGINE_SRC_UTILS_F_TYPEDEFS_HPP_
+#define _3FENGINE_SRC_UTILS_F_TYPEDEFS_HPP_
 
 #include <memory>
 #include <string>
 
 #include "f_vertices.hpp"
 
-namespace FEngine {
+namespace fengine {
 #define F_DISABLE_COPY(Class) \
 	Class(const Class&) = delete; \
 	Class& operator=(const Class&) = delete;
@@ -24,7 +24,6 @@ namespace FEngine {
 
 	using FIndices3 = FVertices<int, 3>;
 	using FUVsf = FVertices<float, 2>;
-
 }
 
-#endif
+#endif // _3FENGINE_SRC_UTILS_F_TYPEDEFS_HPP_

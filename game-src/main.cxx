@@ -20,20 +20,20 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-namespace FE = FEngine;
+namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
-	auto engine = FEngine::Engine::GetInstance();
+	auto engine = fengine::Engine::GetInstance();
 
 	//auto& instinst = engine.GetInstance();
 	//FE::FLogger::
 
 
-	FEngine::FSettings s;
+	fengine::FSettings s;
 	s.LoadDefaultSettings();
-	std::cout << s.Get<int>(FEngine::FSettings::SettingsNames::WindowHeight) << std::endl;
-	std::cout << s.Get<int>(FEngine::FSettings::SettingsNames::WindowWidth) << std::endl;
+	std::cout << s.Get<int>(fengine::FSettings::SettingsNames::WindowHeight) << std::endl;
+	std::cout << s.Get<int>(fengine::FSettings::SettingsNames::WindowWidth) << std::endl;
 
 	s.Set<int>("param1", 5006600);
 	std::cout << s.Get<int>("param1");	
@@ -48,7 +48,7 @@ int main(int argc, char* args[])
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);

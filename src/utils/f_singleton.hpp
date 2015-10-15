@@ -1,13 +1,12 @@
-#ifndef _3FENGINE_SRC_UTILS_SINGLETON_HPP_
-#define _3FENGINE_SRC_UTILS_SINGLETON_HPP_
+#ifndef _3FENGINE_SRC_UTILS_F_SINGLETON_HPP_
+#define _3FENGINE_SRC_UTILS_F_SINGLETON_HPP_
 
 #include <assert.h>
 
 #include "../utils/f_typedefs.hpp"
 
-
-namespace FEngine {
-	namespace FUtils {
+namespace fengine {
+	namespace futils {
 		template<typename T>
 		class FSingleton {
 			F_DISABLE_COPY(FSingleton)
@@ -40,4 +39,4 @@ namespace FEngine {
 	}
 }
 
-#endif // _3FENGINE_SRC_UTILS_SINGLETON_HPP_
+#endif // _3FENGINE_SRC_UTILS_F_SINGLETON_HPP_
