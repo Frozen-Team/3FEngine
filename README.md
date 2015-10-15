@@ -9,6 +9,7 @@
     - easyloggingpp
     - Eigen
     - FBX SDK
+    - GLI
 ### Software
     - CMake
 
@@ -33,7 +34,11 @@ x86-64 architecture set by default. In order to change architecture change gener
 **Limitation**:
 The solution can be generated for only one architecture: either x86 or x86-64.  
 
-**CMake Generator Visual Studio supported only for now.**
+**CMake Generator Visual Studio supported only for now.**  
+7) Open the generated solution, and set working directory (game project properties -> Configuration Properties -> Working Directory) to 
+
+    $(ProjectDir)..\deploy
+both for Debug and Release configurations.
 
 ## Documentation
 You will need the doxygen tool to generate documentation. Install it, and set environment variable DOXYGEN_EXECUTABLE that point to Doxygen`s binary directory.
