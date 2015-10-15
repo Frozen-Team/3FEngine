@@ -1,8 +1,8 @@
 ## Roadmap
 
-- [ ] Configure logger.
+- [X] Configure logger.
   - [X] Add FLogger class.
-  - [ ] Make better a loggers.cfg file.
+  - [X] Make better a loggers.cfg file.
 - [ ] Scene loader.
   - [ ] FBX files loader.
 - [ ] Configure RapidJSON and make json settings loader.

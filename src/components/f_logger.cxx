@@ -5,7 +5,7 @@
 INITIALIZE_EASYLOGGINGPP
 
 namespace fengine {
-	const std::string FLogger::kDefaultConfiguration = R"(
+	const FString FLogger::kDefaultConfiguration = R"(
 * GLOBAL:
 	FORMAT = "%datetime %msg"
 	FILENAME = "game.log"
@@ -19,7 +19,12 @@ namespace fengine {
 * DEBUG:
 	FORMAT = "%datetime{%d/%M} %func %msg")";
 
-	FLogger::FLogger() {}
+	//const std::function<char*(void)> FLogger::kNewLineSpecifier = [] { return "\n"; }();
+
+	FLogger::FLogger()
+	{
+		el::Helpers::installCustomFormatSpecifier(el::CustomFormatSpecifier("%n", [] { return "\n"; }));
+	}
 
 	FLogger::~FLogger() {}
 
