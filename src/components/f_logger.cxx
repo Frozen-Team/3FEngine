@@ -4,7 +4,7 @@
 
 INITIALIZE_EASYLOGGINGPP
 
-namespace FEngine {
+namespace fengine {
 	const std::string FLogger::kDefaultConfiguration = R"(
 * GLOBAL:
 	FORMAT = "%datetime %msg"

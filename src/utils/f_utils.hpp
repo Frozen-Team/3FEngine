@@ -2,8 +2,8 @@
 #define _3FENGINE_SRC_UTILS_F_UTILS_HPP_
 
 #include "f_typedefs.hpp"
-namespace FEngine {
-	namespace FUtils {
+namespace fengine {
+	namespace futils {
 		std::string ToLower(const FString & str);
 	}
 }
