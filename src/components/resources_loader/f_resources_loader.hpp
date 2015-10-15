@@ -13,7 +13,6 @@ namespace fengine {
 		~FResoucresLoader() = default;
 		FResoucresLoader() = delete;
 	private:
-		FFbxLoader fbx_loader_;
 	};
 }
 
