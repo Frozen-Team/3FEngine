@@ -1,10 +1,10 @@
-#ifndef _3FENGINE_SRC_UTILS_VERTICES_HPP_
-#define _3FENGINE_SRC_UTILS_VERTICES_HPP_
+#ifndef _3FENGINE_SRC_UTILS_F_VERTICES_HPP_
+#define _3FENGINE_SRC_UTILS_F_VERTICES_HPP_
 
 #include <vector>
 #include <Eigen\Dense>
 
-namespace FEngine {
+namespace fengine {
 	template<typename T, int base>
 	class FVertices {
 	public:
@@ -12,6 +12,8 @@ namespace FEngine {
 		~FVertices() = default;
 
 		FVertices(const T* const inVertices, int length) {
+			assert(base);
+			this->points_count_ = length / base;
 			vertices_.reserve(length);
 			std::copy(inVertices, inVertices + length, vertices_.begin());
 		}
@@ -19,7 +21,8 @@ namespace FEngine {
 		using Vector = std::vector<T>;
 		using Vertex = Eigen::Matrix<T, base, 1>;
 
-		Vector& vertices() noexcept { return vertices_; }
+		inline Vector& vertices() noexcept { return vertices_; }
+		inline int points_count() noexcept { return points_count_; }
 
 		inline Vertex GetVerticeByIndex(int index) const {
 			//TODO: add error handler
@@ -28,7 +31,6 @@ namespace FEngine {
 			if index < 0 || index >= verticesSize ||  { return; }
 			auto fromIndex = index * base;
 			
-			//for optimization purposes use this CRAP code.
 			Vertex result;
 			for (int i = 0; i < base; i++) {
 				result(i) = vertices_.at(fromIndex + i);
@@ -38,8 +40,9 @@ namespace FEngine {
 
 	private:
 		Vector vertices_;
+		int points_count_;
 	};
 }
 
 
-#endif // _3FENGINE_SRC_UTILS_VERTICES_HPP_
+#endif // _3FENGINE_SRC_UTILS_F_VERTICES_HPP_

@@ -3,9 +3,9 @@
 
 #include <string>
 
-namespace FEngine {
+namespace fengine {
 
-#define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = FUtils::ToLower(#enum_name);}
+#define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = futils::ToLower(#enum_name);}
 
 	const FSettings::DefaultSettingsMap FSettings::default_settings_ = [] {
 		FSettings::DefaultSettingsMap ret_map;

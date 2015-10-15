@@ -1,8 +1,8 @@
 #ifndef _3FENGINE_SRC_UTILS_F_ENUM_ITERATOR_HPP_
 #define _3FENGINE_SRC_UTILS_F_ENUM_ITERATOR_HPP_
 
-namespace FEngine {
-	namespace FUtils {
+namespace fengine {
+	namespace futils {
 		template<typename T>
 		class FEnumIterator
 		{

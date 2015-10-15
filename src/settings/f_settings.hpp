@@ -12,7 +12,7 @@
 
 #include "..\utils\f_utils.hpp"
 
-namespace FEngine {
+namespace fengine {
 
 	class FSettingInterface
 	{
@@ -72,7 +72,7 @@ namespace FEngine {
 		template<typename T>
 		struct SettingTraits {
 			static std::string setting(T t) {
-				return FUtils::ToLower(t);
+				return futils::ToLower(t);
 			}
 		};
 
@@ -87,7 +87,8 @@ namespace FEngine {
 
 		template<typename V, typename T>
 		void Set(T setting, FSettingField<V> value) noexcept {
-			values_[FUtils::ToLower(SettingTraits<T>::setting(setting))] = std::make_unique<FSettingField<V>>(value);
+			values_[futils::ToLower(SettingTraits<T>::setting(setting))] = std::make_unique<FSettingField<V>>(value);
+
 		}
 
 		template<typename V, typename T>

@@ -8,8 +8,8 @@
 #include "../utils/f_typedefs.hpp"
 #include "../utils/f_singleton.hpp"
 
-namespace FEngine {
-	class FLogger : public FUtils::FSingleton<FLogger>
+namespace fengine {
+	class FLogger : public futils::FSingleton<FLogger>
 	{
 		F_DISABLE_COPY(FLogger)
 	public:

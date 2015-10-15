@@ -4,7 +4,7 @@
 #include <vector>
 #include "../../utils/f_typedefs.hpp"
 
-namespace FEngine {
+namespace fengine {
 	class FGeometry
 	{
 	public:

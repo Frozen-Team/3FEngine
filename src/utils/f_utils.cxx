@@ -1,8 +1,8 @@
 #include "f_utils.hpp"
 #include <algorithm>
 
-namespace FEngine {
-	namespace FUtils {
+namespace fengine {
+	namespace futils {
 		FString ToLower(const FString & str)
 		{
 			auto lower_case = str;
