@@ -5,6 +5,12 @@ OTER:
  - Add prefix F to classes.
  - Add FLogger class. Load loggers configuration from file.
  
+OlehGol260:
+ 
+ - Add initialization method for fbx_loader
+ - Rename namespace FEngine to fengine, Utils to utlis
+ - Fix header guards according to Google style guide
+ 
 ### 13.10.2015 
 OlehGol260:
 
