@@ -3,6 +3,10 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <deque>
 
 #include "f_vertices.hpp"
 
@@ -24,6 +28,18 @@ namespace fengine {
 
 	using FIndices3 = FVertices<int, 3>;
 	using FUVsf = FVertices<float, 2>;
+
+	template<typename T>
+	using FVector = std::vector<T>;
+
+	template<typename K, typename V>
+	using FMap = std::map<K, V>;
+
+	template<typename T>
+	using FSet = std::set<T>;
+
+	template<typename T>
+	using FDeque = std::deque<T>;
 }
 
 #endif // _3FENGINE_SRC_UTILS_F_TYPEDEFS_HPP_
