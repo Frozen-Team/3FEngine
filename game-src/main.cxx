@@ -13,8 +13,9 @@
 #include "utils\f_singleton.hpp"
 
 #include <memory>
-
 #include "engine.hpp"
+
+#include "utils\f_json.h"
 
 
 const int SCREEN_WIDTH = 640;
@@ -24,11 +25,23 @@ namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	auto engine = fengine::Engine::GetInstance();
-
-	//auto& instinst = engine.GetInstance();
-	//FE::FLogger::
-
 
 	fengine::FSettings s;
 	s.LoadDefaultSettings();
