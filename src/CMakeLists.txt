@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 
+add_subdirectory(fbx2fseq)
+
 # Set path to Engine's third party installation directory.
 set(ENGINE_3DPARTY_INSTALL "${CMAKE_SOURCE_DIR}/3dparty/install")
 set(ENGINE_3DPARTY_DIR_ARCH "${ENGINE_3DPARTY_INSTALL}/${LIBS_INSTALL_SUFFIX}")
 
 # Make a list of extra runtime libraries.
-list(APPEND ENGINE_EXTRA_LIBS user32 gdi32 winmm imm32 ole32 oleaut32 version uuid)
-
+list(APPEND ENGINE_EXTRA_LIBS_ user32 gdi32 winmm imm32 ole32 oleaut32 version uuid)
+set(ENGINE_EXTRA_LIBS ${ENGINE_EXTRA_LIBS_} CACHE STRING "Set extra system libs")
 set(ENGINE_DEFAULT_FBX_VERSION "2016.1.2")
 
 # Make the options to define custom library path.
@@ -110,30 +112,3 @@ target_include_directories(3FEngine PUBLIC ${OPENGL_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${EIGEN3_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
-
-#
-# fbx2fseq project
-#
-file(GLOB_RECURSE FBX2FSEQ_SOURCES 
-        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.cpp 
-        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.h 
-        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.hpp 
-        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.cxx
-)
-
-add_executable(fbx2fseq ${FBX2FSEQ_SOURCES}) 
-set_target_properties(fbx2fseq PROPERTIES DEBUG_POSTFIX -d)
-if(MSVC)
-    set_target_properties(fbx2fseq PROPERTIES LINK_FLAGS_RELEASE ${ENGINE_WIN_SUBSYSTEM})
-    message(${ENGINE_WIN_SUBSYSTEM})
-    set_target_properties(fbx2fseq PROPERTIES LINK_FLAGS_DEBUG ${ENGINE_WIN_SUBSYSTEM})
-    set_target_properties(fbx2fseq PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${ENGINE_DEPLOY_DIR} )
-    message(${ENGINE_DEPLOY_DIR})
-    set_target_properties(fbx2fseq PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${ENGINE_DEPLOY_DIR} )
-    set_target_properties(fbx2fseq PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${ENGINE_DEPLOY_DIR} )
-endif()
-
-target_link_libraries(fbx2fseq optimized ${FBXSDK_LIBRARY} debug ${FBXSDK_LIBRARY_DEBUG})
-target_link_libraries(fbx2fseq ${ENGINE_EXTRA_LIBS})
-
-target_include_directories(fbx2fseq PUBLIC ${FBXSDK_INCLUDE_DIR})

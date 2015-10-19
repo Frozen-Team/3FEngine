@@ -2,8 +2,8 @@
 
 #include "utils\f_typedefs.hpp"
 
-int LoadFile(const FString& file_name)
-{
-
-	return 0;
-}
+//int LoadFile(const FString& file_name)
+//{
+//
+//	return 0;
+//}
