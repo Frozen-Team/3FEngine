@@ -15,6 +15,10 @@ namespace fengine {
 	Class(const Class&) = delete; \
 	Class& operator=(const Class&) = delete;
 
+#define F_DEFAULT_CTOR_DTOR(Class) \
+	Class() = default; \
+	~Class() = default;
+	
 	template<class T>
 	using FShared = std::shared_ptr<T>;
 
@@ -27,7 +31,7 @@ namespace fengine {
 	using FVertex3f = FVertices3f::Vertex;
 
 	using FIndices3 = FVertices<int, 3>;
-	using FUVsf = FVertices<float, 2>;
+	using FUvsf = FVertices<float, 2>;
 
 	template<typename T>
 	using FVector = std::vector<T>;

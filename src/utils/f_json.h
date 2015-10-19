@@ -12,8 +12,8 @@ namespace fengine {
 	{
 		F_DISABLE_COPY(FJson)
 	public:
-		FJson() {}
-		~FJson() {}
+		FJson() = default;
+		~FJson() = default;
 
 		auto operator[](const FString& key) -> decltype(rj::Document()[key.c_str()]);
 		
