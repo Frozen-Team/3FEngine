@@ -16,6 +16,7 @@
 #include "engine.hpp"
 
 #include "utils\f_json.h"
+#include "utils\f_json.hpp"
 
 
 const int SCREEN_WIDTH = 640;

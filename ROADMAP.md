@@ -4,8 +4,12 @@
   - [X] Add FLogger class.
   - [X] Make better a loggers.cfg file.
 - [ ] Scene loader.
+  - [ ] Scene, meshes, lods, nodes, entities.
   - [ ] FBX files loader.
-- [ ] Configure RapidJSON and make json settings loader.
+  - [ ] fseq file writer.
+  - [ ] fseq file reader.
+  - [ ] fbx2fseq converter.
+- [X] Configure RapidJSON and make json settings loader.
 - [ ] Make OpenGL helper class for retrieving harware-specific properties.
 - [ ] Make classes for windows, I\O and OpenGL management.
 - [ ] Make Camera class.

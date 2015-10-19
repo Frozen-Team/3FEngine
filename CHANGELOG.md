@@ -1,3 +1,12 @@
+### 19.10.2015
+OlehGol260:
+
+ - All necessary stuff from fbx now will be packed in fseq format
+ - These work is moved to separate project fbx2fseq
+ - Create CMakeLists for new project, minor refactor old ones.
+ - As fbx2fseq is difficult to realize without 3FEngine classes, start work on them
+ - Begin with mesh lods
+
 ### 15.10.2015 
 OTER:
 
