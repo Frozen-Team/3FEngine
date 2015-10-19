@@ -15,7 +15,28 @@ namespace fengine {
 		FJson() {}
 		~FJson() {}
 
+		auto operator[](const FString& key) -> decltype(rj::Document()[key.c_str()]);
+		
 		int LoadFile(const FString& file_name);
+
+		int Save();
+
+		int SaveFile(const FString& file_name);
+
+		int LoadRaw(const FString& raw_json);
+
+		const FString& GetRaw() const;
+
+		const static FString& GetErrorDescription(rapidjson::ParseErrorCode code);
+
+	private:
+		int Reload();
+
+	private:
+		const static FMap<rj::ParseErrorCode, FString> kErrorCodesDescr;
+
+		FString raw_json_;
+		FString file_name_;
 
 	};
 }
