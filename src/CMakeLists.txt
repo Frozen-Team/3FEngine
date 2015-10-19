@@ -48,12 +48,22 @@ find_package(GLI REQUIRED)
 
 set(ENGINE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Set engine include directory")
 
+
 file(GLOB_RECURSE ENGINE_SOURCES  
 		${CMAKE_CURRENT_SOURCE_DIR}/*.cpp 
 		${CMAKE_CURRENT_SOURCE_DIR}/*.h 
 		${CMAKE_CURRENT_SOURCE_DIR}/*.hpp 
 		${CMAKE_CURRENT_SOURCE_DIR}/*.cxx
 )
+
+# workaroung to remove fbx2fseq out of 3FEngine src
+set (ENGINE_EXCLUDE_DIR "/fbx2fseq/")
+foreach (TMP_PATH ${ENGINE_SOURCES})
+    string (FIND ${TMP_PATH} ${ENGINE_EXCLUDE_DIR} ENGINE_EXCLUDE_DIR_FOUND)
+    if (NOT ${ENGINE_EXCLUDE_DIR_FOUND} EQUAL -1)
+        list (REMOVE_ITEM ENGINE_SOURCES ${TMP_PATH})
+    endif ()
+endforeach(TMP_PATH)
 
 foreach(f ${ENGINE_SOURCES})
     # Get the path of the file relative to ${DIRECTORY},
@@ -100,3 +110,30 @@ target_include_directories(3FEngine PUBLIC ${OPENGL_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${EIGEN3_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
+
+#
+# fbx2fseq project
+#
+file(GLOB_RECURSE FBX2FSEQ_SOURCES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.cpp 
+        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.h 
+        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.hpp 
+        ${CMAKE_CURRENT_SOURCE_DIR}/fbx2fseq/*.cxx
+)
+
+add_executable(fbx2fseq ${FBX2FSEQ_SOURCES}) 
+set_target_properties(fbx2fseq PROPERTIES DEBUG_POSTFIX -d)
+if(MSVC)
+    set_target_properties(fbx2fseq PROPERTIES LINK_FLAGS_RELEASE ${ENGINE_WIN_SUBSYSTEM})
+    message(${ENGINE_WIN_SUBSYSTEM})
+    set_target_properties(fbx2fseq PROPERTIES LINK_FLAGS_DEBUG ${ENGINE_WIN_SUBSYSTEM})
+    set_target_properties(fbx2fseq PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${ENGINE_DEPLOY_DIR} )
+    message(${ENGINE_DEPLOY_DIR})
+    set_target_properties(fbx2fseq PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${ENGINE_DEPLOY_DIR} )
+    set_target_properties(fbx2fseq PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${ENGINE_DEPLOY_DIR} )
+endif()
+
+target_link_libraries(fbx2fseq optimized ${FBXSDK_LIBRARY} debug ${FBXSDK_LIBRARY_DEBUG})
+target_link_libraries(fbx2fseq ${ENGINE_EXTRA_LIBS})
+
+target_include_directories(fbx2fseq PUBLIC ${FBXSDK_INCLUDE_DIR})
