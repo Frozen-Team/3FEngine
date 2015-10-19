@@ -3,7 +3,6 @@
 
 #include "../../utils/f_typedefs.hpp"
 #include "../../utils/f_singleton.hpp"
-#include "f_fbx_loader.hpp"
 
 namespace fengine {
 	class FResoucresLoader : public futils::FSingleton<FResoucresLoader>

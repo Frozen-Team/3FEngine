@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 include(ExternalProject)
 include(CMakeDependentOption)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
+include(FilterHelper)
 
 project(Game)
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
   set(LIBS_INSTALL_SUFFIX x64)
@@ -23,13 +23,13 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Allow Debug and Rele
 if(MSVC)
 	option(ENGINE_ENABLE_CONSOLE "Enable console window." ON)
 	if(ENGINE_ENABLE_CONSOLE)
-		set(ENGINE_WIN_SUBSYSTEM "/SUBSYSTEM:CONSOLE")
+		set(ENGINE_WIN_SUBSYSTEM "/SUBSYSTEM:CONSOLE" CACHE STRING "Enable console")
 	else()
-		set(ENGINE_WIN_SUBSYSTEM "/SUBSYSTEM:WINDOWS")
+		set(ENGINE_WIN_SUBSYSTEM "/SUBSYSTEM:WINDOWS" CACHE STRING "Disable console")
 	endif()
 endif()
 
-set(ENGINE_DEPLOY_DIR "${CMAKE_SOURCE_DIR}/deploy")
+set(ENGINE_DEPLOY_DIR "${CMAKE_SOURCE_DIR}/deploy" CACHE STRING "Set deploy dir")
 
 add_subdirectory(src)
 
@@ -39,19 +39,21 @@ file(GLOB_RECURSE GAME_SOURCES 	${CMAKE_CURRENT_SOURCE_DIR}/game-src/*.cpp
 								${CMAKE_CURRENT_SOURCE_DIR}/game-src/*.hpp 
 )
 
-foreach(f ${GAME_SOURCES})
-    # Get the path of the file relative to ${DIRECTORY},
-    # then alter it (not compulsory)
-    file(RELATIVE_PATH SRCGR ${CMAKE_CURRENT_SOURCE_DIR}/game-src ${f})
-    set(SRCGR "src/${SRCGR}")
+ADD_FILTERS(${GAME_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/game-src)
 
-    # Extract the folder, ie remove the filename part
-    string(REGEX REPLACE "(.*)(/[^/]*)$" "\\1" SRCGR ${SRCGR})
-
-    # Source_group expects \\ (double antislash), not / (slash)
-    string(REPLACE / \\ SRCGR ${SRCGR})
-    source_group("${SRCGR}" FILES ${f})
-endforeach()
+#foreach(f ${GAME_SOURCES})
+#    # Get the path of the file relative to ${DIRECTORY},
+#    # then alter it (not compulsory)
+#    file(RELATIVE_PATH SRCGR ${CMAKE_CURRENT_SOURCE_DIR}/game-src ${f})
+#    set(SRCGR "src/${SRCGR}")
+#
+#    # Extract the folder, ie remove the filename part
+#    string(REGEX REPLACE "(.*)(/[^/]*)$" "\\1" SRCGR ${SRCGR})
+#
+#    # Source_group expects \\ (double antislash), not / (slash)
+#    string(REPLACE / \\ SRCGR ${SRCGR})
+#    source_group("${SRCGR}" FILES ${f})
+#endforeach()
 
 add_executable(game ${GAME_SOURCES})
 set_target_properties(game PROPERTIES DEBUG_POSTFIX -d)

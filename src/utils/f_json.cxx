@@ -6,9 +6,6 @@
 
 #include "components/f_logger.hpp"
 
-
-
-
 namespace fengine {
 	const FMap<rj::ParseErrorCode, FString> FJson::kErrorCodesDescr = {
 		{ rj::kParseErrorNone, "No error." },
