@@ -23,3 +23,6 @@
 [submodule "3dparty/gli"]
 	path = 3dparty/gli
 	url = git@github.com:Frozen-Team/gli.git
+[submodule "3dparty/glew"]
+	path = 3dparty/glew
+	url = git@github.com:Frozen-Team/glew.git

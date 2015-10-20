@@ -15,7 +15,6 @@
 #include <memory>
 #include "engine.hpp"
 
-#include "utils\f_json.h"
 #include "utils\f_json.hpp"
 
 
@@ -26,14 +25,24 @@ namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
+	FE::FJson j;
 
+	j.LoadRaw("{\"kuku\": 80802, \"kaka\":{\"hi\": 123}}");
+	j.SaveFile("test.json");
 
+	auto t = j.FindMember("kuku");
+	std::cout << t->value.GetInt() << std::endl;
 
+	auto& val = j["kuku"];
+	std::cout << val.GetInt() << std:: endl;
 
+	val.SetInt(100500);
 
+	std::cout << j["kuku"].GetInt() << std::endl;
 
+	auto& l = j["kaka"]["hi"];
 
-
+	std::cout << l.GetInt() << std::endl;
 
 
 

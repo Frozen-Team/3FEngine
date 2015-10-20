@@ -1,3 +1,9 @@
+### 20.10.2015
+OTER:
+
+ - Add GLEW library as submodule.
+ - Work on OpenGL helper.
+
 ### 19.10.2015
 OlehGol260:
 
