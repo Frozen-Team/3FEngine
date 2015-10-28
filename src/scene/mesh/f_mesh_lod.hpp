@@ -3,13 +3,19 @@
 
 #include "scene/geometry/f_geometry.hpp"
 #include "utils/f_typedefs.hpp"
+#include "boost/regex.hpp"
 
 namespace fengine {
 	class FMeshLod {
 		F_DEFAULT_CTOR_DTOR(FMeshLod)
 	private:
+		
+		void set_treshold_m(float treshold) { 
+			boost::regex regex;
+			regex.assign("\\d+");
 
-		void set_treshold_m(float treshold) { threshold_ = treshold; }
+
+				threshold_ = treshold; }
 	private:
 		float threshold_;
 		FGeometry geometry_;

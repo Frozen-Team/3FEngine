@@ -21,7 +21,7 @@ namespace fengine {
 
 	private:
 		const static FMap<GlExtension, FString> extension_names_;
-		static FMap<FString, 
+		//static FMap<FString, 
 	};
 }
 

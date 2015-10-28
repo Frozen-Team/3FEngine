@@ -41,20 +41,6 @@ file(GLOB_RECURSE GAME_SOURCES 	${CMAKE_CURRENT_SOURCE_DIR}/game-src/*.cpp
 
 ADD_FILTERS(${GAME_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/game-src)
 
-#foreach(f ${GAME_SOURCES})
-#    # Get the path of the file relative to ${DIRECTORY},
-#    # then alter it (not compulsory)
-#    file(RELATIVE_PATH SRCGR ${CMAKE_CURRENT_SOURCE_DIR}/game-src ${f})
-#    set(SRCGR "src/${SRCGR}")
-#
-#    # Extract the folder, ie remove the filename part
-#    string(REGEX REPLACE "(.*)(/[^/]*)$" "\\1" SRCGR ${SRCGR})
-#
-#    # Source_group expects \\ (double antislash), not / (slash)
-#    string(REPLACE / \\ SRCGR ${SRCGR})
-#    source_group("${SRCGR}" FILES ${f})
-#endforeach()
-
 add_executable(game ${GAME_SOURCES})
 set_target_properties(game PROPERTIES DEBUG_POSTFIX -d)
 if(MSVC)
