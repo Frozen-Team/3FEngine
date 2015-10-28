@@ -7,7 +7,6 @@
 #include <map>
 #include <set>
 #include <deque>
-#include <utility>
 
 #include "f_vertices.hpp"
 

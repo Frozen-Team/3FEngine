@@ -7,6 +7,7 @@
 
 namespace fengine {
 	class FMeshLod {
+	public:
 		F_DEFAULT_CTOR_DTOR(FMeshLod)
 	public:
 		bool IsVisible(float distance) {
@@ -15,7 +16,7 @@ namespace fengine {
 		
 		auto where_visible() { return where_visible_; }
 		auto geometry() { return geometry_; }
-		FString& name() { return name_; }
+		auto& name() { return name_; }
 
 		void set_geometry(FShared<FGeometry> geometry) { geometry_ = geometry; }
 		void set_where_active(const FRange& where_active) {	where_visible_ = where_active; }

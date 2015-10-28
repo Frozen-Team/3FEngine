@@ -6,8 +6,9 @@
 
 namespace fengine {
 	class FRange {
-		F_DEFAULT_CTOR_DTOR(FRange)
 	public:
+		F_DEFAULT_CTOR_DTOR(FRange)
+
 		FRange(float from, float to) {
 			this->SetRange(from, to);
 		}
@@ -18,7 +19,7 @@ namespace fengine {
 			this->to_ = to;
 		}
 		
-		bool IsInRange(float value) { return from_ <= value and value <= to_; }
+		bool IsInRange(float value) { return ((from_ <= value) && (value <= to_)); }
 
 		float from() { return from_; }
 		float to() { return to_; }
