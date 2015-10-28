@@ -2,7 +2,7 @@
 #define _3FENGINE_SRC_UTILS_F_VERTICES_HPP_
 
 #include <vector>
-#include <Eigen\Dense>
+#include <Eigen/Dense>
 
 namespace fengine {
 	template<typename T, int base>

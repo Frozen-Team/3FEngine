@@ -11,7 +11,7 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FEntity)
 	private:
-		FVe
+		FPoint3f position_;
 	};
 }
 #endif // _3FENGINE_SRC_SCENE_F_ENTITY_

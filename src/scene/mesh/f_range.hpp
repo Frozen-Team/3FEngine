@@ -19,7 +19,7 @@ namespace fengine {
 			this->to_ = to;
 		}
 		
-		bool IsInRange(float value) { return ((from_ <= value) && (value <= to_)); }
+		bool IsInRange(float value) const { return ((from_ <= value) && (value <= to_)); }
 
 		float from() { return from_; }
 		float to() { return to_; }

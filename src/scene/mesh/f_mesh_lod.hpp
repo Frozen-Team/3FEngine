@@ -9,24 +9,26 @@ namespace fengine {
 	class FMeshLod {
 	public:
 		F_DEFAULT_CTOR_DTOR(FMeshLod)
-	public:
-		bool IsVisible(float distance) {
-			return where_visible_.IsInRange(distance);
+
+		bool IsVisible(float distance) const {
+			return distance <= threshold_;
 		}
 		
-		auto where_visible() { return where_visible_; }
-		auto geometry() { return geometry_; }
-		auto& name() { return name_; }
+		//const auto where_visible() const { return where_visible_; }
+		const auto geometry() const { return geometry_; }
+		const auto& name() const { return name_; }
 
 		void set_geometry(FShared<FGeometry> geometry) { geometry_ = geometry; }
-		void set_where_active(const FRange& where_active) {	where_visible_ = where_active; }
+		void set_thresold(float threshold) { threshold_ = threshold; }
+		//void set_where_active(const FRange& where_active) {	where_visible_ = where_active; }
 		void set_name(const FString& lod_name) { name_ = lod_name; }
 	private:
 
 		
 	private: 
 		FString name_;
-		FRange where_visible_;
+		float threshold_;
+		//FRange where_visible_;
 		FShared<FGeometry> geometry_;
 	};
 }
