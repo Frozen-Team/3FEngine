@@ -54,3 +54,7 @@ add_subdirectory(eigen/Eigen)
 
 # Add GLI
 add_subdirectory(gli)
+
+# Add GLEW
+
+add_subdirectory(glew/build/cmake)

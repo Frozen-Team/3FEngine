@@ -21,6 +21,7 @@ set(ENGINE_EIGEN_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "Eigen root path."
 set(ENGINE_FBXSDK_VESION ${ENGINE_DEFAULT_FBX_VERSION} CACHE STRING "The FBX SDK version to find.")
 set(ENGINE_FBXSDK_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "FBX SDK root path.")
 set(ENGINE_GLI_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "GLI root path.")
+set(ENGINE_GLEW_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "GLEW root path.")
 
 function(SET_LIB_ROOT_PATH VAR VALUE)
 	if(NOT DEFINED ${VAR} AND NOT DEFINED ENV{${VAR}})
@@ -36,6 +37,7 @@ SET_LIB_ROOT_PATH(CPPFORMAT_ROOT ${ENGINE_CPPFORMAT_ROOT})
 SET_LIB_ROOT_PATH(EIGEN_ROOT ${ENGINE_EIGEN_ROOT})
 SET_LIB_ROOT_PATH(FBXSDK_ROOT ${ENGINE_3DPARTY_INSTALL})
 SET_LIB_ROOT_PATH(GLI_ROOT ${ENGINE_GLI_ROOT})
+SET_LIB_ROOT_PATH(GLEW_ROOT ${ENGINE_GLEW_ROOT})
 
 # Find RapidJSON, SDL2, EntityX, Easyloggingpp, Cppformat, OpenGL, FBX SDK
 find_package(RapidJSON REQUIRED)
@@ -47,9 +49,9 @@ find_package(OpenGL REQUIRED)
 find_package(Eigen REQUIRED)
 find_package(FBXSDK REQUIRED)
 find_package(GLI REQUIRED)
+find_package(GLEW REQUIRED)
 
 set(ENGINE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Set engine include directory")
-
 
 file(GLOB_RECURSE ENGINE_SOURCES  
 		${CMAKE_CURRENT_SOURCE_DIR}/*.cpp 
@@ -100,6 +102,7 @@ target_link_libraries(3FEngine ${SDL_LINK_LIST} ${SDL_LINK_LIST_DEBUG})
 # target_link_libraries(game optimized ${SDL2MAIN_LIBRARY} DEBUG ${SDL2MAIN_LIBRARY_DEBUG})
 target_link_libraries(3FEngine optimized ${CPPFORMAT_LIBRARY} debug ${CPPFORMAT_LIBRARY_DEBUG})
 target_link_libraries(3FEngine optimized ${FBXSDK_LIBRARY} debug ${FBXSDK_LIBRARY_DEBUG})
+target_link_libraries(3FEngine optimized ${GLEW_LIBRARY} debug ${GLEW_LIBRARY_DEBUG})
 target_link_libraries(3FEngine ${OPENGL_LIBRARIES})
 target_link_libraries(3FEngine ${ENGINE_EXTRA_LIBS})
 
@@ -112,3 +115,4 @@ target_include_directories(3FEngine PUBLIC ${OPENGL_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${EIGEN3_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
+target_include_directories(3FEngine PUBLIC ${GLEW_INCLUDE_DIR})
