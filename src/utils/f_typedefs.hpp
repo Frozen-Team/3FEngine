@@ -7,7 +7,7 @@
 #include <map>
 #include <set>
 #include <deque>
-
+#include "Eigen/Dense"	
 #include "f_vertices.hpp"
 
 namespace fengine {
@@ -18,7 +18,13 @@ namespace fengine {
 #define F_DEFAULT_CTOR_DTOR(Class) \
 	Class() = default; \
 	~Class() = default;
+
+#define F_DEFAULT_CTOR_V_DTOR(Class) \
+	Class() = default; \
+	virtual ~Class() = default;
 	
+	using FPoint3f = Eigen::Matrix<float, 3, 1>;
+
 	template<class T>
 	using FShared = std::shared_ptr<T>;
 

@@ -22,6 +22,7 @@ set(ENGINE_FBXSDK_VESION ${ENGINE_DEFAULT_FBX_VERSION} CACHE STRING "The FBX SDK
 set(ENGINE_FBXSDK_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "FBX SDK root path.")
 set(ENGINE_GLI_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "GLI root path.")
 set(ENGINE_GLEW_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "GLEW root path.")
+set(ENGINE_BOOST_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "Boost root path")
 
 function(SET_LIB_ROOT_PATH VAR VALUE)
 	if(NOT DEFINED ${VAR} AND NOT DEFINED ENV{${VAR}})
@@ -38,8 +39,9 @@ SET_LIB_ROOT_PATH(EIGEN_ROOT ${ENGINE_EIGEN_ROOT})
 SET_LIB_ROOT_PATH(FBXSDK_ROOT ${ENGINE_3DPARTY_INSTALL})
 SET_LIB_ROOT_PATH(GLI_ROOT ${ENGINE_GLI_ROOT})
 SET_LIB_ROOT_PATH(GLEW_ROOT ${ENGINE_GLEW_ROOT})
+SET_LIB_ROOT_PATH(BOOST_ROOT ${ENGINE_BOOST_ROOT})
 
-# Find RapidJSON, SDL2, EntityX, Easyloggingpp, Cppformat, OpenGL, FBX SDK
+# Find RapidJSON, SDL2, EntityX, Easyloggingpp, Cppformat, OpenGL, FBX SDK, GLI, boost
 find_package(RapidJSON REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(EntityX REQUIRED)
@@ -50,6 +52,7 @@ find_package(Eigen REQUIRED)
 find_package(FBXSDK REQUIRED)
 find_package(GLI REQUIRED)
 find_package(GLEW REQUIRED)
+find_package(boost REQUIRED COMPONENTS regex)
 
 set(ENGINE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Set engine include directory")
 
@@ -105,6 +108,7 @@ target_link_libraries(3FEngine optimized ${FBXSDK_LIBRARY} debug ${FBXSDK_LIBRAR
 target_link_libraries(3FEngine optimized ${GLEW_LIBRARY} debug ${GLEW_LIBRARY_DEBUG})
 target_link_libraries(3FEngine ${OPENGL_LIBRARIES})
 target_link_libraries(3FEngine ${ENGINE_EXTRA_LIBS})
+target_link_libraries(3FEngine ${Boost_LIBRARY_DIRS})
 
 target_include_directories(3FEngine PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${RAPIDJSON_INCLUDE_DIR})
@@ -116,3 +120,4 @@ target_include_directories(3FEngine PUBLIC ${EIGEN3_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLEW_INCLUDE_DIR})
+target_include_directories(3FEngine PUBLIC ${Boost_INCLUDE_DIRS})
