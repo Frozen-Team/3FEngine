@@ -1,6 +1,5 @@
 #include "f_gl_helper.hpp"
-#include <utils\f_utils.hpp>
-
+#include <utils/f_utils.hpp>
 #include <components/f_logger.hpp>
 
 namespace fengine {
@@ -17,12 +16,21 @@ namespace fengine {
 		glGetIntegerv(GL_MAJOR_VERSION, &this->major_);
 		glGetIntegerv(GL_MAJOR_VERSION, &this->minor_);
 		
-		// TODO: Check all strings
+		// Get vendor string
 		auto vendor_str = (const char*)glGetString(GL_VENDOR);
-		LOG_IF(vendor_str != nullptr, FATAL);
+		LOG_IF(vendor_str != nullptr, ERROR);
 		GlHelper::gl_vendor_.assign(vendor_str);
-		GlHelper::gl_renderer_.assign((const char*)glGetString(GL_RENDER));
-		GlHelper::gl_shading_lang_ver_.assign((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+		// Get renderer string
+		auto renderer_str = (const char*)glGetString(GL_RENDER);
+		LOG_IF(renderer_str != nullptr, ERROR);
+		GlHelper::gl_renderer_.assign(renderer_str);
+		// Get shading language version string
+		auto shading_lang_ver = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+		LOG_IF(shading_lang_ver != nullptr, ERROR);
+		GlHelper::gl_shading_lang_ver_.assign(shading_lang_ver);
+		// Get OpenGL version string
+		auto gl_ver_str = (const char*)glGetString(GL_VERSION);
+		LOG_IF(gl_ver_str != nullptr, ERROR);
 		GlHelper::gl_ver_.assign((const char*)glGetString(GL_VERSION));
 
 		int num_extensions = 0;
@@ -47,7 +55,7 @@ namespace fengine {
 
 	bool GlHelper::IsExtensionSupported(GlExtension ext)
 	{
-		// We assume that there are all possible values in map.
+		// We assume that there are all possible values in the map.
 		return GlHelper::IsExtensionSupported(GlHelper::ext_names_.at(ext));
 	}
 }

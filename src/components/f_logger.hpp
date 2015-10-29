@@ -9,7 +9,7 @@
 #include "easylogging++.h"
 
 #include <utils/f_typedefs.hpp>
-#include "../utils/f_singleton.hpp"
+#include <utils/f_singleton.hpp>
 
 namespace fengine {
 	class FLogger : public futils::FSingleton<FLogger>
@@ -27,7 +27,6 @@ namespace fengine {
 
 	private:
 		const static FString kDefaultConfiguration;
-		//const static std::function<char*(void)> kNewLineSpecifier;
 	};
 }
 

@@ -1,5 +1,7 @@
-#include "engine.hpp"
 #include <iostream>
+
+#include "engine.hpp"
+
 
 namespace fengine {
 	Engine::Engine() {
@@ -8,6 +10,8 @@ namespace fengine {
 		
 		FLogger::LoadConfiguration("loggers.cfg");
 		LOG(INFO) << "========== LOG START  ==========";
+
+		this->settings_ = std::make_shared<FSettings>();
 	}
 	Engine::~Engine() {
 

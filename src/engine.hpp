@@ -4,16 +4,19 @@
 #include "utils\f_typedefs.hpp"
 #include "utils\f_singleton.hpp"
 #include "components\f_logger.hpp"
-// _3FENGINE_SRC_ENGINE_HPP_
+#include <settings/f_settings.hpp>
+
 namespace fengine {
 	class Engine : public futils::FSingleton<Engine> {
-		F_DISABLE_COPY(Engine)// _3FENGINE_SRC_ENGINE_HPP_
+		F_DISABLE_COPY(Engine)
 	public:
-		Engine(); //
+		Engine();
 		~Engine();
 
 	private:
-		FShared<FLogger> logger_;// _3FENGINE_SRC_ENGINE_HPP_
+		FShared<FLogger> logger_;
+		FShared<FSettings> settings_;
+		
 	};
 }
 

@@ -19,8 +19,6 @@ namespace fengine {
 * DEBUG:
 	FORMAT = "%datetime{%d/%M} %func %msg")";
 
-	//const std::function<char*(void)> FLogger::kNewLineSpecifier = [] { return "\n"; }();
-
 	FLogger::FLogger()
 	{
 		el::Helpers::installCustomFormatSpecifier(el::CustomFormatSpecifier("%n", [] { return "\n"; }));
@@ -63,7 +61,6 @@ namespace fengine {
 		if (!logger_cfg.parseFromText(str_cfg)) {
 			return -1;
 		}
-		//el::Loggers::configureFromGlobal
 		el::Loggers::reconfigureAllLoggers(logger_cfg);
 		return 0;
 	}
