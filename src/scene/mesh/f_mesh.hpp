@@ -14,7 +14,6 @@ namespace fengine {
 		void AddLod(float threshold, FShared<FGeometry> geometry);
 
 	private:
-		void SortLods();
 
 	private:
 		FString name_;

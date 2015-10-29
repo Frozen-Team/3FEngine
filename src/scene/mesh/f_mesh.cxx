@@ -15,13 +15,10 @@ namespace fengine {
 	}
 
 	void FMesh::AddLod(float threshold, FShared<FGeometry> geometry)
-	{
-		
-	}
-
-	void FMesh::SortLods()
-	{
-
+	{	
+		LOG_IF(threshold < 0 || !geometry, FATAL);
+		auto is_inserted = this->lods_.insert(FMeshLod(threshold, geometry));
+		LOG_IF(!is_inserted.second, FATAL);
 	}
 }
 

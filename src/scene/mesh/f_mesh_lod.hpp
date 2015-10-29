@@ -24,7 +24,7 @@ namespace fengine {
 		//void set_where_active(const FRange& where_active) {	where_visible_ = where_active; }
 		void set_name(const FString& lod_name) { name_ = lod_name; }
 
-		bool operator() (const FMeshLod& mesh_lod) {
+		bool operator<(const FMeshLod& mesh_lod) const {
 			return this->threshold() < mesh_lod.threshold();
 		}
 
