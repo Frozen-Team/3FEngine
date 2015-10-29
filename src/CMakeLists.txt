@@ -49,7 +49,7 @@ find_package(OpenGL REQUIRED)
 find_package(Eigen REQUIRED)
 find_package(FBXSDK REQUIRED)
 find_package(GLI REQUIRED)
-find_package(boost REQUIRED COMPONENTS regex)
+find_package(boost REQUIRED COMPONENTS regex container)
 
 set(ENGINE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Set engine include directory")
 

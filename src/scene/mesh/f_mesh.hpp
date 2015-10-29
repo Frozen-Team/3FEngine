@@ -4,7 +4,6 @@
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh_lod.hpp"
 #include "scene/f_entity.hpp"
-#include "components/f_logger.hpp"
 
 namespace fengine {
 	class FMesh : public FEntity {
@@ -12,9 +11,14 @@ namespace fengine {
 		F_DEFAULT_CTOR_V_DTOR(FMesh)
 
 		const FShared<FGeometry> GetGeometry(float distance) const;
+		void AddLod(float threshold, FShared<FGeometry> geometry);
+
+	private:
+		void SortLods();
+
 	private:
 		FString name_;
-		FVector<FMeshLod> lods_;
+		FSortedSet<FMeshLod, std::less<FMeshLod> > lods_;
 	};
 }
 

@@ -7,7 +7,11 @@
 #include <map>
 #include <set>
 #include <deque>
+#include <functional>
+
 #include "Eigen/Dense"	
+#include "boost/container/flat_set.hpp"
+
 #include "f_vertices.hpp"
 
 namespace fengine {
@@ -41,6 +45,9 @@ namespace fengine {
 
 	template<typename T>
 	using FVector = std::vector<T>;
+
+	template<typename T, typename Compare = std::less<T>>
+	using FSortedSet = boost::container::flat_set<T, Compare>;
 
 	template<typename K, typename V>
 	using FMap = std::map<K, V>;

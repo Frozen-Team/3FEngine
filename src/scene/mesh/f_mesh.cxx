@@ -11,7 +11,17 @@ namespace fengine {
 		if (found != lods_.cend()) {
 			return found->geometry();
 		}
-		return lods_.back;
+		return lods_.nth(lods_.size() - 1).get_ptr()->geometry();
+	}
+
+	void FMesh::AddLod(float threshold, FShared<FGeometry> geometry)
+	{
+		
+	}
+
+	void FMesh::SortLods()
+	{
+
 	}
 }
 

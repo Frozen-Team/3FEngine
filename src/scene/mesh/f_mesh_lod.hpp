@@ -10,11 +10,12 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_DTOR(FMeshLod)
 
-		bool IsVisible(float distance) const {
-			return distance <= threshold_;
-		}
+		FMeshLod(float threshold, FShared<FGeometry> geometry) : threshold_(threshold), geometry_(geometry) { }
+
+		bool IsVisible(float distance) const { return distance <= threshold_; }
 		
 		//const auto where_visible() const { return where_visible_; }
+		const float threshold() const { return threshold_; }
 		const auto geometry() const { return geometry_; }
 		const auto& name() const { return name_; }
 
@@ -22,13 +23,17 @@ namespace fengine {
 		void set_thresold(float threshold) { threshold_ = threshold; }
 		//void set_where_active(const FRange& where_active) {	where_visible_ = where_active; }
 		void set_name(const FString& lod_name) { name_ = lod_name; }
+
+		bool operator() (const FMeshLod& mesh_lod) {
+			return this->threshold() < mesh_lod.threshold();
+		}
+
 	private:
 
 		
 	private: 
 		FString name_;
 		float threshold_;
-		//FRange where_visible_;
 		FShared<FGeometry> geometry_;
 	};
 }
