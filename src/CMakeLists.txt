@@ -21,6 +21,7 @@ set(ENGINE_EIGEN_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "Eigen root path."
 set(ENGINE_FBXSDK_VESION ${ENGINE_DEFAULT_FBX_VERSION} CACHE STRING "The FBX SDK version to find.")
 set(ENGINE_FBXSDK_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "FBX SDK root path.")
 set(ENGINE_GLI_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "GLI root path.")
+set(ENGINE_GLEW_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "GLEW root path.")
 set(ENGINE_BOOST_ROOT ${ENGINE_3DPARTY_DIR_ARCH} CACHE STRING "Boost root path")
 
 function(SET_LIB_ROOT_PATH VAR VALUE)
@@ -37,6 +38,7 @@ SET_LIB_ROOT_PATH(CPPFORMAT_ROOT ${ENGINE_CPPFORMAT_ROOT})
 SET_LIB_ROOT_PATH(EIGEN_ROOT ${ENGINE_EIGEN_ROOT})
 SET_LIB_ROOT_PATH(FBXSDK_ROOT ${ENGINE_3DPARTY_INSTALL})
 SET_LIB_ROOT_PATH(GLI_ROOT ${ENGINE_GLI_ROOT})
+SET_LIB_ROOT_PATH(GLEW_ROOT ${ENGINE_GLEW_ROOT})
 SET_LIB_ROOT_PATH(BOOST_ROOT ${ENGINE_BOOST_ROOT})
 
 # Find RapidJSON, SDL2, EntityX, Easyloggingpp, Cppformat, OpenGL, FBX SDK, GLI, boost
@@ -50,9 +52,9 @@ find_package(Eigen REQUIRED)
 find_package(FBXSDK REQUIRED)
 find_package(GLI REQUIRED)
 find_package(boost REQUIRED COMPONENTS regex container)
+find_package(GLEW REQUIRED)
 
 set(ENGINE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Set engine include directory")
-
 
 file(GLOB_RECURSE ENGINE_SOURCES  
 		${CMAKE_CURRENT_SOURCE_DIR}/*.cpp 
@@ -61,7 +63,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
 		${CMAKE_CURRENT_SOURCE_DIR}/*.cxx
 )
 
-# workaroung to remove fbx2fseq out of 3FEngine src
+# workaround to remove fbx2fseq out of 3FEngine src
 set (ENGINE_EXCLUDE_DIR "/fbx2fseq/")
 foreach (TMP_PATH ${ENGINE_SOURCES})
     string (FIND ${TMP_PATH} ${ENGINE_EXCLUDE_DIR} ENGINE_EXCLUDE_DIR_FOUND)
@@ -103,6 +105,7 @@ target_link_libraries(3FEngine ${SDL_LINK_LIST} ${SDL_LINK_LIST_DEBUG})
 # target_link_libraries(game optimized ${SDL2MAIN_LIBRARY} DEBUG ${SDL2MAIN_LIBRARY_DEBUG})
 target_link_libraries(3FEngine optimized ${CPPFORMAT_LIBRARY} debug ${CPPFORMAT_LIBRARY_DEBUG})
 target_link_libraries(3FEngine optimized ${FBXSDK_LIBRARY} debug ${FBXSDK_LIBRARY_DEBUG})
+target_link_libraries(3FEngine optimized ${GLEW_LIBRARY} debug ${GLEW_LIBRARY_DEBUG})
 target_link_libraries(3FEngine ${OPENGL_LIBRARIES})
 target_link_libraries(3FEngine ${ENGINE_EXTRA_LIBS})
 target_link_libraries(3FEngine ${Boost_LIBRARY_DIRS})
@@ -116,4 +119,5 @@ target_include_directories(3FEngine PUBLIC ${OPENGL_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${EIGEN3_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
+target_include_directories(3FEngine PUBLIC ${GLEW_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${Boost_INCLUDE_DIRS})
