@@ -13,8 +13,7 @@ class FFbxLoader
 {
 	F_DISABLE_COPY(FFbxLoader)
 public:
-	~FFbxLoader() = default;
-	FFbxLoader(); 
+	F_DEFAULT_CTOR_DTOR(FFbxLoader)
 
 public:
 	static inline FbxManager* fbx_manager() noexcept { return fbx_manager_; }

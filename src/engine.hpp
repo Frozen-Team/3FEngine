@@ -3,7 +3,7 @@
 
 #include "utils\f_typedefs.hpp"
 #include "utils\f_singleton.hpp"
-#include "components\f_logger.hpp"
+#include "fcomponents\f_logger.hpp"
 #include <settings/f_settings.hpp>
 
 namespace fengine {

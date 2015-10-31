@@ -1,9 +1,22 @@
 #include <algorithm>
 
 #include "f_mesh.hpp"
-#include "components/f_logger.hpp"
+#include "fcomponents/f_logger.hpp"
+#include "scene/components/components.hpp"
 
 namespace fengine {
+	FMesh::FMesh(ex::EntityManager & entity_manager, const FPoint3f& position) : FEntity(entity_manager)
+	{
+		this->assign<Position>(position);
+	}
+
+	const FPoint3f & FMesh::GetPosition()
+	{
+		auto pos = this->component<Position>();
+		LOG_IF(!pos, FATAL) << "Cannot retrieve the position from the mesh";
+		return pos.get()->pos();
+	}
+
 	const FShared<FGeometry> FMesh::GetGeometry(float distance) const
 	{
 		LOG_IF(lods_.size() == 0, FATAL);

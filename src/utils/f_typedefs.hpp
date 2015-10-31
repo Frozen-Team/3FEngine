@@ -11,6 +11,7 @@
 
 #include "Eigen/Dense"	
 #include "boost/container/flat_set.hpp"
+#include "entityx/entityx.h"
 
 #include "f_vertices.hpp"
 
@@ -27,13 +28,18 @@ namespace fengine {
 	Class() = default; \
 	virtual ~Class() = default;
 	
+	namespace ex = entityx;
+
 	using FPoint3f = Eigen::Matrix<float, 3, 1>;
+
+	using FMatrix4f = Eigen::Matrix4f;
 
 	template<class T>
 	using FShared = std::shared_ptr<T>;
-
 	template<class T>
 	using FUnique = std::unique_ptr<T>;
+	template<class T>
+	using FWeak = std::weak_ptr<T>;
 
 	using FString = std::string;
 

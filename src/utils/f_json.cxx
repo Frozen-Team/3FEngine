@@ -4,7 +4,7 @@
 #include "rapidjson/filewritestream.h"
 #include <fstream>
 
-#include "components/f_logger.hpp"
+#include "fcomponents/f_logger.hpp"
 
 namespace fengine {
 	const FMap<rj::ParseErrorCode, FString> FJson::kErrorCodesDescr = {

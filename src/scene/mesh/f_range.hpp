@@ -1,7 +1,7 @@
 #ifndef _3FENGINE_SRC_SCENE_MESH_F_RANGE_HPP_
 #define _3FENGINE_SRC_SCENE_MESH_F_RANGE_HPP_
 
-#include "components/f_logger.hpp"
+#include "fcomponents/f_logger.hpp"
 #include "utils/f_typedefs.hpp"
 
 namespace fengine {

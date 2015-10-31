@@ -10,6 +10,8 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FMesh)
 
+		FMesh(ex::EntityManager& entity_manager, const FPoint3f& position);
+		const FPoint3f& GetPosition();
 		const FShared<FGeometry> GetGeometry(float distance) const;
 		void AddLod(float threshold, FShared<FGeometry> geometry);
 
