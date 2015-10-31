@@ -17,7 +17,7 @@ public:
 		kJoystick
 	};
 
-	explicit FEvent(EventType type) { this->type_ = type; }
+	explicit FEvent(EventType type) : accepted_(false) { this->type_ = type; }
 
 	EventType type() const { return this->type_; }
 
