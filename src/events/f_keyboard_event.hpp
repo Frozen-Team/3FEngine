@@ -1,7 +1,7 @@
 #ifndef _3FENGINE_SRC_F_KEYBOARD_EVENT_HPP_
 #define _3FENGINE_SRC_F_KEYBOARD_EVENT_HPP_
 
-#include <components/f_logger.hpp>
+#include <fcomponents/f_logger.hpp>
 #include <events/f_event.hpp>
 #include <utils/f_flags.hpp>
 #include <events/f_events_enums.hpp>
