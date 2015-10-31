@@ -31,6 +31,8 @@ namespace fengine {
 	namespace ex = entityx;
 
 	using FPoint3f = Eigen::Matrix<float, 3, 1>;
+	using FPoint2i = Eigen::Matrix<int, 2, 1>;
+	using FPoint2f = Eigen::Matrix<float, 2, 1>;
 
 	using FMatrix4f = Eigen::Matrix4f;
 
@@ -44,7 +46,7 @@ namespace fengine {
 	using FString = std::string;
 
 	using FVertices3f = FVertices<float, 3>;
-	using FVertex3f = FVertices3f::Vertex;
+	using FVertex3f = FVertices3f::Vertex;	
 
 	using FIndices3 = FVertices<int, 3>;
 	using FUvsf = FVertices<float, 2>;

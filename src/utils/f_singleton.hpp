@@ -2,8 +2,7 @@
 #define _3FENGINE_SRC_UTILS_F_SINGLETON_HPP_
 
 #include <assert.h>
-
-#include "../utils/f_typedefs.hpp"
+#include "utils/f_typedefs.hpp"
 
 namespace fengine {
 	namespace futils {
