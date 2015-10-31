@@ -3,6 +3,7 @@
 
 #include "SDL_events.h"
 #include "SDL_joystick.h"
+#include "SDL_mouse.h"
 #include "SDL_keyboard.h"
 #include "SDL_keycode.h"
 
@@ -12,6 +13,7 @@ namespace fengine {
 	class FSdlEventsDispather : public futils::FSingleton<FSdlEventsDispather>
 	{
 	public:
+		
 		void PollEvents();
 
 	private:

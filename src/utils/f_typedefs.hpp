@@ -29,6 +29,7 @@ namespace fengine {
 	
 	using FPoint3f = Eigen::Matrix<float, 3, 1>;
 	using FPoint2i = Eigen::Matrix<int, 2, 1>;
+	using FPoint2f = Eigen::Matrix<float, 2, 1>;
 
 	template<class T>
 	using FShared = std::shared_ptr<T>;

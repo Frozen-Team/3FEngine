@@ -4,6 +4,7 @@ void fengine::FSdlEventsDispather::PollEvents()
 {
 	while (SDL_PollEvent(&event_))
 	{
+		//SDL_GetMouseState()
 
 	}
 }

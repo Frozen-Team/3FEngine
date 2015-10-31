@@ -4,21 +4,22 @@
 class FEvent
 {
 public:
-	enum Type
+	enum EventType
 	{
-		KeyPress,
-		KeyRelease,
-		MouseMove,
-		MouseButtonDblClick,
-		MouseButtonPress,
-		MouseButtonRelease,
-		MouseWheel,
-		Joystick
+		kNoEvent,
+		kKeyPress,
+		kKeyRelease,
+		kMouseMove,
+		kMouseButtonDblClick,
+		kMouseButtonPress,
+		kMouseButtonRelease,
+		kMouseWheel,
+		kJoystick
 	};
 
-	explicit FEvent(Type type) { this->type_ = type; }
+	explicit FEvent(EventType type) { this->type_ = type; }
 
-	Type type() const { return this->type_; }
+	EventType type() const { return this->type_; }
 
 	bool accepted() const { return this->accepted_; }
 
@@ -29,7 +30,7 @@ public:
 	inline void setAccepted(bool accepted) { this->accepted_ = accepted; }
 
 private:
-	Type type_;
+	EventType type_;
 	bool accepted_;
 };
 
