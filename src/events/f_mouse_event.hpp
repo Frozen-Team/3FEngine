@@ -6,7 +6,8 @@
 #include <events/f_events_enums.hpp>
 #include <utils/f_typedefs.hpp>
 
-namespace fengine {
+namespace fengine 
+{
 	class FMouseEvent : public FEvent
 	{
 	public:

@@ -3,7 +3,8 @@
 
 #include <string>
 
-namespace fengine {
+namespace fengine
+{
 
 #define ADD_DEFAULT_SETTING(map_name,enum_name) {map_name[enum_name] = futils::ToLower(#enum_name);}
 
@@ -16,7 +17,6 @@ namespace fengine {
 
 		return ret_map;
 	}();
-
 
 	void FSettings::LoadDefaultSettings()
 	{

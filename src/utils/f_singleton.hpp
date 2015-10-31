@@ -4,16 +4,20 @@
 #include <assert.h>
 #include "utils/f_typedefs.hpp"
 
-namespace fengine {
-	namespace futils {
+namespace fengine
+{
+	namespace futils
+	{
 		template<typename T>
-		class FSingleton {
+		class FSingleton
+		{
 			F_DISABLE_COPY(FSingleton)
 		public:
 
 			virtual ~FSingleton() {}
 
-			static FShared<T> GetInstance() {
+			static FShared<T> GetInstance()
+			{
 				if (!instance) {
 					instance = FShared<T>(new T());
 				}

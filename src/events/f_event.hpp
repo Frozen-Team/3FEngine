@@ -1,37 +1,29 @@
 #ifndef _3FENGINE_SRC_EVENTS_F_EVENT_HPP_
 #define _3FENGINE_SRC_EVENTS_F_EVENT_HPP_
 
-class FEvent
+#include <events/f_events_enums.hpp>
+
+namespace fengine
 {
-public:
-	enum EventType
+	class FEvent
 	{
-		kNoEvent,
-		kKeyPress,
-		kKeyRelease,
-		kMouseMove,
-		kMouseButtonDblClick,
-		kMouseButtonPress,
-		kMouseButtonRelease,
-		kMouseWheel,
-		kJoystick
+	public:
+
+		explicit FEvent(EventType type) : accepted_(false) { this->type_ = type; }
+
+		EventType type() const { return this->type_; }
+
+		bool accepted() const { return this->accepted_; }
+
+		void accept() { setAccepted(true); }
+
+		void ignore() { setAccepted(false); }
+
+		inline void setAccepted(bool accepted) { this->accepted_ = accepted; }
+
+	private:
+		EventType type_;
+		bool accepted_;
 	};
-
-	explicit FEvent(EventType type) : accepted_(false) { this->type_ = type; }
-
-	EventType type() const { return this->type_; }
-
-	bool accepted() const { return this->accepted_; }
-
-	void accept() { setAccepted(true); }
-
-	void ignore() { setAccepted(false); }
-
-	inline void setAccepted(bool accepted) { this->accepted_ = accepted; }
-
-private:
-	EventType type_;
-	bool accepted_;
-};
-
+}
 #endif // _3FENGINE_SRC_EVENTS_F_EVENT_HPP_

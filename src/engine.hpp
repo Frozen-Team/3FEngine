@@ -6,8 +6,10 @@
 #include "fcomponents\f_logger.hpp"
 #include <settings/f_settings.hpp>
 
-namespace fengine {
-	class Engine : public futils::FSingleton<Engine> {
+namespace fengine
+{
+	class Engine : public futils::FSingleton<Engine>
+	{
 		F_DISABLE_COPY(Engine)
 	public:
 		Engine();

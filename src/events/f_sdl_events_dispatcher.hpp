@@ -9,7 +9,8 @@
 
 #include <utils/f_singleton.hpp>
 
-namespace fengine {
+namespace fengine
+{
 	class FSdlEventsDispather : public futils::FSingleton<FSdlEventsDispather>
 	{
 	public:

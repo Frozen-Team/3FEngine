@@ -5,8 +5,8 @@
 
 #include <fcomponents/f_logger.hpp>
 
-namespace fengine {
-
+namespace fengine
+{
 	template<typename EnumType, typename Enable = void>
 	class FFlags {};
 

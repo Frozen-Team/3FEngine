@@ -4,10 +4,11 @@
 #include <vector>
 #include <Eigen/Dense>
 
-
-namespace fengine {
+namespace fengine
+{
 	template<typename T, int base>
-	class FVertices {
+	class FVertices
+	{
 	public:
 		FVertices() = default;
 		~FVertices() = default;
