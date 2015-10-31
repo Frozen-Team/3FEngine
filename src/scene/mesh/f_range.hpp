@@ -14,7 +14,7 @@ namespace fengine {
 		}
 
 		void SetRange(float from, float to) {
-			LOG_IF(from > to, FATAL);
+			LOG_IF(from > to, FATAL) << "'From' value is bigger than 'to'";
 			this->from_ = from;
 			this->to_ = to;
 		}

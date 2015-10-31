@@ -19,7 +19,7 @@ namespace fengine {
 
 	const FShared<FGeometry> FMesh::GetGeometry(float distance) const
 	{
-		LOG_IF(lods_.size() == 0, FATAL);
+		LOG_IF(lods_.size() == 0, FATAL) << "There is no LOD for current mesh";
 		auto& found = std::find_if(lods_.cbegin(), lods_.cend(), [distance](const FMeshLod& lod) { return lod.IsVisible(distance); });
 		if (found != lods_.cend()) {
 			return found->geometry();
@@ -31,7 +31,7 @@ namespace fengine {
 	{	
 		LOG_IF(threshold < 0 || !geometry, FATAL);
 		auto is_inserted = this->lods_.insert(FMeshLod(threshold, geometry));
-		LOG_IF(!is_inserted.second, FATAL);
+		LOG_IF(!is_inserted.second, FATAL) << "Failed to add LOD to mesh";
 	}
 }
 
