@@ -4,7 +4,6 @@
 #include <vector>
 #include <Eigen/Dense>
 
-#include "fcomponents/f_logger.hpp"
 
 namespace fengine {
 	template<typename T, int base>
@@ -13,12 +12,7 @@ namespace fengine {
 		FVertices() = default;
 		~FVertices() = default;
 
-		FVertices(const T* const inVertices, int length) {
-			LOG_IF(base <= 0, FATAL) << "Base must be bigger than 0"
-			this->points_count_ = length / base;
-			vertices_.reserve(length);
-			std::copy(inVertices, inVertices + length, vertices_.begin());
-		}
+		FVertices(const T* const inVertices, int length);
 		
 		using Vector = std::vector<T>;
 		using Vertex = Eigen::Matrix<T, base, 1>;
@@ -26,24 +20,13 @@ namespace fengine {
 		inline Vector& vertices() noexcept { return vertices_; }
 		inline int points_count() noexcept { return points_count_; }
 
-		inline Vertex GetVerticeByIndex(int index) const {
-			//TODO: add error handler
-			auto verticesSize = vertices_.size();
-			LOG_IF(verticesSize % base == 0, FATAL) << "Vertices size has to be divisible by base"
-			if index < 0 || index >= verticesSize ||  { return; }
-			auto fromIndex = index * base;
-			
-			Vertex result;
-			for (int i = 0; i < base; i++) {
-				result(i) = vertices_.at(fromIndex + i);
-			}
-			return result;
-		}
+		inline Vertex GetVerticeByIndex(int index) const;
 
 	private:
 		Vector vertices_;
 		int points_count_;
 	};
+	
 }
 
 
