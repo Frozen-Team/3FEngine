@@ -14,7 +14,8 @@
 
 #include "f_vertices.hpp"
 
-namespace fengine {
+namespace fengine
+{
 #define F_DISABLE_COPY(Class) \
 	Class(const Class&) = delete; \
 	Class& operator=(const Class&) = delete;

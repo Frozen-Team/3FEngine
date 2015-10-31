@@ -8,7 +8,8 @@
 #include <events/f_mouse_event.hpp>
 #include <events/f_keyboard_event.hpp>
 
-namespace fengine {
+namespace fengine
+{
 	class FMouseWheelEvent : public FEvent
 	{
 	public:

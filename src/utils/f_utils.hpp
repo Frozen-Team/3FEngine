@@ -3,8 +3,10 @@
 
 #include "f_typedefs.hpp"
 
-namespace fengine {
-	namespace futils {
+namespace fengine
+{
+	namespace futils
+	{
 		inline FString ToLower(const FString & str)
 		{
 			auto lower_case = str;

@@ -4,8 +4,8 @@
 #include "rapidjson\document.h"
 #include "utils\f_typedefs.hpp"
 
-namespace fengine {
-
+namespace fengine
+{
 	namespace rj = rapidjson;
 
 	class FJson : public rapidjson::Document

@@ -6,7 +6,8 @@
 #include <utils/f_flags.hpp>
 #include <events/f_events_enums.hpp>
 
-namespace fengine {
+namespace fengine 
+{
 	class FKeyboardEvent : public FEvent
 	{
 	public:

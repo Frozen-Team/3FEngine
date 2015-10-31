@@ -4,14 +4,17 @@
 #include <vector>
 #include <Eigen/Dense>
 
-namespace fengine {
+namespace fengine
+{
 	template<typename T, int base>
-	class FVertices {
+	class FVertices
+	{
 	public:
 		FVertices() = default;
 		~FVertices() = default;
 
-		FVertices(const T* const inVertices, int length) {
+		FVertices(const T* const inVertices, int length)
+		{
 			assert(base);
 			this->points_count_ = length / base;
 			vertices_.reserve(length);
@@ -24,7 +27,8 @@ namespace fengine {
 		inline Vector& vertices() noexcept { return vertices_; }
 		inline int points_count() noexcept { return points_count_; }
 
-		inline Vertex GetVerticeByIndex(int index) const {
+		inline Vertex GetVerticeByIndex(int index) const
+		{
 			//TODO: add error handler
 			auto verticesSize = vertices_.size();
 			assert(verticesSize % base == 0)

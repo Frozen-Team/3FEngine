@@ -3,8 +3,10 @@
 #include "engine.hpp"
 
 
-namespace fengine {
-	Engine::Engine() {
+namespace fengine
+{
+	Engine::Engine()
+	{
 		// Construct logger
 		this->logger_ = FLogger::GetInstance();
 		

@@ -12,7 +12,8 @@
 
 #include "..\utils\f_utils.hpp"
 
-namespace fengine {
+namespace fengine
+{
 
 	class FSettingInterface
 	{
@@ -31,11 +32,13 @@ namespace fengine {
 		FSettingField(const FSettingField& ref) : t_(ref.t_), value_(ref.value_) {}
 		~FSettingField() {};
 
-		const T& value() {
+		const T& value()
+		{
 			CheckTypes();
 			return this->value_;
 		}
-		void set_value(const T& v) {
+		void set_value(const T& v)
+		{
 			CheckTypes();
 			this->value_ = v;
 		}
@@ -60,7 +63,8 @@ namespace fengine {
 
 		virtual void LoadDefaultSettings();
 
-		 enum SettingsNames {
+		 enum SettingsNames
+		 {
 			WindowHeight,
 			WindowWidth,
 			WindowCaption
@@ -70,14 +74,16 @@ namespace fengine {
 		using DefaultSettingsMap = std::map<SettingsNames, std::string>;
 
 		template<typename T>
-		struct SettingTraits {
+		struct SettingTraits
+		{
 			static std::string setting(T t) {
 				return futils::ToLower(t);
 			}
 		};
 
 		template<>
-		struct SettingTraits<SettingsNames> {
+		struct SettingTraits<SettingsNames>
+		{
 			static std::string setting(SettingsNames s) {
 				auto &found = default_settings_.find(s);
 				assert(found != default_settings_.end());
@@ -92,7 +98,8 @@ namespace fengine {
 		}
 
 		template<typename V, typename T>
-		const V& Get(T setting) {
+		const V& Get(T setting)
+		{
 			auto s = SettingTraits<T>::setting(setting);
 			auto &found = values_.find(s);
 			assert(found != values_.end());
