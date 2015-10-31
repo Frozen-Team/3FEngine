@@ -3,25 +3,15 @@
 
 #include <utils/f_flags.hpp>
 #include <events/f_event.hpp>
+#include <events/f_events_enums.hpp>
 #include <utils/f_typedefs.hpp>
 
 namespace fengine {
 	class FMouseEvent : public FEvent
 	{
 	public:
-		enum MouseButton
-		{
-			kNoButton = 0,
-			kLeftButton = 1,
-			kMiddleButton = 2,
-			kRightButton = 4,
-			kXButton1 = 8,
-			kXButton2 = 16
-		};
 
-		F_DECLARE_FLAGS_ENUM(MouseButton, MouseButtons)
-
-		explicit FMouseEvent(EventType type, const FPoint2i& pos, MouseButton button, const MouseButtons& buttons);
+		explicit FMouseEvent(EventType type, const FPoint2i& pos, MouseButton button, const MouseButtons& buttons, const KeyboardModifiers& modifiers);
 
 		const FPoint2i& pos() const noexcept { return this->pos_; }
 
@@ -29,10 +19,13 @@ namespace fengine {
 
 		const MouseButtons& buttons() const noexcept { this->buttons_; }
 
+		const KeyboardModifiers& modifiers() const noexcept { this->modifiers_; }
+
 	private:
 		FPoint2i pos_;
 		MouseButton button_;
 		MouseButtons buttons_;
+		KeyboardModifiers modifiers_;
 	};
 }
 

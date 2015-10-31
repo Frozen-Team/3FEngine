@@ -16,15 +16,15 @@ namespace fengine {
 		explicit FMouseWheelEvent(int delta, const FPoint2i& position, const MouseButtons& buttons, 
 			KeyboardModifiers modifiers, WheelOrientation orientation = WheelOrientation::kWheelVertical);
 
-		int delta() const { return this->delta_; }
+		int delta() const noexcept { return this->delta_; }
 
-		const FPoint2i& pos() const { return this->pos_; }
+		const FPoint2i& pos() const noexcept { return this->pos_; }
 
-		const MouseButtons& buttons() const { return this->buttons_; }
+		const MouseButtons& buttons() const noexcept { return this->buttons_; }
 
-		const KeyboardModifiers& modifiers() const { return this->modifiers_; }
+		const KeyboardModifiers& modifiers() const noexcept { return this->modifiers_; }
 
-		WheelOrientation orientation() const { return this->orientation_; }
+		WheelOrientation orientation() const noexcept { return this->orientation_; }
 
 	private:
 		int delta_;
