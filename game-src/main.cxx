@@ -23,8 +23,16 @@ const int SCREEN_HEIGHT = 480;
 
 namespace FE = fengine;
 
+#include <utils/f_flags.hpp>
+
+
 int main(int argc, char* args[])
 {
+	auto engine = fengine::Engine::GetInstance();
+
+	system("pause");
+
+	return 0;
 	FE::FJson j;
 
 	j.LoadRaw("{\"kuku\": 80802, \"kaka\":{\"hi\": 123}}");
@@ -51,7 +59,7 @@ int main(int argc, char* args[])
 
 
 
-	auto engine = fengine::Engine::GetInstance();
+	
 
 	fengine::FSettings s;
 	s.LoadDefaultSettings();
