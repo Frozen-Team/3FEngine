@@ -2,23 +2,28 @@
 #define _3FENGINE_SRC_EVENTS_F_SDL_EVENTS_DISPATCHER_HPP_
 
 #include "SDL_events.h"
-#include "SDL_joystick.h"
-#include "SDL_mouse.h"
-#include "SDL_keyboard.h"
-#include "SDL_keycode.h"
 
-#include <utils/f_singleton.hpp>
+#include <events/f_events_enums.hpp>
 
 namespace fengine
 {
-	class FSdlEventsDispather : public futils::FSingleton<FSdlEventsDispather>
+	class FSdlEventsDispather
 	{
 	public:
 		
-		void PollEvents();
+	protected:
+		inline bool PollEvent() noexcept;
+
+		EventType inline type() const noexcept;
 
 	private:
 		SDL_Event event_;
+
+		union EventTypeUnion
+		{
+			EventType ftype;
+			unsigned int sdl_type;
+		} event_type_union_;
 	};
 }
 #endif // _3FENGINE_SRC_EVENTS_F_SDL_EVENTS_DISPATCHER_HPP_
