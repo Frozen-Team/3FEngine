@@ -17,6 +17,7 @@
 
 #include "utils\f_json.hpp"
 
+#include "scene/camera/f_camera.hpp"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -29,8 +30,6 @@ namespace FE = fengine;
 int main(int argc, char* args[])
 {
 	auto engine = fengine::Engine::GetInstance();
-
-	system("pause");
 
 	return 0;
 	FE::FJson j;

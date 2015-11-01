@@ -1,17 +1,21 @@
 #ifndef _3FENGINE_SRC_SCENE_F_SCENE_
 #define _3FENGINE_SRC_SCENE_F_SCENE_
 
-#include "entityx/entityx.h"
-
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh.hpp"
+#include "scene/camera/f_camera.hpp"
+#include "scene/f_scene_node.hpp"
 
 namespace fengine {
-	class FScene : public ex::EntityX {
+	class FScene{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FScene)
+		
 
 	private:
+		FVector<FShared<FMesh> > meshes_;
+		FVector<FShared<FCamera> > cameras_;
+		FVector<FShared<FSceneNode> > scene_nodes_;
 	};
 }
 
