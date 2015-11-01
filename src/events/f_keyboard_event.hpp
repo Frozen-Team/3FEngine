@@ -13,6 +13,8 @@ namespace fengine
 	public:
 		explicit FKeyboardEvent(EventType type, KeyboardKey key, KeyboardModifiers modifiers);
 
+		virtual ~FKeyboardEvent() {}
+
 		KeyboardKey key() const noexcept { return this->key_; }
 
 		const KeyboardModifiers& modifiers() const noexcept { return this->modifiers_; }

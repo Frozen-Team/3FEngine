@@ -17,6 +17,8 @@ namespace fengine
 		explicit FMouseWheelEvent(int delta, const FPoint2i& position, const MouseButtons& buttons, 
 			KeyboardModifiers modifiers, WheelOrientation orientation = WheelOrientation::kWheelVertical);
 
+		virtual ~FMouseWheelEvent() {}
+
 		int delta() const noexcept { return this->delta_; }
 
 		const FPoint2i& pos() const noexcept { return this->pos_; }

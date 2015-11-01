@@ -11,6 +11,8 @@ namespace fengine
 
 		explicit FEvent(EventType type) : accepted_(false) { this->type_ = type; }
 
+		virtual ~FEvent() {}
+
 		EventType type() const { return this->type_; }
 
 		bool accepted() const { return this->accepted_; }
