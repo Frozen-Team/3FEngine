@@ -11,7 +11,6 @@
 
 #include "Eigen/Dense"	
 #include "boost/container/flat_set.hpp"
-#include "entityx/entityx.h"
 
 #include "f_vertices.hpp"
 
@@ -28,8 +27,7 @@ namespace fengine
 #define F_DEFAULT_CTOR_V_DTOR(Class) \
 	Class() = default; \
 	virtual ~Class() = default;
-	
-	namespace ex = entityx;
+
 
 	using FPoint3f = Eigen::Matrix<float, 3, 1>;
 	using FPoint2i = Eigen::Matrix<int, 2, 1>;

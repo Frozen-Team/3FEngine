@@ -6,12 +6,13 @@
 #include "scene/f_entity.hpp"
 
 namespace fengine {
-	class FMesh : public FEntity {
+	class FMesh 
+	{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FMesh)
 
-		FMesh(ex::EntityManager& entity_manager, const FPoint3f& position);
-		const FPoint3f& GetPosition();
+		FMesh(const FPoint3f& position);
+		const FPoint3f& position() { return position_; }
 		const FShared<FGeometry> GetGeometry(float distance) const;
 		void AddLod(float threshold, FShared<FGeometry> geometry);
 
@@ -19,6 +20,7 @@ namespace fengine {
 
 	private:
 		FString name_;
+		FPoint3f position_;
 		FSortedSet<FMeshLod, std::less<FMeshLod> > lods_;
 	};
 }
