@@ -19,7 +19,7 @@ namespace fengine
 	private:
 		FShared<FLogger> logger_;
 		FShared<FSettings> settings_;
-		
+		FShared<FEventsManager> events_manager_;
 	};
 }
 
