@@ -17,6 +17,7 @@
 
 #include "utils\f_json.hpp"
 
+#include "scene/camera/f_camera.hpp"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -25,6 +26,12 @@ namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
+	FE::FCamera cam({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f });
+	cam.SetPerspective(3.1415 / 2, 1.3f, 1.0f, 2.0f);
+	std::cout << cam.view() << std::endl;
+	std::cout << cam.view_projection() << std::endl;
+	system("pause");
+	return 0;
 	FE::FJson j;
 
 	j.LoadRaw("{\"kuku\": 80802, \"kaka\":{\"hi\": 123}}");

@@ -3,13 +3,19 @@
 
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh.hpp"
+#include "scene/camera/f_camera.hpp"
+#include "scene/f_scene_node.hpp"
 
 namespace fengine {
 	class FScene{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FScene)
+		
 
 	private:
+		FVector<FShared<FMesh> > meshes_;
+		FVector<FShared<FCamera> > cameras_;
+		FVector<FShared<FSceneNode> > scene_nodes_;
 	};
 }
 
