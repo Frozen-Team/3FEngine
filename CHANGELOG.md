@@ -1,7 +1,14 @@
+### 31.10.2015
+OlegGol260
+
+ - Add entityx to FScene, FEntity, FMesh.
+ - Now only Position component is added to entityx.
+ - Add log message where an error is fatal.
+
 ### 29.10.2015
 OTER:
 
- - Integrate GLEW
+ - Integrate GLEW.
 
 ### 20.10.2015
 OTER:
@@ -12,11 +19,11 @@ OTER:
 ### 19.10.2015
 OlehGol260:
 
- - All necessary stuff from fbx now will be packed in fseq format
- - These work is moved to separate project fbx2fseq
+ - All necessary stuff from fbx now will be packed in fseq format.
+ - These work is moved to separate project fbx2fseq.
  - Create CMakeLists for new project, minor refactor old ones.
- - As fbx2fseq is difficult to realize without 3FEngine classes, start work on them
- - Begin with mesh lods
+ - As fbx2fseq is difficult to realize without 3FEngine classes, start work on them.
+ - Begin with mesh lods.
 
 ### 15.10.2015 
 OTER:
