@@ -1,3 +1,10 @@
+### 01.10.2015
+OlehGol260
+
+ - Remove entityx(it's usefull for game, not for engine)
+ - Add matrix stuff to camera
+ - Return to fbx2fseq, add blank files for necessary classes
+ 
 ### 31.10.2015
 OlegGol260
 
