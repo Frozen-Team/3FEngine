@@ -28,7 +28,7 @@ namespace fengine
 
 		FlagType ToNumber() const { return (FlagType)this->flags_; }
 
-		bool IsSet(EnumType flag) { return (((FlagType)flag) & this->flags_) != 0; }
+		bool IsSet(const EnumType flag) const { return (((FlagType)flag) & this->flags_) != 0; }
 
 	public:
 		inline FFlags& operator=(EnumType rhs) noexcept

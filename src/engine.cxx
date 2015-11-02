@@ -14,6 +14,9 @@ namespace fengine
 		LOG(INFO) << "========== LOG START  ==========";
 
 		this->settings_ = std::make_shared<FSettings>();
+
+		// Construct Events Manager
+		this->events_manager_ = FEventsManager::GetInstance();
 	}
 	Engine::~Engine() {
 
