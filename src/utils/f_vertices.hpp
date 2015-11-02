@@ -12,12 +12,15 @@ namespace fengine
 	public:
 		FVertices() = default;
 		~FVertices() = default;
-
-		FVertices(const T* const inVertices, int length);
 		
-		using Vector = std::vector<T>;
+
+		using Vector = std::vector <T>;
 		using Vertex = Eigen::Matrix<T, base, 1>;
 
+		FVertices(const Vector& inVertices);
+
+
+		void Add(const Vector& args);
 		inline Vector& vertices() noexcept { return vertices_; }
 		inline int points_count() noexcept { return points_count_; }
 

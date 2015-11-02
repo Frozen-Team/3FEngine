@@ -4,12 +4,20 @@
 
 namespace fengine {
 	template<typename T, int base>
-	inline FVertices<T, base>::FVertices(const T * const inVertices, int length)
+	FVertices<T, base>::FVertices(const Vector& inVertices)
 	{
-		LOG_IF(base <= 0, FATAL) << "Base must be bigger than 0"
-			this->points_count_ = length / base;
-		vertices_.reserve(length);
-		std::copy(inVertices, inVertices + length, vertices_.begin());
+		auto inVerticesSize = inVertices.size();
+		LOG_IF(inVerticesSize % base == 0, FATAL) << "Vertices size has to be divisible by base";
+		this->vertices_ = inVertices;
+		this->points_count = inVerticesSize / base;
+	}
+
+	template<typename T, int base>
+	void FVertices<T, base>::Add(const Vector& args)
+	{
+		for (auto& el : args) {
+			this->vertices_.push_back(el);
+		}
 	}
 
 	template<typename T, int base>
@@ -17,7 +25,7 @@ namespace fengine {
 	{
 		//TODO: add error handler
 		auto verticesSize = vertices_.size();
-		LOG_IF(verticesSize % base == 0, FATAL) << "Vertices size has to be divisible by base"
+		LOG_IF(verticesSize % base == 0, FATAL) << "Vertices size has to be divisible by base";
 		if index < 0 || index >= verticesSize || { return; }
 		auto fromIndex = index * base;
 
