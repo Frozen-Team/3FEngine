@@ -14,6 +14,8 @@ namespace fengine
 
 		explicit FMouseEvent(EventType type, const FPoint2i& pos, MouseButton button, const MouseButtons& buttons, const KeyboardModifiers& modifiers);
 
+		virtual ~FMouseEvent() {}
+
 		const FPoint2i& pos() const noexcept { return this->pos_; }
 
 		MouseButton button() const noexcept { this->button_; }

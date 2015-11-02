@@ -6,17 +6,32 @@
 
 namespace fengine
 {
-	enum class EventType
+	enum EventSourceType
 	{
-		kNoEvent,
-		kKeyPress,
+		kNoSource				= 0,
+		kKeyboardSource			= 1,
+		kMouseSource			= 2,
+		kMouseWheelSource		= 4,
+		kJoystickSource			= 8
+	};
+
+	F_DECLARE_FLAGS_ENUM(EventSourceType, EventSourceTypes)
+
+	enum EventType
+	{
+		kNoEvent				= 0,
+
+		kKeyPress				= 0x300,
 		kKeyRelease,
-		kMouseMove,
-		kMouseButtonDblClick,
+
+		kMouseMove				= 0x400,
+		//kMouseButtonDblClick, TODO
 		kMouseButtonPress,
 		kMouseButtonRelease,
+
 		kMouseWheel,
-		kJoystick
+
+		kJoyAxisMotion			= 0x600
 	};
 	//static const FMap<EventType, FString> EventTypeNames
 	enum MouseButton
@@ -50,12 +65,12 @@ namespace fengine
 		kRightMetaModifier	= 0x0800,
 		kNumLockModifier	= 0x1000,
 		kCapsLockModifier	= 0x2000,
-		kModeModifie		= 0x4000,
+		kModeModifier		= 0x4000,
 	};
 
 	F_DECLARE_FLAGS_ENUM(KeyboardModifier, KeyboardModifiers)
 
-	enum class KeyboardKey
+	enum KeyboardKey
 	{
 		kKeyUnknown			= 0,
 		kKeyA				= 4,

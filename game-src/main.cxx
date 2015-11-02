@@ -24,13 +24,13 @@ const int SCREEN_HEIGHT = 480;
 
 namespace FE = fengine;
 
+#include <utils/f_flags.hpp>
+
+
 int main(int argc, char* args[])
 {
-	FE::FCamera cam({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f });
-	cam.SetPerspective(3.1415 / 2, 1.3f, 1.0f, 2.0f);
-	std::cout << cam.view() << std::endl;
-	std::cout << cam.view_projection() << std::endl;
-	system("pause");
+	auto engine = fengine::Engine::GetInstance();
+
 	return 0;
 	FE::FJson j;
 
@@ -58,7 +58,7 @@ int main(int argc, char* args[])
 
 
 
-	auto engine = fengine::Engine::GetInstance();
+	
 
 	fengine::FSettings s;
 	s.LoadDefaultSettings();

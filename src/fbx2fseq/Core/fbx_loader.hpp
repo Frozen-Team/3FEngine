@@ -17,9 +17,10 @@ public:
 	~FFbxLoader() = default;
 
 public:
-	static FbxManager* fbx_manager() noexcept { return fbx_manager_; }
-	static FbxIOSettings* fbx_io_settings() { return fbx_io_settings_; }
-	static FbxImporter* fbx_importer() { return fbx_importer_; }
+	FFbxLoader();
+	static inline FbxManager* fbx_manager() noexcept { return fbx_manager_; }
+	static inline FbxIOSettings* fbx_io_settings() { return fbx_io_settings_; }
+	static inline FbxImporter* fbx_importer() { return fbx_importer_; }
 
 private:
 
