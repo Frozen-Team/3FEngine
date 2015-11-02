@@ -7,21 +7,28 @@
 
 namespace fengine
 {
-	class FSdlEventsDispather
+	class FSdlEventsDispatcher
 	{
 	public:
 		
 	protected:
-		inline bool PollEvent() noexcept;
 
-		EventType inline type() const noexcept;
+		bool PollEvent();
+
+		EventType inline GetEventType() const noexcept { return event_type_union_.type; }
+		// Unsafe direct conversion.
+		KeyboardKey inline GetKeyboardScanCode() const { return static_cast<KeyboardKey>(event_.key.keysym.scancode); }
+
+		int inline GetKeyboardSymbol() const { return event_.key.keysym.sym; }
+
+		KeyboardModifiers GetKeyboardModifiers() const noexcept;
 
 	private:
 		SDL_Event event_;
 
 		union EventTypeUnion
 		{
-			EventType ftype;
+			EventType type;
 			unsigned int sdl_type;
 		} event_type_union_;
 	};

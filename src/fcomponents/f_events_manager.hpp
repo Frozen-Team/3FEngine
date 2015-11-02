@@ -2,41 +2,57 @@
 #define _3FENGINE_SRC_FCOMPONENTS_F_EVENTS_MANAGER_HPP_
 
 #include <atomic>
+#include <type_traits>
 
 #include <utils/f_typedefs.hpp>
 #include <utils/f_singleton.hpp>
+
+#include <events/listeners/f_event_listener.hpp> 
 #include <events/f_sdl_events_dispatcher.hpp>
 
-#include <events/listeners/f_keyboard_listener.hpp>
-#include <events/listeners/f_mouse_listener.hpp>
-#include <events/listeners/f_mouse_wheel_listener.hpp>
 
 namespace fengine
 {
-	class FEventsManager : public futils::FSingleton<FEventsManager>, FSdlEventsDispather
+	class FEventsManager : public futils::FSingleton<FEventsManager>, FSdlEventsDispatcher
 	{
 		F_DISABLE_COPY(FEventsManager)
-
 	public:
-		FEventsManager() {}
+		FEventsManager() : last_id_(0) {}
 
-		static int RegisterEventHandler(FUnique<FKeyboardListener> handler);
+		int Register(FUnique<FEventListener> handler);
 
-		static int RegisterEventHandler(FUnique<FMouseListener> handler);
-		
-		static int RegisterEventHandler(FUnique<FMouseWheelListener> handler);
+		int Deregister(int id);
 
-	private:
-		static int GetNewEventId();
+		void HandleEvents();
 
 	private:
-		static std::atomic_int last_id_;
-		static FMap<int, FUnique<FKeyboardListener>> keyboard_handlers_;
-		static FMap<int, FUnique<FMouseListener>> mouse_handlers_;
-		static FMap<int, FUnique<FMouseWheelListener>> mouse_wheel_handlers_;
+		//template<typename ListenerType, typename EventType>
+		//inline ListenerType& DelegateEvent(EventType type, EventSourceType source_type, EventType event)
+		//{
+		//	for (auto& it = handlers_.begin(); it != handlers_.end(); it++)
+		//	{
+		//		auto ptr = it->second.get();
+		//		if (ptr->source_types().IsSet(source_type))
+		//		{
+		//			static_cast<ListenerType*>(it->second.get())->OnKeyReleased(keyboardEvent);
+		//		}
+		//	}
+		//}
 
-		constexpr static int kMaxLastId = 100000;
+		//template<typename T>
+		//void Exec(EventType type)
+		//{
+		//	auto 
+		//}
 
+		int GetNewEventId();
+	
+
+	private:
+		std::atomic_int last_id_;
+		FMap<int, FUnique<FEventListener>> handlers_;
+
+		constexpr static int kMaxLastId = 1024;
 	};
 }
 

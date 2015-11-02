@@ -6,6 +6,17 @@
 
 namespace fengine
 {
+	enum EventSourceType
+	{
+		kNoSource				= 0,
+		kKeyboardSource			= 1,
+		kMouseSource			= 2,
+		kMouseWheelSource		= 4,
+		kJoystickSource			= 8
+	};
+
+	F_DECLARE_FLAGS_ENUM(EventSourceType, EventSourceTypes)
+
 	enum EventType
 	{
 		kNoEvent				= 0,
@@ -17,6 +28,7 @@ namespace fengine
 		//kMouseButtonDblClick, TODO
 		kMouseButtonPress,
 		kMouseButtonRelease,
+
 		kMouseWheel,
 
 		kJoyAxisMotion			= 0x600

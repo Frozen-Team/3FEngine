@@ -7,7 +7,7 @@
 
 namespace fengine
 {
-	bool FSdlEventsDispather::PollEvent() noexcept
+	bool FSdlEventsDispatcher::PollEvent()
 	{
 		auto ret = SDL_PollEvent(&this->event_) != 0;
 		if (ret)
@@ -16,8 +16,8 @@ namespace fengine
 		}
 		return ret;
 	}
-	inline EventType FSdlEventsDispather::type() const noexcept
+	KeyboardModifiers FSdlEventsDispatcher::GetKeyboardModifiers() const noexcept
 	{
-		return event_type_union_.ftype;
+		return KeyboardModifiers(event_.key.keysym.mod);
 	}
 }
