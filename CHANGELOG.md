@@ -1,10 +1,16 @@
-### 02.10.2015
+### 03.11.2015
+OlehGol260
+
+ - Move FindEasyloggingpp.cmake to corresponding submodule
+ - Work on resource loader, restructure hierarchy
+
+### 02.11.2015
 OlehGol260
 
  - Start work on importing data from fbx files
  - Make raw realization, which have to be greatly refactored
 
-### 01.10.2015
+### 01.11.2015
 OlehGol260
 
  - Remove entityx(it's usefull for game, not for engine)
