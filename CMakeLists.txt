@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 include(ExternalProject)
 include(CMakeDependentOption)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/3dparty/easyloggingpp/cmake")
+
 include(FilterHelper)
 
 project(Game)

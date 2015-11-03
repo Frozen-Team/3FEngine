@@ -27,7 +27,7 @@
 # 	easylogging++ directory with all necessary headers.
 # 
 # $EASYLOGGINGPP_ROOT is an environment variable that
-# would correspond to the installation path.
+# would correspond to the installation path. Set outside of this file
 #
 # TODO: Test it under OSX, Linux
 
