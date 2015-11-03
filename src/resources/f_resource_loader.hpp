@@ -12,8 +12,10 @@
 #include "scene/mesh/f_mesh.hpp"
 #include "scene/mesh/f_mesh_lod.hpp"
 
-
-
+/*
+	Raw pointers here are used only because of fbxsdk
+	Unnecessary to wrap raw pointers into smart pointers for now
+*/
 namespace fengine {
 	class FResourceLoader : public FFbxLoader, public futils::FSingleton<FResourceLoader> {
 		F_DISABLE_COPY(FResourceLoader)
@@ -24,7 +26,9 @@ namespace fengine {
 		FShared<FScene> ImportScene(const std::string& fbx_file);
 		void LoadComponent(FShared<FScene>& scene, FbxNode* node);
 		FShared<FMesh> LoadMesh(FbxNode* node);
-		FUvsf& LoadUvs(FbxMesh* mesh);
+		FShared<FMesh> LoadLodGroup(FbxNode* node);
+		FMeshLod& LoadLod(FbxNode* node, float threshold);
+		FUvsf LoadUvs(FbxMesh* mesh);
 	private:
 
 	};

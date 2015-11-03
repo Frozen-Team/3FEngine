@@ -16,11 +16,32 @@ namespace fengine {
 		return lods_.nth(lods_.size() - 1).get_ptr()->geometry();
 	}
 
+	void FMesh::AddLod(const FMeshLod & mesh_lod)
+	{
+		if (!mesh_lod.IsValid()) {
+			LOG(ERROR) << "Mesh lod is not valid";
+		}
+		auto is_inserted = this->lods_.insert(mesh_lod);
+		LOG_IF(!is_inserted.second, FATAL) << "Failed to add LOD to mesh";
+		
+	}
+
+	void FMesh::AddLods(const FVector<FMeshLod>& lods)
+	{
+		for (const auto& lod : lods)
+		{
+			this->AddLod(lod);
+		}
+	}
+
 	void FMesh::AddLod(float threshold, FShared<FGeometry> geometry)
 	{	
-		LOG_IF(threshold < 0 || !geometry, FATAL);
-		auto is_inserted = this->lods_.insert(FMeshLod(threshold, geometry));
-		LOG_IF(!is_inserted.second, FATAL) << "Failed to add LOD to mesh";
+		this->AddLod(FMeshLod(threshold, geometry));
+	}
+
+	void FMesh::set_position(const FPoint3f & position)
+	{
+		this->position_ = position;
 	}
 }
 

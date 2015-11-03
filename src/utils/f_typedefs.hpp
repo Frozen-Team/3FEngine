@@ -8,6 +8,7 @@
 #include <set>
 #include <deque>
 #include <functional>
+#include <cfloat>
 
 #include "Eigen/Dense"	
 #include "boost/container/flat_set.hpp"

@@ -14,8 +14,12 @@ namespace fengine {
 		FMesh(const FPoint3f& position);
 		const FPoint3f& position() { return position_; }
 		const FShared<FGeometry> GetGeometry(float distance) const;
+
+		void AddLod(const FMeshLod& mesh_lod);
+		void AddLods(const FVector<FMeshLod>& lods);
 		void AddLod(float threshold, FShared<FGeometry> geometry);
 
+		void set_position(const FPoint3f& position);
 	private:
 
 	private:

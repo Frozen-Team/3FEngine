@@ -21,7 +21,6 @@ namespace fengine {
 	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FbxNode * node)
 	{
 		LOG_IF(!node, FATAL) << "Passed invalid scene";
-
 		auto node_attr = node->GetNodeAttribute();
 		if (node_attr)
 		{
@@ -34,48 +33,70 @@ namespace fengine {
 				break;
 			}
 			case FbxNodeAttribute::eLODGroup:
+				scene->Add(this->LoadLodGroup(node));
 				break;
 			case FbxNodeAttribute::eCamera:
+				scene->Add(this->LoadCamera(node));
 				break;
 			}
 		}
 	}
 
+	//TODO: Add position here
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node)
 	{
-		FShared<FMesh> f_mesh = std::make_shared<FMesh>();
+		FShared<FMesh> mesh = std::make_shared<FMesh>();
+		mesh->AddLod(this->LoadLod(node, FLT_MAX));
+		return mesh;
+	}
+
+	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node)
+	{
+		return FShared<FMesh>();
+	}
+
+	FMeshLod& FResourceLoader::LoadLod(FbxNode * node, float threshold)
+	{
+		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
+
 		auto fbx_mesh = (FbxMesh*)node;
 
-		// retrieve vertices coord XYZ
+		//retrieve vertices
 		auto fbx_vertices = fbx_mesh->GetControlPoints();
 		auto fbx_vertices_count = fbx_mesh->GetControlPointsCount();
-		FVector<float> float_vertices;
-		float_vertices.reserve(fbx_vertices_count * 3);
+
+		FVectorf verticesf;
+		verticesf.reserve(fbx_vertices_count * 3);
+
 		for (int i = 0; i < fbx_vertices_count; i++) {
-			float_vertices.push_back(fbx_vertices[i][0]);
-			float_vertices.push_back(fbx_vertices[i][1]);
-			float_vertices.push_back(fbx_vertices[i][2]);
+			verticesf.push_back(static_cast<float>(fbx_vertices[i][0]));
+			verticesf.push_back(static_cast<float>(fbx_vertices[i][1]));
+			verticesf.push_back(static_cast<float>(fbx_vertices[i][2]));
 		}
-		auto f_vertices = FVertices3f(float_vertices);
+		auto f_vertices = FVertices3f(verticesf);
 
 		//retrieve indices
 		auto fbx_indices = fbx_mesh->GetPolygonVertices();
 		auto fbx_indices_count = fbx_mesh->GetPolygonVertexCount();
-		auto indices_vector = FVector<int>();
-		indices_vector.reserve(fbx_indices_count);
-		std::copy(fbx_indices, fbx_indices + fbx_indices_count, indices_vector.begin());
+		auto indices = FVectori();
+		indices.reserve(fbx_indices_count);
+		std::copy(fbx_indices, fbx_indices + fbx_indices_count, indices.begin());
 
-		auto f_indices = FIndices3(indices_vector);
+		auto f_indices = FIndices3(indices);
 
 		auto f_uvs = this->LoadUvs(fbx_mesh);
 		//retrieve 
 		auto geometry = std::make_shared<FGeometry>(f_indices, f_vertices, f_uvs);
-
-		f_mesh->AddLod(0, geometry);
-		return f_mesh;
+		
+		return std::move(FMeshLod(threshold, geometry));
 	}
 
-	FUvsf & FResourceLoader::LoadUvs(FbxMesh * mesh)
+	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node)
+	{
+		return FShared<FCamera>();
+	}
+
+	FUvsf FResourceLoader::LoadUvs(FbxMesh * mesh)
 	{
 		FUvsf uvs;
 	//	//get all UV set names
