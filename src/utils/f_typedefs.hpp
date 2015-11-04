@@ -54,6 +54,8 @@ namespace fengine
 
 	template<typename T>
 	using FVector = std::vector<T>;
+	using FVectorf = FVector<float>;
+	using FVectori = FVector<int>;
 
 	template<typename T, typename Compare = std::less<T>>
 	using FSortedSet = boost::container::flat_set<T, Compare>;

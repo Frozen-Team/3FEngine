@@ -23,7 +23,6 @@ namespace fengine {
 	private:
 
 	private:
-		FString name_;
 		FPoint3f position_;
 		FSortedSet<FMeshLod, std::less<FMeshLod> > lods_;
 	};

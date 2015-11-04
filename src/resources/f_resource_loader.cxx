@@ -45,6 +45,7 @@ namespace fengine {
 	//TODO: Add position here
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node)
 	{
+		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
 		FShared<FMesh> mesh = std::make_shared<FMesh>();
 		mesh->AddLod(this->LoadLod(node, FLT_MAX));
 		return mesh;
@@ -52,6 +53,7 @@ namespace fengine {
 
 	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node)
 	{
+		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLodGroup";
 		return FShared<FMesh>();
 	}
 
@@ -60,7 +62,6 @@ namespace fengine {
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
 
 		auto fbx_mesh = (FbxMesh*)node;
-
 		//retrieve vertices
 		auto fbx_vertices = fbx_mesh->GetControlPoints();
 		auto fbx_vertices_count = fbx_mesh->GetControlPointsCount();
@@ -93,11 +94,13 @@ namespace fengine {
 
 	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node)
 	{
+		LOG_IF(!node, FATAL) << "nullptr node passed to LoadCamera";
 		return FShared<FCamera>();
 	}
 
 	FUvsf FResourceLoader::LoadUvs(FbxMesh * mesh)
 	{
+		LOG_IF(!mesh, FATAL) << "nullptr node passed to LoadUvs";
 		FUvsf uvs;
 	//	//get all UV set names
 	//	FbxStringList lUVSetNameList;
