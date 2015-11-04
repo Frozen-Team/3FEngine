@@ -20,6 +20,7 @@ namespace FE = fengine;
 #include <utils/f_flags.hpp>
 
 #include <events/listeners/f_keyboard_listener.hpp>
+#include <events/listeners/f_mouse_listener.hpp>
 
 class KeyboardEventsHandler : public fengine::FKeyboardListener
 {
@@ -29,12 +30,31 @@ protected:
 	virtual void OnKeyPressed(fengine::FKeyboardEvent& e) override
 	{
 		std::cout << "OnKeyPressed() Key:" << e.key() << std::endl;
-	};
+	}
 
 	virtual void OnKeyReleased(fengine::FKeyboardEvent& e) override
 	{
 		std::cout << "OnKeyReleased() Key:" << e.key() << std::endl;
-	};
+	}
+};
+
+class MouseEventListener : public fengine::FMouseListener
+{
+protected:
+	virtual void OnMouseMove(fengine::FMouseEvent& e) override
+	{
+		std::cout << "OnMouseMove() Pos:" << e.pos().x() << std::endl;
+	}
+
+	virtual void OnMouseButtonPressed(fengine::FMouseEvent& e) override
+	{
+		std::cout << "OnMouseButtonPressed() Pos:" << e.pos().x() << ", " << e.pos().y() << std::endl;
+	}
+
+	virtual void OnMouseButtonReleased(fengine::FMouseEvent& e) override
+	{
+		std::cout << "OnMouseButtonReleased() Pos:" << e.pos().x() << ", " << e.pos().y() << std::endl;
+	}
 };
 
 
@@ -43,6 +63,7 @@ int main(int argc, char* args[])
 	auto engine = fengine::Engine::GetInstance();
 	
 	fengine::FEventsManager::GetInstance()->Register<KeyboardEventsHandler>();
+	fengine::FEventsManager::GetInstance()->Register<MouseEventListener>();
 	
 
 	FE::FJson j;
