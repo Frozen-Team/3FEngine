@@ -25,54 +25,39 @@ namespace fengine
 		{
 			auto t = this->GetEventType();
 
-			if (t & (kKeyPress | kKeyRelease))
-			{
-				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
-				{
-					auto ptr = it->second.get();
-					if (ptr->source_types().IsSet(kKeyboardSource))
-					{
-						static_cast<FKeyboardListener*>(it->second.get())->CallEvent(keyboardEvent);
-					}
-				}
-				continue;
-			}
 
 			switch (t)
 			{
 			case kNoEvent: break;
-			/*case kKeyPress:
+			case kKeyPress:
+			case kKeyRelease:
 			{
-				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
+				FKeyboardEvent keyboard_event(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
+				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboard_event.accepted(); it++)
 				{
 					auto ptr = it->second.get();
 					if (ptr->source_types().IsSet(kKeyboardSource))
 					{
-						static_cast<FKeyboardListener*>(it->second.get())->OnKeyPressed(keyboardEvent);
+						static_cast<FKeyboardListener*>(it->second.get())->CallEvent(keyboard_event);
 					}
 				}
 				break;
 			}
-			case kKeyRelease:
-			{
-				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
-				{
-					auto ptr = it->second.get();
-					if (ptr->source_types().IsSet(kKeyboardSource))
-					{
-						static_cast<FKeyboardListener*>(it->second.get())->OnKeyReleased(keyboardEvent);
-					}
-				}
-				break;
-			}*/
 			case kMouseMove:
 			case kMouseButtonPress:
 			case kMouseButtonRelease:
-				//DelegateEvent(t, kMouseSource);
-				//break;
+			{
+				FMouseEvent mouse_event(t, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), KeyboardModifiers(this->GetKeyboardModifiers()));
+				for (auto& it = handlers_.begin(); it != handlers_.end() && !mouse_event.accepted(); it++)
+				{
+					auto ptr = it->second.get();
+					if (ptr->source_types().IsSet(kMouseSource))
+					{
+						static_cast<FMouseListener*>(it->second.get())->CallEvent(mouse_event);
+					}
+				}
+				break;
+			}
 			case kMouseWheel:
 				//DelegateEvent(t, kMouseWheelSource);
 				//break;

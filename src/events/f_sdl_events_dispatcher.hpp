@@ -3,6 +3,7 @@
 
 #include "SDL_events.h"
 
+#include <utils/f_typedefs.hpp>
 #include <events/f_events_enums.hpp>
 
 namespace fengine
@@ -23,7 +24,14 @@ namespace fengine
 
 		KeyboardModifiers GetKeyboardModifiers() const noexcept;
 
+		FPoint2i GetMousePos() { return FPoint2i(event_.motion.x, event_.motion.y); }
+
+		MouseButton GetMouseButton() { return MouseButton(event_.button.button); }
+
+		MouseButtons GetMouseButtons() { return MouseButtons(event_.motion.state); }
+
 	private:
+		FPoint2i mouse_pos_;
 		SDL_Event event_;
 
 		union EventTypeUnion

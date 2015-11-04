@@ -10,7 +10,7 @@
 
 namespace fengine
 {
-	class FKeyboardListener : FEventListener
+	class FKeyboardListener : public FEventListener
 	{
 	public:
 		FKeyboardListener() : FEventListener(kKeyboardSource) {};

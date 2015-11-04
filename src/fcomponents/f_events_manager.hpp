@@ -24,8 +24,16 @@ namespace fengine
 		{
 			static_assert(std::is_base_of<FEventListener, EventHandler>::value, "Not a derived class from FEventListener");
 			auto new_id = GetNewEventId();
-			handlers_[new_id] = std::move(FUnique<FEventListener>(new EventHandler()));
-			return 0;
+			handlers_[new_id] = std::make_shared<EventHandler>();
+			return new_id;
+		}
+
+		template<typename EventHandler>
+		int Register(FShared<EventHandler> handler)
+		{
+			auto new_id = GetNewEventId();
+			handlers_[new_id] = std::move(handler);
+			return new_id;
 		}
 
 		int Deregister(int id);
@@ -38,7 +46,7 @@ namespace fengine
 
 	private:
 		std::atomic_int last_id_;
-		FMap<int, FUnique<FEventListener>> handlers_;
+		FMap<int, FShared<FEventListener>> handlers_;
 
 		constexpr static int kMaxLastId = 1024;
 	};
