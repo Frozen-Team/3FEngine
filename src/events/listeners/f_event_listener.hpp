@@ -8,6 +8,8 @@ namespace fengine
 	class FEventListener
 	{
 	public:
+		virtual ~FEventListener() = default;
+
 		explicit FEventListener(EventSourceTypes types) { this->source_types_ |= types; }
 
 		const EventSourceTypes& source_types() const noexcept { return source_types_; }

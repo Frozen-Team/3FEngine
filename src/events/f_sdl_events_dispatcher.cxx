@@ -12,7 +12,15 @@ namespace fengine
 		auto ret = SDL_PollEvent(&this->event_) != 0;
 		if (ret)
 		{
-			event_type_union_.sdl_type = event_.type;
+			// Ignore some events
+			if (event_.type == SDL_FINGERMOTION || event_.type == SDL_FINGERDOWN || event_.type == SDL_FINGERUP || event_.type == SDL_TEXTINPUT)
+			{
+				event_type_union_.sdl_type = 0;
+			}
+			else 
+			{
+				event_type_union_.sdl_type = event_.type;
+			}
 		}
 		return ret;
 	}
