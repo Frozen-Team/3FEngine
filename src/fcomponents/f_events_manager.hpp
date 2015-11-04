@@ -19,34 +19,22 @@ namespace fengine
 	public:
 		FEventsManager() : last_id_(0) {}
 
-		int Register(FUnique<FEventListener> handler);
+		template<typename EventHandler>
+		int Register()
+		{
+			static_assert(std::is_base_of<FEventListener, EventHandler>::value, "Not a derived class from FEventListener");
+			auto new_id = GetNewEventId();
+			handlers_[new_id] = std::move(FUnique<FEventListener>(new EventHandler()));
+			return 0;
+		}
 
 		int Deregister(int id);
 
 		void HandleEvents();
 
 	private:
-		//template<typename ListenerType, typename EventType>
-		//inline ListenerType& DelegateEvent(EventType type, EventSourceType source_type, EventType event)
-		//{
-		//	for (auto& it = handlers_.begin(); it != handlers_.end(); it++)
-		//	{
-		//		auto ptr = it->second.get();
-		//		if (ptr->source_types().IsSet(source_type))
-		//		{
-		//			static_cast<ListenerType*>(it->second.get())->OnKeyReleased(keyboardEvent);
-		//		}
-		//	}
-		//}
-
-		//template<typename T>
-		//void Exec(EventType type)
-		//{
-		//	auto 
-		//}
 
 		int GetNewEventId();
-	
 
 	private:
 		std::atomic_int last_id_;

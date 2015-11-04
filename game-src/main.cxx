@@ -1,22 +1,15 @@
 #include "SDL_main.h"
 #include "SDL.h"
 #include "SDL_opengl.h"
-
 #include <stdio.h>
 #include <iostream>
 #include <assert.h>
-
 #include "settings\f_settings.hpp"
-
 #include "Eigen\Dense"
-
 #include "utils\f_singleton.hpp"
-
 #include <memory>
 #include "engine.hpp"
-
 #include "utils\f_json.hpp"
-
 #include "scene/camera/f_camera.hpp"
 
 const int SCREEN_WIDTH = 640;
@@ -26,12 +19,32 @@ namespace FE = fengine;
 
 #include <utils/f_flags.hpp>
 
+#include <events/listeners/f_keyboard_listener.hpp>
+
+class KeyboardEventsHandler : public fengine::FKeyboardListener
+{
+public:
+	virtual ~KeyboardEventsHandler() { std::cout << "dtor" << std::endl; }
+protected:
+	virtual void OnKeyPressed(fengine::FKeyboardEvent& e) override
+	{
+		std::cout << "OnKeyPressed() Key:" << e.key() << std::endl;
+	};
+
+	virtual void OnKeyReleased(fengine::FKeyboardEvent& e) override
+	{
+		std::cout << "OnKeyReleased() Key:" << e.key() << std::endl;
+	};
+};
+
 
 int main(int argc, char* args[])
 {
 	auto engine = fengine::Engine::GetInstance();
+	
+	fengine::FEventsManager::GetInstance()->Register<KeyboardEventsHandler>();
+	
 
-	return 0;
 	FE::FJson j;
 
 	j.LoadRaw("{\"kuku\": 80802, \"kaka\":{\"hi\": 123}}");
@@ -105,13 +118,15 @@ int main(int argc, char* args[])
 	while (true)
 	{
 		i++;
-		if (i > 100) {
+		if (i > 100000) {
 			break;
 		}
 		SDL_Delay(1);
 		glClearColor(float(rand() % 256) / 256, float(rand() % 256) / 256, float(rand() % 256) / 256, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		SDL_GL_SwapWindow(window);
+
+		fengine::FEventsManager::GetInstance()->HandleEvents();
 		//SDL_GL_
 	}
 

@@ -8,14 +8,6 @@
 
 namespace fengine
 {
-	int FEventsManager::Register(FUnique<FEventListener> handler)
-	{
-		LOG_IF(!handler, FATAL) << "Invalid pointer.";
-		auto new_id = FEventsManager::GetNewEventId();
-		handlers_[new_id] = std::move(handler);
-		return new_id;
-	}
-
 	int FEventsManager::Deregister(int id)
 	{
 		const auto& it = handlers_.find(id);
@@ -32,10 +24,25 @@ namespace fengine
 		while (PollEvent())
 		{
 			auto t = this->GetEventType();
+
+			if (t & (kKeyPress | kKeyRelease))
+			{
+				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
+				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
+				{
+					auto ptr = it->second.get();
+					if (ptr->source_types().IsSet(kKeyboardSource))
+					{
+						static_cast<FKeyboardListener*>(it->second.get())->CallEvent(keyboardEvent);
+					}
+				}
+				continue;
+			}
+
 			switch (t)
 			{
 			case kNoEvent: break;
-			case kKeyPress:
+			/*case kKeyPress:
 			{
 				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
 				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
@@ -60,7 +67,7 @@ namespace fengine
 					}
 				}
 				break;
-			}
+			}*/
 			case kMouseMove:
 			case kMouseButtonPress:
 			case kMouseButtonRelease:
