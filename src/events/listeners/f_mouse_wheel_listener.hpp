@@ -6,10 +6,10 @@
 
 namespace fengine
 {
-	class FMouseWheelListener// : public FEventListener
+	class FMouseWheelListener : public FEventListener
 	{
 	public:
-		//FMouseWheelListener() : FEventListener(kMouseSource) {}
+		FMouseWheelListener() : FEventListener(kMouseSource) {}
 
 		virtual ~FMouseWheelListener() = default;
 

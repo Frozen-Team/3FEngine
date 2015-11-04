@@ -33,10 +33,8 @@
 
 set(GLEW_PATHS ${GLEW_ROOT} $ENV{GLEW_ROOT} )
 
-if(NOT DEFINED DEBUG_LIB_SUFFIX)
-	# TODO: Suffix must be -d. Workaround for now.
-	set(DEBUG_LIB_SUFFIX d)
-endif()
+# TODO: Suffix must be -d. Workaround for now.
+set(GLEW_DEBUG_LIB_SUFFIX d)
 
 find_path(GLEW_INCLUDE_DIR GL/glew.h 
 	PATH_SUFFIXES include PATHS ${GLEW_PATHS}
@@ -44,14 +42,14 @@ find_path(GLEW_INCLUDE_DIR GL/glew.h
 
 find_library(GLEW_LIBRARY NAMES libglew32 
 	PATH_SUFFIXES lib 
-	PATHS ${CPPFORMAT_PATHS}
+	PATHS ${GLEW_PATHS}
 )
 
-find_library(GLEW_LIBRARY_DEBUG NAMES cppformat${DEBUG_LIB_SUFFIX}
+find_library(GLEW_LIBRARY_DEBUG NAMES "libglew32${GLEW_DEBUG_LIB_SUFFIX}"
 	PATH_SUFFIXES lib
-	PATHS ${CPPFORMAT_PATHS}
+	PATHS ${GLEW_PATHS}
 )
 
 include(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(CPPFORMAT REQUIRED_VARS CPPFORMAT_INCLUDE_DIR CPPFORMAT_LIBRARY CPPFORMAT_LIBRARY_DEBUG)
+find_package_handle_standard_args(GLEW REQUIRED_VARS GLEW_INCLUDE_DIR GLEW_LIBRARY GLEW_LIBRARY_DEBUG)

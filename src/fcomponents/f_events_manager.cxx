@@ -8,14 +8,6 @@
 
 namespace fengine
 {
-	int FEventsManager::Register(FUnique<FEventListener> handler)
-	{
-		LOG_IF(!handler, FATAL) << "Invalid pointer.";
-		auto new_id = FEventsManager::GetNewEventId();
-		handlers_[new_id] = std::move(handler);
-		return new_id;
-	}
-
 	int FEventsManager::Deregister(int id)
 	{
 		const auto& it = handlers_.find(id);
@@ -32,31 +24,21 @@ namespace fengine
 		while (PollEvent())
 		{
 			auto t = this->GetEventType();
+
+
 			switch (t)
 			{
 			case kNoEvent: break;
 			case kKeyPress:
-			{
-				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
-				{
-					auto ptr = it->second.get();
-					if (ptr->source_types().IsSet(kKeyboardSource))
-					{
-						static_cast<FKeyboardListener*>(it->second.get())->OnKeyPressed(keyboardEvent);
-					}
-				}
-				break;
-			}
 			case kKeyRelease:
 			{
-				FKeyboardEvent keyboardEvent(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboardEvent.accepted(); it++)
+				FKeyboardEvent keyboard_event(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
+				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboard_event.accepted(); it++)
 				{
 					auto ptr = it->second.get();
 					if (ptr->source_types().IsSet(kKeyboardSource))
 					{
-						static_cast<FKeyboardListener*>(it->second.get())->OnKeyReleased(keyboardEvent);
+						static_cast<FKeyboardListener*>(it->second.get())->CallEvent(keyboard_event);
 					}
 				}
 				break;
@@ -64,8 +46,18 @@ namespace fengine
 			case kMouseMove:
 			case kMouseButtonPress:
 			case kMouseButtonRelease:
-				//DelegateEvent(t, kMouseSource);
-				//break;
+			{
+				FMouseEvent mouse_event(t, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), KeyboardModifiers(this->GetKeyboardModifiers()));
+				for (auto& it = handlers_.begin(); it != handlers_.end() && !mouse_event.accepted(); it++)
+				{
+					auto ptr = it->second.get();
+					if (ptr->source_types().IsSet(kMouseSource))
+					{
+						static_cast<FMouseListener*>(it->second.get())->CallEvent(mouse_event);
+					}
+				}
+				break;
+			}
 			case kMouseWheel:
 				//DelegateEvent(t, kMouseWheelSource);
 				//break;

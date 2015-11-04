@@ -9,7 +9,7 @@
 
 namespace fengine
 {
-	class FMouseListener : FEventListener
+	class FMouseListener : public FEventListener
 	{
 	public:
 		FMouseListener() : FEventListener(kMouseSource) {}
@@ -27,6 +27,25 @@ namespace fengine
 		virtual void OnMouseButtonPressed(FMouseEvent& e) {}
 
 		virtual void OnMouseButtonReleased(FMouseEvent& e) {}
+
+	private:
+		inline void CallEvent(FMouseEvent& e)
+		{
+			switch (e.type())
+			{
+			case kMouseMove:
+				OnMouseMove(e);
+				break;
+			case kMouseButtonPress:
+				OnMouseButtonPressed(e);
+				break;
+			case kMouseButtonRelease:
+				OnMouseButtonReleased(e);
+				break;
+			default:
+				break;
+			}
+		}
 	};
 }
 

@@ -10,7 +10,7 @@
 
 namespace fengine
 {
-	class FKeyboardListener : FEventListener
+	class FKeyboardListener : public FEventListener
 	{
 	public:
 		FKeyboardListener() : FEventListener(kKeyboardSource) {};
@@ -23,6 +23,21 @@ namespace fengine
 		virtual void OnKeyPressed(FKeyboardEvent& e) {};
 
 		virtual void OnKeyReleased(FKeyboardEvent& e) {};
+	private:
+		inline void CallEvent(FKeyboardEvent& e)
+		{
+			switch (e.type())
+			{
+			case kKeyPress:
+				OnKeyPressed(e);
+				break;
+			case kKeyRelease:
+				OnKeyReleased(e);
+				break;
+			default:
+				break;
+			}
+		}
 	};
 }
 #endif // _3FENGINE_SRC_EVENTS_F_KEYBOARD_LISTENER_HPP_
