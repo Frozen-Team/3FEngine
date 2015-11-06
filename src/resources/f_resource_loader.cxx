@@ -49,6 +49,7 @@ namespace fengine {
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
 		FShared<FMesh> mesh = std::make_shared<FMesh>();
 		mesh->AddLod(this->LoadLod(node, FLT_MAX));
+		mesh->set_position(this->LoadPosition(node));
 		return mesh;
 	}
 
@@ -62,7 +63,7 @@ namespace fengine {
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
 
-		auto fbx_mesh = (FbxMeshLoader*)node;
+		auto fbx_mesh = dynamic_cast<FbxMeshLoader*>(node);
 
 		return std::move(FMeshLod(threshold, std::make_shared<FGeometry>(
 			fbx_mesh->LoadIndices(),
@@ -152,5 +153,14 @@ namespace fengine {
 		//		}
 		//	}
 		return uvs;
+	}
+	FPoint3f FResourceLoader::LoadPosition(FbxNode * node)
+	{
+		auto position = node->LclTranslation.Get();
+		return FPoint3f(
+			static_cast<float>(position[0]), 
+			static_cast<float>(position[1]), 
+			static_cast<float>(position[2])
+			);
 	}
 }

@@ -5,7 +5,7 @@
 
 #include "fcomponents/f_logger.hpp"
 #include "utils/f_typedefs.hpp"
-#include "fbx2fseq/Core/f_fbx_loader.hpp"
+#include "resources/f_fbx_loader.hpp"
 #include "utils/f_singleton.hpp"
 #include "scene/camera/f_camera.hpp"
 #include "scene/f_scene.hpp"
@@ -31,7 +31,7 @@ namespace fengine {
 		FShared<FCamera> LoadCamera(FbxNode* node);
 		FUvsf LoadUvs(FbxMesh* mesh);
 	private:
-
+		FPoint3f LoadPosition(FbxNode* node);
 	};
 }
 #endif // _3FENGINE_SRC_RESOURCES_F_RESOURCE_LOADER_HPP
