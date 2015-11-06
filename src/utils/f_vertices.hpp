@@ -4,8 +4,6 @@
 #include <vector>
 #include <Eigen/Dense>
 
-//#include "fcomponents/f_logger.hpp"
-
 namespace fengine
 {
 	template<typename T, int base>
@@ -15,34 +13,37 @@ namespace fengine
 		FVertices() = default;
 		~FVertices() = default;
 		
-
 		using Vector = std::vector <T>;
 		using Vertex = Eigen::Matrix<T, base, 1>;
 
-		FVertices(const Vector& inVertices)
+		FVertices(const Vector& in_vertices)
 		{
 			static_assert(base != 0, "Base size cannot be zero.");
-			auto inVerticesSize = static_cast<int>(inVertices.size());
-			assert(inVerticesSize % base == 0);
-			this->vertices_ = inVertices;
-			this->points_count_ = inVerticesSize / base;
+			this->Add(in_vertices);
 		}
 
-
-		void Add(const Vector& args)
+		void Add(const Vector& to_insert)
 		{
-			for (auto& el : args) {
-				this->vertices_.push_back(el);
-			}
+			auto to_insert_size = to_insert.size();
+			assert(to_insert_size % base == 0);
+
+			this->vertices_.reserve(this->vertices_.size() + to_insert_size);
+			this->vertices_.insert(this->vertices_.end(), to_insert.cbegin(), to_insert.cend());
+
+			this->points_count_ = to_insert_size / base;
 		}
-		inline Vector& vertices() noexcept { return vertices_; }
-		inline int points_count() noexcept { return points_count_; }
 
-		inline Vertex GetVerticeByIndex(int index) const
+		Vector& vertices() noexcept { return vertices_; }
+
+		int points_count() noexcept { return points_count_; }
+
+		Vertex GetVerticeByIndex(int index) const
 		{
-			//TODO: add error handler
 			auto verticesSize = vertices_.size();
-			if index < 0 || index >= verticesSize || { return; }
+			if (index < 0 || index >= verticesSize)
+			{ 
+				LOG(FATAL) << "Index out of range";
+			}
 			auto fromIndex = index * base;
 
 			Vertex result;
@@ -54,7 +55,7 @@ namespace fengine
 
 	private:
 		Vector vertices_;
-		int points_count_;
+		size_t points_count_;
 	};
 	
 }

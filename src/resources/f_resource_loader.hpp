@@ -19,19 +19,19 @@
 namespace fengine {
 	class FResourceLoader : public FFbxLoader, public futils::FSingleton<FResourceLoader> {
 		F_DISABLE_COPY(FResourceLoader)
-		
+	
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FResourceLoader)
 
 		FShared<FScene> ImportScene(const std::string& fbx_file);
 		void LoadComponent(FShared<FScene>& scene, FbxNode* node);
-		FShared<FMesh> LoadMesh(FbxNode* node);
-		FShared<FMesh> LoadLodGroup(FbxNode* node);
-		FMeshLod LoadLod(FbxNode* node, float threshold);
-		FShared<FCamera> LoadCamera(FbxNode* node);
-		FUvsf LoadUvs(FbxMesh* mesh);
+
 	private:
-		FPoint3f LoadPosition(FbxNode* node);
+		FShared<FMesh> LoadLodGroup(FbxNode* node);
+		FMeshLod LoadLod(FbxNode* node, float threshold) const;
+		FShared<FCamera> LoadCamera(FbxNode* node);
+		FShared<FMesh> LoadMesh(FbxNode* node) const;
+		static FPoint3f LoadPosition(FbxNode* node);
 	};
 }
 #endif // _3FENGINE_SRC_RESOURCES_F_RESOURCE_LOADER_HPP

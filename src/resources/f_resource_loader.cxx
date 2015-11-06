@@ -39,14 +39,34 @@ namespace fengine {
 			case FbxNodeAttribute::eCamera:
 				scene->Add(this->LoadCamera(node));
 				break;
+			case FbxNodeAttribute::eUnknown: break;
+			case FbxNodeAttribute::eNull: break;
+			case FbxNodeAttribute::eMarker: break;
+			case FbxNodeAttribute::eSkeleton: break;
+			case FbxNodeAttribute::eNurbs: break;
+			case FbxNodeAttribute::ePatch: break;
+			case FbxNodeAttribute::eCameraStereo: break;
+			case FbxNodeAttribute::eCameraSwitcher: break;
+			case FbxNodeAttribute::eLight: break;
+			case FbxNodeAttribute::eOpticalReference: break;
+			case FbxNodeAttribute::eOpticalMarker: break;
+			case FbxNodeAttribute::eNurbsCurve: break;
+			case FbxNodeAttribute::eTrimNurbsSurface: break;
+			case FbxNodeAttribute::eBoundary: break;
+			case FbxNodeAttribute::eNurbsSurface: break;
+			case FbxNodeAttribute::eShape: break;
+			case FbxNodeAttribute::eSubDiv: break;
+			case FbxNodeAttribute::eCachedEffect: break;
+			case FbxNodeAttribute::eLine: break;
+			default: break;
 			}
 		}
 	}
 
-	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node)
+	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node) const
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
-		FShared<FMesh> mesh = std::make_shared<FMesh>();
+		auto mesh = std::make_shared<FMesh>();
 		mesh->AddLod(this->LoadLod(node, FLT_MAX));
 		mesh->set_position(this->LoadPosition(node));
 		return mesh;
@@ -58,7 +78,7 @@ namespace fengine {
 		return FShared<FMesh>();
 	}
 
-	FMeshLod FResourceLoader::LoadLod(FbxNode * node, float threshold)
+	FMeshLod FResourceLoader::LoadLod(FbxNode * node, float threshold) const
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
 		auto fbx_mesh = static_cast<FbxMeshLoader*>(node->GetNodeAttribute());
@@ -74,82 +94,6 @@ namespace fengine {
 		return FShared<FCamera>();
 	}
 
-	FUvsf FResourceLoader::LoadUvs(FbxMesh * mesh)
-	{
-		LOG_IF(!mesh, FATAL) << "nullptr node passed to LoadUvs";
-		FUvsf uvs;
-		//	//get all UV set names
-		//	FbxStringList lUVSetNameList;
-		//	mesh->GetUVSetNames(lUVSetNameList);
-
-		//	//iterating over all uv sets
-		//	for (int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); lUVSetIndex++)
-		//	{
-		//		//get lUVSetIndex-th uv set
-		//		const char* lUVSetName = lUVSetNameList.GetStringAt(lUVSetIndex);
-		//		const FbxGeometryElementUV* lUVElement = mesh->GetElementUV(lUVSetName);
-
-		//		if (!lUVElement)
-		//			continue;
-
-		//		// only support mapping mode eByPolygonVertex and eByControlPoint
-		//		if (lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
-		//			lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
-		//			return;
-
-		//		//index array, where holds the index referenced to the uv data
-		//		auto lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
-		//		auto lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
-
-		//		//iterating through the data by polygon
-		//		const int lPolyCount = mesh->GetPolygonCount();
-		//		FbxVector2 lUVValue;
-		//		if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
-		//		{
-		//			for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
-		//			{
-		//				// build the max index array that we need to pass into MakePoly
-		//				const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
-		//				for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
-		//				{
-		//					//get the index of the current vertex in control points array
-		//					int lPolyVertIndex = mesh->GetPolygonVertex(lPolyIndex, lVertIndex);
-
-		//					//the UV index depends on the reference mode
-		//					int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
-
-		//					lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
-
-		//					//uvs.Add(lUVValue[0], lUVValue[1]);
-		//				}
-		//			}
-		//		}
-		//		else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
-		//		{
-		//			int lPolyIndexCounter = 0;
-		//			for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
-		//			{
-		//				// build the max index array that we need to pass into MakePoly
-		//				const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
-		//				for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
-		//				{
-		//					if (lPolyIndexCounter < lIndexCount)
-		//					{
-		//						//the UV index depends on the reference mode
-		//						int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
-
-		//						lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
-
-		//						//uvs.Add(lUVValue[0], lUVValue[1]);
-
-		//						lPolyIndexCounter++;
-		//					}
-		//				}
-		//			}
-		//		}
-		//	}
-		return uvs;
-	}
 	FPoint3f FResourceLoader::LoadPosition(FbxNode * node)
 	{
 		auto position = node->LclTranslation.Get();

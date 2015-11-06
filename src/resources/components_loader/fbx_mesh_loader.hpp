@@ -13,8 +13,8 @@ namespace fengine
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FbxMeshLoader)
 
-		FVertices3f LoadVertices();
-		FIndices3 LoadIndices();
+		FVertices3f LoadVertices() const;
+		FIndices3 LoadIndices() const;
 		FUvsf LoadUvs();
 	};
 }
