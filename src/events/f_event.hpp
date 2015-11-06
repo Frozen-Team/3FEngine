@@ -9,11 +9,11 @@ namespace fengine
 	{
 	public:
 
-		explicit FEvent(EventType type) : accepted_(false) { this->type_ = type; }
+		explicit FEvent(fevents::EventType type) : accepted_(false) { this->type_ = type; }
 
 		virtual ~FEvent() {}
 
-		EventType type() const { return this->type_; }
+		fevents::EventType type() const { return this->type_; }
 
 		bool accepted() const { return this->accepted_; }
 
@@ -24,7 +24,7 @@ namespace fengine
 		inline void setAccepted(bool accepted) { this->accepted_ = accepted; }
 
 	private:
-		EventType type_;
+		fevents::EventType type_;
 		bool accepted_;
 	};
 }

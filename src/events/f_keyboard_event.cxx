@@ -2,9 +2,9 @@
 
 namespace fengine
 {
-	FKeyboardEvent::FKeyboardEvent(EventType type, KeyboardKey key, KeyboardModifiers modifiers)
+	FKeyboardEvent::FKeyboardEvent(fevents::EventType type, fevents::KeyboardKey key, fevents::KeyboardModifiers modifiers)
 		: FEvent(type), key_(key), modifiers_(modifiers)
 	{
-		LOG_IF((type != EventType::kKeyPress) && (type != EventType::kKeyRelease), FATAL) << "Invalid keyboard event type."; // TODOL Print type
+		LOG_IF((type != fevents::kKeyPress) && (type != fevents::kKeyRelease), FATAL) << "Invalid keyboard event type."; // TODOL Print type
 	}
 }

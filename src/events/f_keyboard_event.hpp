@@ -11,17 +11,17 @@ namespace fengine
 	class FKeyboardEvent : public FEvent
 	{
 	public:
-		explicit FKeyboardEvent(EventType type, KeyboardKey key, KeyboardModifiers modifiers);
+		explicit FKeyboardEvent(fevents::EventType type, fevents::KeyboardKey key, fevents::KeyboardModifiers modifiers);
 
 		virtual ~FKeyboardEvent() {}
 
-		KeyboardKey key() const noexcept { return this->key_; }
+		fevents::KeyboardKey key() const noexcept { return this->key_; }
 
-		const KeyboardModifiers& modifiers() const noexcept { return this->modifiers_; }
+		const fevents::KeyboardModifiers& modifiers() const noexcept { return this->modifiers_; }
 
 	private:
-		KeyboardKey key_;
-		KeyboardModifiers modifiers_;
+		fevents::KeyboardKey key_;
+		fevents::KeyboardModifiers modifiers_;
 	};
 
 }

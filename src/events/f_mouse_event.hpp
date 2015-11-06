@@ -12,23 +12,23 @@ namespace fengine
 	{
 	public:
 
-		explicit FMouseEvent(EventType type, const FPoint2i& pos, MouseButton button, const MouseButtons& buttons, const KeyboardModifiers& modifiers);
+		explicit FMouseEvent(fevents::EventType type, const FPoint2i& pos, fevents::MouseButton button, const fevents::MouseButtons& buttons, const fevents::KeyboardModifiers& modifiers);
 
 		virtual ~FMouseEvent() {}
 
 		const FPoint2i& pos() const noexcept { return this->pos_; }
 
-		MouseButton button() const noexcept { this->button_; }
+		fevents::MouseButton button() const noexcept { this->button_; }
 
-		const MouseButtons& buttons() const noexcept { this->buttons_; }
+		const fevents::MouseButtons& buttons() const noexcept { this->buttons_; }
 
-		const KeyboardModifiers& modifiers() const noexcept { this->modifiers_; }
+		const fevents::KeyboardModifiers& modifiers() const noexcept { this->modifiers_; }
 
 	private:
 		FPoint2i pos_;
-		MouseButton button_;
-		MouseButtons buttons_;
-		KeyboardModifiers modifiers_;
+		fevents::MouseButton button_;
+		fevents::MouseButtons buttons_;
+		fevents::KeyboardModifiers modifiers_;
 	};
 }
 

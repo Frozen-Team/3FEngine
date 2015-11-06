@@ -16,19 +16,19 @@ namespace fengine
 
 		bool PollEvent();
 
-		EventType inline GetEventType() const noexcept { return event_type_union_.type; }
+		fevents::EventType GetEventType() const noexcept { return event_type_union_.type; }
 		// Unsafe direct conversion.
-		KeyboardKey inline GetKeyboardScanCode() const { return static_cast<KeyboardKey>(event_.key.keysym.scancode); }
+		fevents::KeyboardKey GetKeyboardScanCode() const { return static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode); }
 
-		int inline GetKeyboardSymbol() const { return event_.key.keysym.sym; }
+		int GetKeyboardSymbol() const { return event_.key.keysym.sym; }
 
-		KeyboardModifiers GetKeyboardModifiers() const noexcept;
+		fevents::KeyboardModifiers GetKeyboardModifiers() const noexcept;
 
-		FPoint2i GetMousePos() { return FPoint2i(event_.motion.x, event_.motion.y); }
+		FPoint2i GetMousePos() const { return FPoint2i(event_.motion.x, event_.motion.y); }
 
-		MouseButton GetMouseButton() { return MouseButton(event_.button.button); }
+		fevents::MouseButton GetMouseButton() const { return fevents::MouseButton(event_.button.button); }
 
-		MouseButtons GetMouseButtons() { return MouseButtons(event_.motion.state); }
+		fevents::MouseButtons GetMouseButtons() const { return fevents::MouseButtons(event_.motion.state); }
 
 	private:
 		FPoint2i mouse_pos_;
@@ -36,7 +36,7 @@ namespace fengine
 
 		union EventTypeUnion
 		{
-			EventType type;
+			fevents::EventType type;
 			unsigned int sdl_type;
 		} event_type_union_;
 	};

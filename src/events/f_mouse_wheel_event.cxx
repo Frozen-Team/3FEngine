@@ -3,7 +3,7 @@
 
 namespace fengine
 {
-	FMouseWheelEvent::FMouseWheelEvent(int delta, const FPoint2i & pos, const MouseButtons & buttons, KeyboardModifiers modifiers, WheelOrientation orientation)
-		: FEvent(EventType::kMouseWheel), delta_(delta), pos_(pos), buttons_(buttons), modifiers_(modifiers), orientation_(orientation)
+	FMouseWheelEvent::FMouseWheelEvent(int delta, const FPoint2i & pos, const fevents::MouseButtons & buttons, fevents::KeyboardModifiers modifiers, fevents::WheelOrientation orientation)
+		: FEvent(fevents::kMouseWheel), delta_(delta), pos_(pos), buttons_(buttons), modifiers_(modifiers), orientation_(orientation)
 	{}
 }

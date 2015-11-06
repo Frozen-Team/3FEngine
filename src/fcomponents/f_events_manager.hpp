@@ -44,6 +44,19 @@ namespace fengine
 
 		int GetNewEventId();
 
+		template<typename EventListener, typename EventType>
+		void DelegateEvent(EventType& event, fevents::EventSourceType source_type)
+		{
+			for (auto it = handlers_.begin(); it != handlers_.end() && !event.accepted(); ++it)
+			{
+				auto ptr = it->second.get();
+				if (ptr->source_types().IsSet(source_type))
+				{
+					static_cast<EventListener*>(it->second.get())->CallEvent(event);
+				}
+			}
+		}
+
 	private:
 		std::atomic_int last_id_;
 		FMap<int, FShared<FEventListener>> handlers_;

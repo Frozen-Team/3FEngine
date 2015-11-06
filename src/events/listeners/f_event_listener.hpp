@@ -10,12 +10,12 @@ namespace fengine
 	public:
 		virtual ~FEventListener() = default;
 
-		explicit FEventListener(EventSourceTypes types) { this->source_types_ |= types; }
+		explicit FEventListener(fevents::EventSourceTypes types) { this->source_types_ |= types; }
 
-		const EventSourceTypes& source_types() const noexcept { return source_types_; }
+		const fevents::EventSourceTypes& source_types() const noexcept { return source_types_; }
 
 	private:
-		EventSourceTypes source_types_;
+		fevents::EventSourceTypes source_types_;
 	};
 }
 #endif // _3FENGINE_SRC_EVENTS_LISTENERS_F_EVENT_LISTENER_HPP_

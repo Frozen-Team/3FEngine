@@ -24,8 +24,8 @@ namespace fengine
 		}
 		return ret;
 	}
-	KeyboardModifiers FSdlEventsDispatcher::GetKeyboardModifiers() const noexcept
+	fevents::KeyboardModifiers FSdlEventsDispatcher::GetKeyboardModifiers() const noexcept
 	{
-		return KeyboardModifiers(event_.key.keysym.mod);
+		return fevents::KeyboardModifiers(event_.key.keysym.mod);
 	}
 }

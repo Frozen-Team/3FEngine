@@ -13,7 +13,7 @@ namespace fengine
 	class FKeyboardListener : public FEventListener
 	{
 	public:
-		FKeyboardListener() : FEventListener(kKeyboardSource) {};
+		FKeyboardListener() : FEventListener(fevents::kKeyboardSource) {};
 
 		virtual ~FKeyboardListener() = default;
 
@@ -28,10 +28,10 @@ namespace fengine
 		{
 			switch (e.type())
 			{
-			case kKeyPress:
+			case fevents::kKeyPress:
 				OnKeyPressed(e);
 				break;
-			case kKeyRelease:
+			case fevents::kKeyRelease:
 				OnKeyReleased(e);
 				break;
 			default:

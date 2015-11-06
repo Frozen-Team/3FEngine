@@ -3,11 +3,11 @@
 
 namespace fengine 
 {
-	FMouseEvent::FMouseEvent(EventType type, const FPoint2i & pos, MouseButton button, const MouseButtons& buttons, const KeyboardModifiers& modifiers)
+	FMouseEvent::FMouseEvent(fevents::EventType type, const FPoint2i & pos, fevents::MouseButton button, const fevents::MouseButtons& buttons, const fevents::KeyboardModifiers& modifiers)
 		: FEvent(type), pos_(pos), button_(button), buttons_(buttons), modifiers_(modifiers)
 	{
-		LOG_IF((type != EventType::kMouseMove) && (type != EventType::kMouseButtonPress) &&
-				(type != EventType::kMouseButtonRelease), FATAL) << "Invalid mouse event type."; // TODO: Print type info
+		LOG_IF((type != fevents::kMouseMove) && (type != fevents::kMouseButtonPress) &&
+				(type != fevents::kMouseButtonRelease), FATAL) << "Invalid mouse event type."; // TODO: Print type info
 	}
 
 }
