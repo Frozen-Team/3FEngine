@@ -23,7 +23,7 @@ namespace fengine
 		{
 			static_assert(base != 0, "Base size cannot be zero.");
 			auto inVerticesSize = static_cast<int>(inVertices.size());
-			static_assert(inVerticesSize % base != 0, "Vertices size has to be divisible by base")
+			assert(inVerticesSize % base == 0);
 			this->vertices_ = inVertices;
 			this->points_count_ = inVerticesSize / base;
 		}

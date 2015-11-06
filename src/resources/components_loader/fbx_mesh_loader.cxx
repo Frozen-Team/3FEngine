@@ -1,4 +1,6 @@
 #include "fbx_mesh_loader.hpp"
+#include <algorithm>
+#include <iterator>
 
 namespace fengine 
 {
@@ -14,17 +16,18 @@ namespace fengine
 			vertices.push_back(static_cast<float>(fbx_vertices[i][1]));
 			vertices.push_back(static_cast<float>(fbx_vertices[i][2]));
 		}
+
 		return FVertices3f(vertices);
 	}
 	FIndices3 FbxMeshLoader::LoadIndices()
 	{
 		auto fbx_indices = this->GetPolygonVertices();
 		auto fbx_indices_count = this->GetPolygonVertexCount();
-		auto indices = FVectori();
+		FIndices3::Vector indices;
 		indices.reserve(fbx_indices_count);
-		std::copy(fbx_indices, fbx_indices + fbx_indices_count, indices.begin());
+		std::copy(fbx_indices, fbx_indices + fbx_indices_count, std::back_inserter(indices));
 
-		return FIndices3();
+		return FIndices3(indices);
 	}
 	FUvsf FbxMeshLoader::LoadUvs()
 	{

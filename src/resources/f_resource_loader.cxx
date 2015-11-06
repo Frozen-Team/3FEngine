@@ -43,7 +43,6 @@ namespace fengine {
 		}
 	}
 
-	//TODO: Add position here
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
@@ -59,17 +58,14 @@ namespace fengine {
 		return FShared<FMesh>();
 	}
 
-	FMeshLod& FResourceLoader::LoadLod(FbxNode * node, float threshold)
+	FMeshLod FResourceLoader::LoadLod(FbxNode * node, float threshold)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
-
-		auto fbx_mesh = dynamic_cast<FbxMeshLoader*>(node);
-
-		return std::move(FMeshLod(threshold, std::make_shared<FGeometry>(
+		auto fbx_mesh = static_cast<FbxMeshLoader*>(node->GetNodeAttribute());
+		return FMeshLod(threshold, std::make_shared<FGeometry>(
 			fbx_mesh->LoadIndices(),
 			fbx_mesh->LoadVertices(),
-			fbx_mesh->LoadUvs())
-			));
+			fbx_mesh->LoadUvs()));
 	}
 
 	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node)
