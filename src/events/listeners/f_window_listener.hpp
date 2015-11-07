@@ -47,8 +47,7 @@ namespace fengine
 
 		virtual void OnWindowClose(FWindowEvent& e) {}
 
-	private:
-		void CallEvent(FWindowEvent& e)
+		virtual void CallEvent(FWindowEvent& e)
 		{
 			switch (e.type())
 			{

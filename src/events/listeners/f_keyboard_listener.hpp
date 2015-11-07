@@ -22,8 +22,8 @@ namespace fengine
 		virtual void OnKeyPressed(FKeyboardEvent& e) {};
 
 		virtual void OnKeyReleased(FKeyboardEvent& e) {};
-	private:
-		void CallEvent(FKeyboardEvent& e)
+
+		virtual void CallEvent(FKeyboardEvent& e)
 		{
 			switch (e.type())
 			{

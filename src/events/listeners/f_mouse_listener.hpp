@@ -24,8 +24,7 @@ namespace fengine
 
 		virtual void OnMouseButtonReleased(FMouseEvent& e) {}
 
-	private:
-		void CallEvent(FMouseEvent& e)
+		virtual void CallEvent(FMouseEvent& e)
 		{
 			switch (e.type())
 			{

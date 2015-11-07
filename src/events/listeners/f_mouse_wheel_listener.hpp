@@ -14,10 +14,10 @@ namespace fengine
 
 	protected:
 		friend class FEventsManager;
+
 		virtual void OnMouseWheelScrolled(FMouseWheelEvent& e) {}
 
-	private:
-		void CallEvent(FMouseWheelEvent& e)
+		virtual void CallEvent(FMouseWheelEvent& e)
 		{
 			if (e.type() == fevents::kMouseWheel)
 			{
