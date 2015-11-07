@@ -100,9 +100,9 @@ protected:
 	}
 };
 
-int main_app
+void main_app()
 {
 	//fengine::FEventsManager::GetInstance()->Register<KeyboardEventsHandler>();
 	//fengine::FEventsManager::GetInstance()->Register<MouseEventListener>();
 	//fengine::FEventsManager::GetInstance()->Register<WindowEventListener>();
-}
+};
