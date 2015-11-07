@@ -2,7 +2,7 @@
 #define _3FENGINE_SRC_GUI_F_WINDOW_HPP_
 
 #include <utils/f_typedefs.hpp>
-#include <events/listeners/f_window_listener.hpp>
+#include <event_system/listeners/f_window_listener.hpp>
 #include "f_sdl_window.hpp"
 
 namespace fengine

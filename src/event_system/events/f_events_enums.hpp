@@ -1,7 +1,6 @@
-#ifndef _3FENGINE_SRC_F_EVENTS_ENUMS_HPP_
-#define _3FENGINE_SRC_F_EVENTS_ENUMS_HPP_
+#ifndef _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_EVENTS_ENUMS_HPP_
+#define _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_EVENTS_ENUMS_HPP_
 
-#include <utils/f_typedefs.hpp>
 #include <utils/f_flags.hpp>
 
 namespace fengine
@@ -22,9 +21,9 @@ namespace fengine
 
 		enum EventType
 		{
-			kNoEvent = 0,
+			kNoEvent			= 0x000,
 
-			kSysWmEvent = 0x201,
+			kSysWmEvent			= 0x201,
 			kWindowShown,
 			kWindowHidden,
 			kWindowExposed,
@@ -40,17 +39,22 @@ namespace fengine
 			kWindowFocusLost,
 			kWindowClose,
 
-			kKeyPress = 0x300,
+			kKeyPress			= 0x300,
 			kKeyRelease,
 
-			kMouseMove = 0x400,
-			//kMouseButtonDblClick, TODO
+			kMouseMove			= 0x400,
 			kMouseButtonPress,
 			kMouseButtonRelease,
 
 			kMouseWheel,
 
-			kJoyAxisMotion = 0x600
+			kJoyAxisMotion		= 0x600,
+			kJoyBallMotion,
+			kJoyHatMotion,
+			kJoyButtonDown,
+			kJoyButtonUp,
+			kJoyDeviceAdded,
+			kJoyDeviceRemoved,
 		};
 		//static const FMap<EventType, FString> EventTypeNames
 		enum MouseButton
@@ -336,4 +340,4 @@ namespace fengine
 	}
 }
 
-#endif // _3FENGINE_SRC_F_EVENTS_ENUMS_HPP_
+#endif // _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_EVENTS_ENUMS_HPP_

@@ -1,9 +1,9 @@
-#ifndef _3FENGINE_SRC_EVENTS_F_MOUSE_EVENT_HPP_
-#define _3FENGINE_SRC_EVENTS_F_MOUSE_EVENT_HPP_
+#ifndef _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_MOUSE_EVENT_HPP_
+#define _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_MOUSE_EVENT_HPP_
 
 #include <utils/f_flags.hpp>
-#include <events/f_event.hpp>
-#include <events/f_events_enums.hpp>
+#include <event_system/events/f_event.hpp>
+#include <event_system/events/f_events_enums.hpp>
 #include <utils/f_typedefs.hpp>
 
 namespace fengine 
@@ -11,7 +11,7 @@ namespace fengine
 	class FMouseEvent : public FEvent
 	{
 	public:
-		explicit FMouseEvent(fevents::EventType type, const FPoint2i& pos, fevents::MouseButton button, const fevents::MouseButtons& buttons, const fevents::KeyboardModifiers& modifiers);
+		explicit FMouseEvent(fevents::EventType type, unsigned which, const FPoint2i& pos, fevents::MouseButton button, const fevents::MouseButtons& buttons, const fevents::KeyboardModifiers& modifiers);
 		
 		virtual ~FMouseEvent() {}
 
@@ -31,4 +31,4 @@ namespace fengine
 	};
 }
 
-#endif // _3FENGINE_SRC_EVENTS_F_MOUSE_EVENT_HPP_
+#endif // _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_MOUSE_EVENT_HPP_

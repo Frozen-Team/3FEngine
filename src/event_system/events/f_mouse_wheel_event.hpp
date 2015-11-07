@@ -1,8 +1,8 @@
-#ifndef _3FENGINE_SRC_F_MOUSE_WHEEL_EVENT_HPP_
-#define _3FENGINE_SRC_F_MOUSE_WHEEL_EVENT_HPP_
+#ifndef _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_MOUSE_WHEEL_EVENT_HPP_
+#define _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_MOUSE_WHEEL_EVENT_HPP_
 
-#include <events/f_event.hpp>
-#include <events/f_events_enums.hpp>
+#include <event_system/events/f_event.hpp>
+#include <event_system/events/f_events_enums.hpp>
 #include <utils/f_typedefs.hpp>
 
 namespace fengine
@@ -11,7 +11,7 @@ namespace fengine
 	{
 	public:
 		
-		explicit FMouseWheelEvent(int delta, const FPoint2i& position, const fevents::MouseButtons& buttons,
+		explicit FMouseWheelEvent(int delta, unsigned which, const FPoint2i& position, const fevents::MouseButtons& buttons,
 			fevents::KeyboardModifiers modifiers, fevents::WheelOrientation orientation = fevents::WheelOrientation::kWheelVertical);
 
 		virtual ~FMouseWheelEvent() {}
@@ -35,4 +35,4 @@ namespace fengine
 	};
 
 }
-#endif // _3FENGINE_SRC_F_MOUSE_WHEEL_EVENT_HPP_
+#endif // _3FENGINE_SRC_EVENT_SYSTEM_EVENTS_F_MOUSE_WHEEL_EVENT_HPP_

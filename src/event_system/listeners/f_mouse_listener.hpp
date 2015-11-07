@@ -1,8 +1,8 @@
-#ifndef _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_LISTENER_HPP_
-#define _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_LISTENER_HPP_
+#ifndef _3FENGINE_SRC_EVENT_SYSTEM_LISTENERS_F_MOUSE_LISTENER_HPP_
+#define _3FENGINE_SRC_EVENT_SYSTEM_LISTENERS_F_MOUSE_LISTENER_HPP_
 
-#include <events/listeners/f_event_listener.hpp>
-#include <events/f_mouse_event.hpp>
+#include <event_system/listeners/f_event_listener.hpp>
+#include <event_system/events/f_mouse_event.hpp>
 
 #include <fcomponents/f_events_manager.hpp>
 
@@ -44,4 +44,4 @@ namespace fengine
 	};
 }
 
-#endif // _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_LISTENER_HPP_
+#endif // _3FENGINE_SRC_EVENT_SYSTEM_LISTENERS_F_MOUSE_LISTENER_HPP_
