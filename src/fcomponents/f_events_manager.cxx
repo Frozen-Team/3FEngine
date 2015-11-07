@@ -2,10 +2,10 @@
 
 #include <fcomponents/f_logger.hpp>
 
-#include <events/listeners/f_keyboard_listener.hpp>
-#include <events/listeners/f_mouse_listener.hpp>
-#include <events/listeners/f_mouse_wheel_listener.hpp>
-#include <events/listeners/f_window_listener.hpp>
+#include <event_system/listeners/f_keyboard_listener.hpp>
+#include <event_system/listeners/f_mouse_listener.hpp>
+#include <event_system/listeners/f_mouse_wheel_listener.hpp>
+#include <event_system/listeners/f_window_listener.hpp>
 
 namespace fengine
 {
@@ -19,7 +19,7 @@ namespace fengine
 		}
 		return -1;
 	}
-
+	// TODO: remove 'which' workaround
 	void FEventsManager::HandleEvents()
 	{
 		while (PollEvent())
@@ -32,7 +32,7 @@ namespace fengine
 			case fevents::kKeyPress:
 			case fevents::kKeyRelease:
 			{
-				FKeyboardEvent keyboard_event(t, this->GetKeyboardScanCode(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
+				FKeyboardEvent keyboard_event(t, 0, this->GetKeyboardScanCode(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
 				DelegateEvent<FKeyboardListener>(keyboard_event, fevents::kKeyboardSource);
 				break;
 			}
@@ -40,13 +40,13 @@ namespace fengine
 			case fevents::kMouseButtonPress:
 			case fevents::kMouseButtonRelease:
 			{
-				FMouseEvent mouse_event(t, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
+				FMouseEvent mouse_event(t, 0, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
 				DelegateEvent<FMouseListener>(mouse_event, fevents::kMouseSource);
 				break;
 			}
 			case fevents::kMouseWheel:
 			{
-				FMouseWheelEvent wheel_event(this->GetMouseWheelDelta(), this->GetMousePos(), this->GetMouseButtons(), this->GetKeyboardModifiers()); // TODO: Wheel orientation
+				FMouseWheelEvent wheel_event(0, this->GetMouseWheelDelta(), this->GetMousePos(), this->GetMouseButtons(), this->GetKeyboardModifiers()); // TODO: Wheel orientation
 				DelegateEvent<FMouseWheelListener>(wheel_event, fevents::kMouseWheelSource);
 				break;
 			}
@@ -65,8 +65,9 @@ namespace fengine
 			case fevents::kWindowFocusGained:
 			case fevents::kWindowFocusLost:
 			case fevents::kWindowClose:
+				//SDL_JOYAXISMOTION
 			{
-				FWindowEvent window_event(t, FPoint2i(), FPoint2i());
+				FWindowEvent window_event(t, 0, FPoint2i(), FPoint2i()); // TODO: window pos, window size
 				DelegateEvent<FWindowListener>(window_event, fevents::kWindowSource);
 				break;
 			}

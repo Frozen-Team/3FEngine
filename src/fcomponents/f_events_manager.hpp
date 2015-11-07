@@ -7,8 +7,8 @@
 #include <utils/f_typedefs.hpp>
 #include <utils/f_singleton.hpp>
 
-#include <events/listeners/f_event_listener.hpp> 
-#include <events/f_sdl_events_dispatcher.hpp>
+#include <event_system/listeners/f_event_listener.hpp> 
+#include <event_system/f_sdl_events_dispatcher.hpp>
 
 
 namespace fengine
