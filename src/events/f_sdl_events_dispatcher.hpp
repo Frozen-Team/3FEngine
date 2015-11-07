@@ -11,6 +11,7 @@ namespace fengine
 	class FSdlEventsDispatcher
 	{
 	public:
+		FSdlEventsDispatcher() : mouse_wheel_delta_(0) {}
 		
 	protected:
 
@@ -30,7 +31,10 @@ namespace fengine
 
 		fevents::MouseButtons GetMouseButtons() const { return fevents::MouseButtons(event_.motion.state); }
 
+		int GetMouseWheelDelta() const noexcept { return mouse_wheel_delta_; }
+
 	private:
+		int mouse_wheel_delta_;
 		FPoint2i mouse_pos_;
 		SDL_Event event_;
 

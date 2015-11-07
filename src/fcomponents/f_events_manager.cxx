@@ -44,8 +44,11 @@ namespace fengine
 				break;
 			}
 			case fevents::kMouseWheel:
-				//DelegateEvent(t, kMouseWheelSource);
-				//break;
+			{
+				FMouseWheelEvent wheel_event(this->GetMouseWheelDelta(), this->GetMousePos(), this->GetMouseButtons(), this->GetKeyboardModifiers()); // TODO: Wheel orientation
+				DelegateEvent<FMouseWheelListener>(wheel_event, fevents::kMouseWheelSource);
+				break;
+			}
 			case fevents::kJoyAxisMotion:
 				//DelegateEvent(t, kJoystickSource);
 				break;
