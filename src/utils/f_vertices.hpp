@@ -13,22 +13,49 @@ namespace fengine
 		FVertices() = default;
 		~FVertices() = default;
 		
-
 		using Vector = std::vector <T>;
 		using Vertex = Eigen::Matrix<T, base, 1>;
 
-		FVertices(const Vector& inVertices);
+		FVertices(const Vector& in_vertices)
+		{
+			static_assert(base != 0, "Base size cannot be zero.");
+			this->Add(in_vertices);
+		}
 
+		void Add(const Vector& to_insert)
+		{
+			auto to_insert_size = to_insert.size();
+			assert(to_insert_size % base == 0);
 
-		void Add(const Vector& args);
-		inline Vector& vertices() noexcept { return vertices_; }
-		inline int points_count() noexcept { return points_count_; }
+			this->vertices_.reserve(this->vertices_.size() + to_insert_size);
+			this->vertices_.insert(this->vertices_.end(), to_insert.cbegin(), to_insert.cend());
 
-		inline Vertex GetVerticeByIndex(int index) const;
+			this->points_count_ = to_insert_size / base;
+		}
+
+		Vector& vertices() noexcept { return vertices_; }
+
+		int points_count() noexcept { return points_count_; }
+
+		Vertex GetVerticeByIndex(int index) const
+		{
+			auto verticesSize = vertices_.size();
+			if (index < 0 || index >= verticesSize)
+			{ 
+				LOG(FATAL) << "Index out of range";
+			}
+			auto fromIndex = index * base;
+
+			Vertex result;
+			for (int i = 0; i < base; i++) {
+				result(i) = vertices_.at(fromIndex + i);
+			}
+			return result;
+		}
 
 	private:
 		Vector vertices_;
-		int points_count_;
+		size_t points_count_;
 	};
 	
 }

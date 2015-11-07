@@ -9,7 +9,7 @@ FFbxLoader::FFbxLoader() {
 	fbx_manager_ = FbxManager::Create();
 	LOG_IF(fbx_manager_ == nullptr, FATAL) << "Fbx manager failed to initialize";
 	//TODO: be careful here with IOSN_IMPORT. Need tests
-	fbx_io_settings_ = FbxIOSettings::Create(fbx_manager_, IOSN_IMPORT);
+	fbx_io_settings_ = FbxIOSettings::Create(fbx_manager_, "");
 	LOG_IF(fbx_io_settings_ == nullptr, FATAL) << "Fbx io settings failed to initialize";
 
 	fbx_manager_->SetIOSettings(fbx_io_settings_);
@@ -28,7 +28,7 @@ bool FFbxLoader::LoadScene(const std::string& filepath)
 	}
 
 	//TODO: is it efficient to recreate scene here?
-	fbx_scene_ = dynamic_cast<FbxSceneLoader*>(FbxSceneLoader::Create(FFbxLoader::fbx_manager(), "importedScene"));
+	fbx_scene_ = static_cast<FbxSceneLoader*>(FbxSceneLoader::Create(FFbxLoader::fbx_manager(), "importedScene"));
 	if (!fbx_scene_) { 
 		LOG(ERROR) << "Fbx scene from file " << filepath << " failed to be created";
 		return false; 

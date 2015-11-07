@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
+add_subdirectory(fbx2fseq)
+
 # Set path to Engine's third party installation directory.
 set(ENGINE_3DPARTY_INSTALL "${CMAKE_SOURCE_DIR}/3dparty/install")
 set(ENGINE_3DPARTY_DIR_ARCH "${ENGINE_3DPARTY_INSTALL}/${LIBS_INSTALL_SUFFIX}")
@@ -121,3 +123,5 @@ target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLEW_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${Boost_INCLUDE_DIRS})
+
+

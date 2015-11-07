@@ -9,7 +9,7 @@
 
 #include "utils/f_typedefs.hpp"
 #include "fcomponents/f_logger.hpp"
-#include "./components_loader/fbx_scene_loader.hpp"
+#include "resources/components_loader/fbx_scene_loader.hpp"
 
 class FFbxLoader 
 {
