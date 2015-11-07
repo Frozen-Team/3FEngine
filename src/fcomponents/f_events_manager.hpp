@@ -50,7 +50,7 @@ namespace fengine
 			for (auto it = handlers_.begin(); it != handlers_.end() && !event.accepted(); ++it)
 			{
 				auto ptr = it->second.get();
-				if (ptr->source_types().IsSet(source_type))
+				if (ptr->IsListenableSource(source_type))
 				{
 					static_cast<EventListener*>(it->second.get())->CallEvent(event);
 				}

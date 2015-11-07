@@ -12,6 +12,8 @@ namespace fengine
 
 		explicit FEventListener(fevents::EventSourceTypes types) { this->source_types_ |= types; }
 
+		bool IsListenableSource(fevents::EventSourceType type) const { return source_types_.IsSet(type); }
+
 		const fevents::EventSourceTypes& source_types() const noexcept { return source_types_; }
 
 	private:
