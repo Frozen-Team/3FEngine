@@ -1,5 +1,5 @@
-#ifndef _3FENGINE_SRC_F_MOUSE_EVENT_HPP_
-#define _3FENGINE_SRC_F_MOUSE_EVENT_HPP_
+#ifndef _3FENGINE_SRC_EVENTS_F_MOUSE_EVENT_HPP_
+#define _3FENGINE_SRC_EVENTS_F_MOUSE_EVENT_HPP_
 
 #include <utils/f_flags.hpp>
 #include <events/f_event.hpp>
@@ -11,18 +11,17 @@ namespace fengine
 	class FMouseEvent : public FEvent
 	{
 	public:
-
 		explicit FMouseEvent(fevents::EventType type, const FPoint2i& pos, fevents::MouseButton button, const fevents::MouseButtons& buttons, const fevents::KeyboardModifiers& modifiers);
-
+		
 		virtual ~FMouseEvent() {}
 
 		const FPoint2i& pos() const noexcept { return this->pos_; }
 
-		fevents::MouseButton button() const noexcept { this->button_; }
+		fevents::MouseButton button() const noexcept { return this->button_; }
 
-		const fevents::MouseButtons& buttons() const noexcept { this->buttons_; }
+		const fevents::MouseButtons& buttons() const noexcept { return this->buttons_; }
 
-		const fevents::KeyboardModifiers& modifiers() const noexcept { this->modifiers_; }
+		const fevents::KeyboardModifiers& modifiers() const noexcept { return this->modifiers_; }
 
 	private:
 		FPoint2i pos_;
@@ -32,4 +31,4 @@ namespace fengine
 	};
 }
 
-#endif // _3FENGINE_SRC_F_MOUSE_EVENT_HPP_
+#endif // _3FENGINE_SRC_EVENTS_F_MOUSE_EVENT_HPP_

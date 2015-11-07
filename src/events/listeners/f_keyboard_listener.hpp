@@ -1,7 +1,6 @@
 #ifndef _3FENGINE_SRC_EVENTS_F_KEYBOARD_LISTENER_HPP_
 #define _3FENGINE_SRC_EVENTS_F_KEYBOARD_LISTENER_HPP_
 
-#include <utils/f_typedefs.hpp>
 #include <events/f_events_enums.hpp>
 #include <events/listeners/f_event_listener.hpp>
 #include <events/f_keyboard_event.hpp>
@@ -13,7 +12,7 @@ namespace fengine
 	class FKeyboardListener : public FEventListener
 	{
 	public:
-		FKeyboardListener() : FEventListener(fevents::kKeyboardSource) {};
+		FKeyboardListener() : FEventListener(fevents::EventSourceTypes(fevents::kKeyboardSource)) {};
 
 		virtual ~FKeyboardListener() = default;
 
@@ -24,7 +23,7 @@ namespace fengine
 
 		virtual void OnKeyReleased(FKeyboardEvent& e) {};
 	private:
-		inline void CallEvent(FKeyboardEvent& e)
+		void CallEvent(FKeyboardEvent& e)
 		{
 			switch (e.type())
 			{

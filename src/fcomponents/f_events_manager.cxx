@@ -32,14 +32,7 @@ namespace fengine
 			case fevents::kKeyRelease:
 			{
 				FKeyboardEvent keyboard_event(t, this->GetKeyboardScanCode(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto it = handlers_.begin(); it != handlers_.end() && !keyboard_event.accepted(); ++it)
-				{
-					auto ptr = it->second.get();
-					if (ptr->source_types().IsSet(fevents::kKeyboardSource))
-					{
-						static_cast<FKeyboardListener*>(it->second.get())->CallEvent(keyboard_event);
-					}
-				}
+				DelegateEvent<FKeyboardListener>(keyboard_event, fevents::kKeyboardSource);
 				break;
 			}
 			case fevents::kMouseMove:
@@ -47,7 +40,7 @@ namespace fengine
 			case fevents::kMouseButtonRelease:
 			{
 				FMouseEvent mouse_event(t, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
-				DelegateEvent<FMouseListener>(mouse_event, fevents::EventSourceType::kMouseSource);
+				DelegateEvent<FMouseListener>(mouse_event, fevents::kMouseSource);
 				break;
 			}
 			case fevents::kMouseWheel:
@@ -55,7 +48,7 @@ namespace fengine
 				//break;
 			case fevents::kJoyAxisMotion:
 				//DelegateEvent(t, kJoystickSource);
-				//break;
+				break;
 
 			default:
 				LOG(WARNING) << "Unhandled event. Type: " << t;
@@ -63,26 +56,6 @@ namespace fengine
 			}
 		}
 	}
-
-	//inline void FEventsManager::DelegateEvent(EventType type, EventSourceType source_type)
-	//{
-	//	switch (source_type)
-	//	{
-	//	case kNoSource:
-	//		break;
-	//	case kKeyboardSource:
-	//		//Exec<FKeyboardListener>
-	//		break;
-	//	case kMouseSource:
-	//		break;
-	//	case kMouseWheelSource:
-	//		break;
-	//	case kJoystickSource:
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
 
 	int FEventsManager::GetNewEventId()
 	{

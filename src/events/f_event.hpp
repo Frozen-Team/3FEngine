@@ -21,7 +21,7 @@ namespace fengine
 
 		void ignore() { setAccepted(false); }
 
-		inline void setAccepted(bool accepted) { this->accepted_ = accepted; }
+		void setAccepted(bool accepted) { this->accepted_ = accepted; }
 
 	private:
 		fevents::EventType type_;

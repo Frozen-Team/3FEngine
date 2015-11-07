@@ -15,54 +15,55 @@ namespace fengine
 	{
 		using FlagType = typename std::underlying_type<EnumType>::type;
 	public:
-		FFlags(FlagType flags) { this->flags_ = flags; }
 
 		FFlags() : flags_(0) {}
 
-		FFlags(EnumType flag)
+		explicit FFlags(FlagType flags) { this->flags_ = flags; }
+
+		explicit FFlags(EnumType flag)
 		{
-			FlagType f = (FlagType)flag;
+			FlagType f = static_cast<FlagType>(flag);
 			LOG_IF(((f & (f - 1)) != 0) && (f != 0), WARNING) << "Passed flag is not a power of 2. Value: " << f;
-			this->flags_ = (FlagType)flag;
+			this->flags_ = static_cast<FlagType>(flag);
 		}
 
-		FlagType ToNumber() const { return (FlagType)this->flags_; }
+		FlagType ToNumber() const { return static_cast<FlagType>(this->flags_); }
 
-		bool IsSet(const EnumType flag) const { return (((FlagType)flag) & this->flags_) != 0; }
+		bool IsSet(const EnumType flag) const { return (static_cast<FlagType>(flag) & this->flags_) != 0; }
 
 	public:
-		inline FFlags& operator=(EnumType rhs) noexcept
+		FFlags& operator=(EnumType rhs) noexcept
 		{
-			this->flags_ = (FlagType)rhs;
+			this->flags_ = static_cast<FlagType>(rhs);
 			return *this;
 		}
-		friend inline FFlags operator~(const FFlags& v) noexcept
+		friend FFlags operator~(const FFlags& v) noexcept
 		{
 			return FFlags(~v.flags_);
 		}
-		friend inline FFlags operator|(const FFlags& lhs, const FFlags& rhs) noexcept
+		friend FFlags operator|(const FFlags& lhs, const FFlags& rhs) noexcept
 		{
 			return FFlags(lhs.flags_ | rhs.flags_);
 		}
-		friend inline FFlags operator&(const FFlags& lhs, const FFlags& rhs) noexcept
+		friend FFlags operator&(const FFlags& lhs, const FFlags& rhs) noexcept
 		{
 			return FFlags(lhs.flags_ & rhs.flags_);
 		}
-		friend inline FFlags operator^(const FFlags& lhs, const FFlags& rhs) noexcept
+		friend FFlags operator^(const FFlags& lhs, const FFlags& rhs) noexcept
 		{
 			return FFlags(lhs.flags_ ^ rhs.flags_);
 		}
-		friend inline FFlags& operator|=(FFlags& lhs, const FFlags& rhs) noexcept
+		friend FFlags& operator|=(FFlags& lhs, const FFlags& rhs) noexcept
 		{
 			lhs.flags_ |= rhs.flags_;
 			return lhs;
 		}
-		friend inline FFlags& operator&=(FFlags& lhs, FFlags rhs) noexcept
+		friend FFlags& operator&=(FFlags& lhs, FFlags rhs) noexcept
 		{
 			lhs.flags_ &= rhs.flags_;
 			return lhs;
 		}
-		friend inline FFlags& operator^=(FFlags& lhs, FFlags rhs) noexcept
+		friend FFlags& operator^=(FFlags& lhs, FFlags rhs) noexcept
 		{
 			lhs.flags_ ^= rhs.flags_;
 			return lhs;

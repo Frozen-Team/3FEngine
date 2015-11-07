@@ -1,7 +1,6 @@
 #ifndef _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_WHEEL_LISTENER_HPP_
 #define _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_WHEEL_LISTENER_HPP_
 
-#include <utils/f_typedefs.hpp>
 #include <events/f_mouse_wheel_event.hpp>
 
 namespace fengine
@@ -9,7 +8,7 @@ namespace fengine
 	class FMouseWheelListener : public FEventListener
 	{
 	public:
-		FMouseWheelListener() : FEventListener(fevents::kMouseSource) {}
+		FMouseWheelListener() : FEventListener(fevents::EventSourceTypes(fevents::kMouseSource)) {}
 
 		virtual ~FMouseWheelListener() = default;
 

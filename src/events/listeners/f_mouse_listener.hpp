@@ -11,7 +11,7 @@ namespace fengine
 	class FMouseListener : public FEventListener
 	{
 	public:
-		FMouseListener() : FEventListener(fevents::kMouseSource) {}
+		FMouseListener() : FEventListener(fevents::EventSourceTypes(fevents::kMouseSource)) {}
 
 		virtual ~FMouseListener() = default;
 
