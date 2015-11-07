@@ -13,13 +13,28 @@ namespace fengine
 		if (ret)
 		{
 			// Ignore some events
-			if (event_.type == SDL_FINGERMOTION || event_.type == SDL_FINGERDOWN || event_.type == SDL_FINGERUP || event_.type == SDL_TEXTINPUT)
+			if (event_.type == SDL_FINGERMOTION || event_.type == SDL_FINGERDOWN || event_.type == SDL_FINGERUP || event_.type == SDL_TEXTINPUT || event_.type == SDL_TEXTEDITING)
 			{
 				event_type_union_.sdl_type = 0;
 			}
 			else 
 			{
-				event_type_union_.sdl_type = event_.type;
+				if (event_.type == SDL_WINDOWEVENT)
+				{
+					event_type_union_.sdl_type = event_.type + event_.window.event+ 1;
+				} else
+				{
+					event_type_union_.sdl_type = event_.type;
+				}
+				
+			}
+			//std::cout << event_.type << std::endl;
+
+			switch (event_.type)
+			{
+			case SDL_MOUSEWHEEL:
+				mouse_wheel_delta_ = event_.wheel.direction;
+				break;
 			}
 		}
 		return ret;

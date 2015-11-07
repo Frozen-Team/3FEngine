@@ -14,7 +14,8 @@ namespace fengine
 			kKeyboardSource = 1,
 			kMouseSource = 2,
 			kMouseWheelSource = 4,
-			kJoystickSource = 8
+			kWindowSource = 8,
+			kJoystickSource = 16
 		};
 
 		F_DECLARE_FLAGS_ENUM(EventSourceType, EventSourceTypes)
@@ -22,6 +23,22 @@ namespace fengine
 		enum EventType
 		{
 			kNoEvent = 0,
+
+			kSysWmEvent = 0x201,
+			kWindowShown,
+			kWindowHidden,
+			kWindowExposed,
+			kWindowMoved,
+			kWindowResized,
+			kWindowSizeChanged,
+			kWindowMinimized,
+			kWindowMaximized,
+			kWindowRestored,
+			kWindowEnter,
+			kWindowLeave,
+			kWindowFocusGained,
+			kWindowFocusLost,
+			kWindowClose,
 
 			kKeyPress = 0x300,
 			kKeyRelease,

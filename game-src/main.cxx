@@ -110,7 +110,6 @@ int main(int argc, char* args[])
 		SDL_GL_SwapWindow(window);
 
 		fengine::FEventsManager::GetInstance()->HandleEvents();
-		//SDL_GL_
 	}
 
 	SDL_JoystickClose(gGameController);

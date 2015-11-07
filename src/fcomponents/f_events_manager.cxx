@@ -5,6 +5,7 @@
 #include <events/listeners/f_keyboard_listener.hpp>
 #include <events/listeners/f_mouse_listener.hpp>
 #include <events/listeners/f_mouse_wheel_listener.hpp>
+#include <events/listeners/f_window_listener.hpp>
 
 namespace fengine
 {
@@ -47,6 +48,26 @@ namespace fengine
 			{
 				FMouseWheelEvent wheel_event(this->GetMouseWheelDelta(), this->GetMousePos(), this->GetMouseButtons(), this->GetKeyboardModifiers()); // TODO: Wheel orientation
 				DelegateEvent<FMouseWheelListener>(wheel_event, fevents::kMouseWheelSource);
+				break;
+			}
+			case fevents::kSysWmEvent:
+			case fevents::kWindowShown:
+			case fevents::kWindowHidden:
+			case fevents::kWindowExposed:
+			case fevents::kWindowMoved:
+			case fevents::kWindowResized:
+			case fevents::kWindowSizeChanged:
+			case fevents::kWindowMinimized:
+			case fevents::kWindowMaximized:
+			case fevents::kWindowRestored:
+			case fevents::kWindowEnter:
+			case fevents::kWindowLeave:
+			case fevents::kWindowFocusGained:
+			case fevents::kWindowFocusLost:
+			case fevents::kWindowClose:
+			{
+				FWindowEvent window_event(t, FPoint2i(), FPoint2i());
+				DelegateEvent<FWindowListener>(window_event, fevents::kWindowSource);
 				break;
 			}
 			case fevents::kJoyAxisMotion:
