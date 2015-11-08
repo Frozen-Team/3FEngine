@@ -39,7 +39,6 @@ set(ENTITYX_BUILD_SHARED OFF CACHE BOOL "Disable building shared version of Enti
 add_subdirectory(entityx)
 
 # Add Easyloggingpp
-message(${CMAKE_MODULE_PATH})
 add_subdirectory(easyloggingpp)
 
 # Add cppformat
