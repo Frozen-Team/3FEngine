@@ -12,9 +12,9 @@ namespace fengine{
 	{
 		this->target_ = target;
 
-		FPoint3f zaxis = (position_ - target_).normalized();
-		FPoint3f xaxis = (kUpVector.cross(zaxis)).normalized();
-		FPoint3f yaxis = zaxis.cross(xaxis);
+		auto zaxis = (position_ - target_).normalized();
+		auto xaxis = (kUpVector.cross(zaxis)).normalized();
+		auto yaxis = zaxis.cross(xaxis);
 		this->view_ = Eigen::MatrixXf::Zero(4, 4);
 		FMatrix3f m;
 		m.col(0) = zaxis;
@@ -30,8 +30,8 @@ namespace fengine{
 
 	void FCamera::SetPerspective(float fovY, float aspectRatio, float zNear, float zFar)
 	{
-		float range = zFar - zNear;
-		float invtan = 1.0f / tan(fovY * 0.5f);
+		auto range = zFar - zNear;
+		auto invtan = 1.0f / tan(fovY * 0.5f);
 		this->projection_ = Eigen::MatrixXf::Zero(4, 4);
 
 		projection_(0, 0) = invtan / aspectRatio;
@@ -58,6 +58,22 @@ namespace fengine{
 
 		updateViewProjectionMatrix();
 	}
+
+	void FCamera::set_aperture(const FPoint2f& apperture)
+	{ this->aperture_ = apperture; }
+
+	void FCamera::set_aperture(float width, float height)
+	{
+		this->aperture_[0] = width;
+		this->aperture_[1] = height;
+	}
+
+	void FCamera::set_film_aspect_ratio(float film_aspect_ratio)
+	{
+		this->film_aspect_ratio_ = film_aspect_ratio;
+		this->set_aperture(film_aspect_ratio * 50, this->aperture()[1]);
+	}
+
 	void FCamera::updateViewProjectionMatrix()
 	{
 		this->view_projection_ = view_ * projection_;

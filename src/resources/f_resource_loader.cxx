@@ -1,5 +1,6 @@
 #include "f_resource_loader.hpp"
 #include "resources/components_loader/fbx_mesh_loader.hpp"
+#include "components_loader/fbx_camera_loader.hpp"
 
 namespace fengine {
 	FShared<FScene> FResourceLoader::ImportScene(const std::string& fbx_file)
@@ -12,7 +13,7 @@ namespace fengine {
 		LOG_IF(!root_node, FATAL) << "Failed to retrieve a root node";
 
 		auto root_node_ch_count = root_node->GetChildCount();
-		for (int i = 0; i < root_node_ch_count; i++)
+		for (auto i = 0; i < root_node_ch_count; i++)
 		{
 			this->LoadComponent(res_scene, root_node->GetChild(i));
 		}
@@ -25,8 +26,8 @@ namespace fengine {
 		auto node_attr = node->GetNodeAttribute();
 		if (node_attr)
 		{
-			auto k_node_type = node_attr->GetAttributeType();
-			switch (k_node_type)
+			auto node_type = node_attr->GetAttributeType();
+			switch (node_type)
 			{
 			case FbxNodeAttribute::eMesh:
 			{
@@ -91,7 +92,12 @@ namespace fengine {
 	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadCamera";
-		return FShared<FCamera>();
+
+		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
+		
+		auto f_camera = std::make_shared<FCamera>(this->LoadPosition(node), fbx_camera->GetTarget());
+		
+		return f_camera;
 	}
 
 	FPoint3f FResourceLoader::LoadPosition(FbxNode * node)
