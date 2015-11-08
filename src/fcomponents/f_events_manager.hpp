@@ -7,8 +7,8 @@
 #include <utils/f_typedefs.hpp>
 #include <utils/f_singleton.hpp>
 
-#include <events/listeners/f_event_listener.hpp> 
-#include <events/f_sdl_events_dispatcher.hpp>
+#include <event_system/listeners/f_event_listener.hpp> 
+#include <event_system/f_sdl_events_dispatcher.hpp>
 
 
 namespace fengine
@@ -43,6 +43,19 @@ namespace fengine
 	private:
 
 		int GetNewEventId();
+
+		template<typename EventListener, typename EventType>
+		void DelegateEvent(EventType& event, fevents::EventSourceType source_type)
+		{
+			for (auto it = handlers_.begin(); it != handlers_.end() && !event.accepted(); ++it)
+			{
+				auto ptr = it->second.get();
+				if (ptr->IsListenableSource(source_type))
+				{
+					static_cast<EventListener*>(it->second.get())->CallEvent(event);
+				}
+			}
+		}
 
 	private:
 		std::atomic_int last_id_;

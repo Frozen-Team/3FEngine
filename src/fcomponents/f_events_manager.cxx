@@ -2,9 +2,10 @@
 
 #include <fcomponents/f_logger.hpp>
 
-#include <events/listeners/f_keyboard_listener.hpp>
-#include <events/listeners/f_mouse_listener.hpp>
-#include <events/listeners/f_mouse_wheel_listener.hpp>
+#include <event_system/listeners/f_keyboard_listener.hpp>
+#include <event_system/listeners/f_mouse_listener.hpp>
+#include <event_system/listeners/f_mouse_wheel_listener.hpp>
+#include <event_system/listeners/f_window_listener.hpp>
 
 namespace fengine
 {
@@ -18,52 +19,61 @@ namespace fengine
 		}
 		return -1;
 	}
-
+	// TODO: remove 'which' workaround
 	void FEventsManager::HandleEvents()
 	{
 		while (PollEvent())
 		{
 			auto t = this->GetEventType();
 
-
 			switch (t)
 			{
-			case kNoEvent: break;
-			case kKeyPress:
-			case kKeyRelease:
+			case fevents::kNoEvent: break;
+			case fevents::kKeyPress:
+			case fevents::kKeyRelease:
 			{
-				FKeyboardEvent keyboard_event(t, this->GetKeyboardScanCode(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !keyboard_event.accepted(); it++)
-				{
-					auto ptr = it->second.get();
-					if (ptr->source_types().IsSet(kKeyboardSource))
-					{
-						static_cast<FKeyboardListener*>(it->second.get())->CallEvent(keyboard_event);
-					}
-				}
+				FKeyboardEvent keyboard_event(t, 0, this->GetKeyboardScanCode(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
+				DelegateEvent<FKeyboardListener>(keyboard_event, fevents::kKeyboardSource);
 				break;
 			}
-			case kMouseMove:
-			case kMouseButtonPress:
-			case kMouseButtonRelease:
+			case fevents::kMouseMove:
+			case fevents::kMouseButtonPress:
+			case fevents::kMouseButtonRelease:
 			{
-				FMouseEvent mouse_event(t, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), KeyboardModifiers(this->GetKeyboardModifiers()));
-				for (auto& it = handlers_.begin(); it != handlers_.end() && !mouse_event.accepted(); it++)
-				{
-					auto ptr = it->second.get();
-					if (ptr->source_types().IsSet(kMouseSource))
-					{
-						static_cast<FMouseListener*>(it->second.get())->CallEvent(mouse_event);
-					}
-				}
+				FMouseEvent mouse_event(t, 0, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
+				DelegateEvent<FMouseListener>(mouse_event, fevents::kMouseSource);
 				break;
 			}
-			case kMouseWheel:
-				//DelegateEvent(t, kMouseWheelSource);
-				//break;
-			case kJoyAxisMotion:
+			case fevents::kMouseWheel:
+			{
+				FMouseWheelEvent wheel_event(0, this->GetMouseWheelDelta(), this->GetMousePos(), this->GetMouseButtons(), this->GetKeyboardModifiers()); // TODO: Wheel orientation
+				DelegateEvent<FMouseWheelListener>(wheel_event, fevents::kMouseWheelSource);
+				break;
+			}
+			case fevents::kSysWmEvent:
+			case fevents::kWindowShown:
+			case fevents::kWindowHidden:
+			case fevents::kWindowExposed:
+			case fevents::kWindowMoved:
+			case fevents::kWindowResized:
+			case fevents::kWindowSizeChanged:
+			case fevents::kWindowMinimized:
+			case fevents::kWindowMaximized:
+			case fevents::kWindowRestored:
+			case fevents::kWindowEnter:
+			case fevents::kWindowLeave:
+			case fevents::kWindowFocusGained:
+			case fevents::kWindowFocusLost:
+			case fevents::kWindowClose:
+				//SDL_JOYAXISMOTION
+			{
+				FWindowEvent window_event(t, 0, FPoint2i(), FPoint2i()); // TODO: window pos, window size
+				DelegateEvent<FWindowListener>(window_event, fevents::kWindowSource);
+				break;
+			}
+			case fevents::kJoyAxisMotion:
 				//DelegateEvent(t, kJoystickSource);
-				//break;
+				break;
 
 			default:
 				LOG(WARNING) << "Unhandled event. Type: " << t;
@@ -71,26 +81,6 @@ namespace fengine
 			}
 		}
 	}
-
-	//inline void FEventsManager::DelegateEvent(EventType type, EventSourceType source_type)
-	//{
-	//	switch (source_type)
-	//	{
-	//	case kNoSource:
-	//		break;
-	//	case kKeyboardSource:
-	//		//Exec<FKeyboardListener>
-	//		break;
-	//	case kMouseSource:
-	//		break;
-	//	case kMouseWheelSource:
-	//		break;
-	//	case kJoystickSource:
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
 
 	int FEventsManager::GetNewEventId()
 	{

@@ -1,9 +1,8 @@
-#ifndef _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_LISTENER_HPP_
-#define _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_LISTENER_HPP_
+#ifndef _3FENGINE_SRC_EVENT_SYSTEM_LISTENERS_F_MOUSE_LISTENER_HPP_
+#define _3FENGINE_SRC_EVENT_SYSTEM_LISTENERS_F_MOUSE_LISTENER_HPP_
 
-#include <utils/f_typedefs.hpp>
-#include <events/listeners/f_event_listener.hpp>
-#include <events/f_mouse_event.hpp>
+#include <event_system/listeners/f_event_listener.hpp>
+#include <event_system/events/f_mouse_event.hpp>
 
 #include <fcomponents/f_events_manager.hpp>
 
@@ -12,12 +11,9 @@ namespace fengine
 	class FMouseListener : public FEventListener
 	{
 	public:
-		FMouseListener() : FEventListener(kMouseSource) {}
+		FMouseListener() : FEventListener(fevents::EventSourceTypes(fevents::kMouseSource)) {}
 
 		virtual ~FMouseListener() = default;
-
-	private:
-		int k;
 
 	protected:
 		friend class FEventsManager;
@@ -28,18 +24,17 @@ namespace fengine
 
 		virtual void OnMouseButtonReleased(FMouseEvent& e) {}
 
-	private:
-		inline void CallEvent(FMouseEvent& e)
+		virtual void CallEvent(FMouseEvent& e)
 		{
 			switch (e.type())
 			{
-			case kMouseMove:
+			case fevents::kMouseMove:
 				OnMouseMove(e);
 				break;
-			case kMouseButtonPress:
+			case fevents::kMouseButtonPress:
 				OnMouseButtonPressed(e);
 				break;
-			case kMouseButtonRelease:
+			case fevents::kMouseButtonRelease:
 				OnMouseButtonReleased(e);
 				break;
 			default:
@@ -49,4 +44,4 @@ namespace fengine
 	};
 }
 
-#endif // _3FENGINE_SRC_EVENTS_LISTENERS_F_MOUSE_LISTENER_HPP_
+#endif // _3FENGINE_SRC_EVENT_SYSTEM_LISTENERS_F_MOUSE_LISTENER_HPP_

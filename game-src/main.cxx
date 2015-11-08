@@ -19,47 +19,6 @@ const int SCREEN_HEIGHT = 480;
 
 namespace FE = fengine;
 
-#include <utils/f_flags.hpp>
-
-#include <events/listeners/f_keyboard_listener.hpp>
-#include <events/listeners/f_mouse_listener.hpp>
-
-class KeyboardEventsHandler : public fengine::FKeyboardListener
-{
-public:
-	virtual ~KeyboardEventsHandler() { std::cout << "dtor" << std::endl; }
-protected:
-	virtual void OnKeyPressed(fengine::FKeyboardEvent& e) override
-	{
-		std::cout << "OnKeyPressed() Key:" << e.key() << std::endl;
-	}
-
-	virtual void OnKeyReleased(fengine::FKeyboardEvent& e) override
-	{
-		std::cout << "OnKeyReleased() Key:" << e.key() << std::endl;
-	}
-};
-
-class MouseEventListener : public fengine::FMouseListener
-{
-protected:
-	virtual void OnMouseMove(fengine::FMouseEvent& e) override
-	{
-		std::cout << "OnMouseMove() Pos:" << e.pos().x() << std::endl;
-	}
-
-	virtual void OnMouseButtonPressed(fengine::FMouseEvent& e) override
-	{
-		std::cout << "OnMouseButtonPressed() Pos:" << e.pos().x() << ", " << e.pos().y() << std::endl;
-	}
-
-	virtual void OnMouseButtonReleased(fengine::FMouseEvent& e) override
-	{
-		std::cout << "OnMouseButtonReleased() Pos:" << e.pos().x() << ", " << e.pos().y() << std::endl;
-	}
-};
-
-
 int main(int argc, char* args[])
 {
 	FE::FResourceLoader resource_loader;
@@ -73,10 +32,6 @@ int main(int argc, char* args[])
 
 	system("pause");
 	auto engine = fengine::Engine::GetInstance();
-	
-	fengine::FEventsManager::GetInstance()->Register<KeyboardEventsHandler>();
-	fengine::FEventsManager::GetInstance()->Register<MouseEventListener>();
-	
 
 	FE::FJson j;
 
@@ -97,15 +52,6 @@ int main(int argc, char* args[])
 
 	std::cout << l.GetInt() << std::endl;
 
-
-
-
-
-
-
-
-	
-
 	fengine::FSettings s;
 	s.LoadDefaultSettings();
 	std::cout << s.Get<int>(fengine::FSettings::SettingsNames::WindowHeight) << std::endl;
@@ -117,10 +63,26 @@ int main(int argc, char* args[])
 	std::cout << s.Get<float>("param1");
 
 	system("pause");
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 		return -1;
+	}
+
+	SDL_Joystick* gGameController = nullptr;
+	//Check for joysticks
+	if (SDL_NumJoysticks() < 1)
+	{
+		printf("Warning: No joysticks connected!\n");
+	}
+	else
+	{
+		//Load joystick
+		gGameController = SDL_JoystickOpen(0);
+		if (gGameController == NULL)
+		{
+			printf("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+		}
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -160,8 +122,9 @@ int main(int argc, char* args[])
 		SDL_GL_SwapWindow(window);
 
 		fengine::FEventsManager::GetInstance()->HandleEvents();
-		//SDL_GL_
 	}
+
+	SDL_JoystickClose(gGameController);
 
 	SDL_DestroyWindow(window);
 
@@ -171,7 +134,3 @@ int main(int argc, char* args[])
 
 	return 0;
 }
-
-//int main(int argc, char* args[]) {
-//	return 0;
-//}
