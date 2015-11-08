@@ -91,12 +91,12 @@ namespace fengine {
 
 	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node)
 	{
-		LOG_IF(!node, FATAL) << "nullptr node passed to LoadCamera";
+		LOG_IF(!node, FATAL) << "Invalid node passed to LoadCamera";
 
 		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
-		
 		auto f_camera = std::make_shared<FCamera>(this->LoadPosition(node), fbx_camera->GetTarget());
-		
+		f_camera->set_aperture(fbx_camera->GetApperture());
+
 		return f_camera;
 	}
 
@@ -104,8 +104,8 @@ namespace fengine {
 	{
 		auto position = node->LclTranslation.Get();
 		return FPoint3f(
-			static_cast<float>(position[0]), 
-			static_cast<float>(position[1]), 
+			static_cast<float>(position[0]),
+			static_cast<float>(position[1]),
 			static_cast<float>(position[2])
 			);
 	}

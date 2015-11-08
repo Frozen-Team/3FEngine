@@ -10,7 +10,9 @@ namespace fengine
 	{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FbxCameraLoader)
-	
+
+		FPoint3f GetTarget(const FbxTime & 	pTime = FBXSDK_TIME_ZERO) const;
+		FPoint2f GetApperture() const;
 	};
 }
 
