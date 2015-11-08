@@ -11,8 +11,8 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FMesh)
 
-		FMesh(const FPoint3f& position);
-		const FPoint3f& position() { return position_; }
+		explicit FMesh(const FPoint3f& position);
+		const FPoint3f& position() const noexcept { return position_; }
 		const FShared<FGeometry> GetGeometry(float distance) const;
 
 		void AddLod(const FMeshLod& mesh_lod);
