@@ -3,10 +3,20 @@
 
 namespace fengine{
 	const FPoint3f FCamera::kUpVector = { 0.0f, 1.0f, 0.0f };
-
-	FCamera::FCamera(const FPoint3f & pos, const FPoint3f & targ) : position_(pos) 
+	
+	FCamera::FCamera() : position_(0, 0 ,0), target_(0, 0, 0), aperture_(0, 0), film_aspect_ratio_(0), focal_length_(0), 
+		aspect_ratio_(0), znear_(0), zfar_(0), fovy_(0)
 	{
+	}
+
+	FCamera::FCamera(const FPoint3f& pos, const FPoint3f& targ, const FPoint2f& aperture_, 
+		float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy)
+		: position_(pos), aperture_(aperture_), film_aspect_ratio_(film_aspect_ratio), focal_length_(focal_length),
+		aspect_ratio_(aspect_ratio), znear_(znear), zfar_(zfar)
+	{
+		this->set_fovy(fovy);
 		this->LookAt(targ);
+		this->UpdatePerspective();
 	}
 
 	void FCamera::LookAt(const FPoint3f & target)
@@ -45,16 +55,16 @@ namespace fengine{
 		updateViewProjectionMatrix();
 	}
 
-	void FCamera::UpdateOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
+	void FCamera::UpdateOrtho(float left, float right, float bottom, float top)
 	{
 		this->projection_ = Eigen::MatrixXf::Zero(4, 4);
 
 		projection_(0, 0) = 2.0f / (right - left);
 		projection_(1, 1) = 2.0f / (top - bottom);
-		projection_(2, 2) = -2.0f / (zFar - zNear);
+		projection_(2, 2) = -2.0f / (zfar_ - znear_);
 		projection_(3, 0) = -(right + left) / (right - left);
 		projection_(3, 1) = -(top + bottom) / (top - bottom);
-		projection_(3, 2) = -(zFar + zNear) / (zFar - zNear);
+		projection_(3, 2) = -(zfar_ + znear_) / (zfar_ - znear_);
 		projection_(3, 3) = 1.0f;
 
 		updateViewProjectionMatrix();
@@ -74,7 +84,6 @@ namespace fengine{
 	void FCamera::set_film_aspect_ratio(float film_aspect_ratio)
 	{
 		this->film_aspect_ratio_ = film_aspect_ratio;
-		//this->set_aperture(film_aspect_ratio * 50, this->aperture()[1]);
 	}
 
 	void FCamera::set_focal_length(float focal_length)
@@ -92,15 +101,11 @@ namespace fengine{
 		this->zfar_ = zfar;
 	}
 
-	void FCamera::set_fovy_d(float degrees)
+	void FCamera::set_fovy(const FAngle & angle)
 	{
-		this->fovy_ = futils::DegreesToRadians(degrees);
+		this->fovy_ = angle.radians();
 	}
 
-	void FCamera::set_fovy_r(float radians)
-	{
-		this->fovy_ = radians;
-	}
 
 	void FCamera::updateViewProjectionMatrix()
 	{

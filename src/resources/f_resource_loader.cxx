@@ -1,6 +1,7 @@
 #include "f_resource_loader.hpp"
 #include "resources/components_loader/fbx_mesh_loader.hpp"
 #include "components_loader/fbx_camera_loader.hpp"
+#include <utils/f_angle.hpp>
 
 namespace fengine {
 	FShared<FScene> FResourceLoader::ImportScene(const std::string& fbx_file)
@@ -62,6 +63,12 @@ namespace fengine {
 			default: break;
 			}
 		}
+		auto node_ch_count = node->GetChildCount();
+		for (auto i = 0; i < node_ch_count; i++)
+		{
+			this->LoadComponent(scene, node->GetChild(i));
+		}
+
 	}
 
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node) const
@@ -89,13 +96,22 @@ namespace fengine {
 			fbx_mesh->LoadUvs()));
 	}
 
-	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node)
+	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node) const
 	{
 		LOG_IF(!node, FATAL) << "Invalid node passed to LoadCamera";
 
 		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
-		auto f_camera = std::make_shared<FCamera>(this->LoadPosition(node), fbx_camera->GetTarget());
-		f_camera->set_aperture(fbx_camera->GetApperture());
+		auto f_camera = std::make_shared<FCamera>(
+			this->LoadPosition(node),
+			fbx_camera->GetTarget(),
+			fbx_camera->GetApperture(),
+			static_cast<float>(fbx_camera->FilmAspectRatio.Get()),
+			static_cast<float>(fbx_camera->FocalLength.Get()),
+			0,//TODO: get aspect ratio
+			static_cast<float>(fbx_camera->NearPlane.Get()),
+			static_cast<float>(fbx_camera->FarPlane.Get()),
+			FAngle::Degrees(static_cast<float>(fbx_camera->FieldOfViewY.Get()))
+			);
 
 		return f_camera;
 	}
