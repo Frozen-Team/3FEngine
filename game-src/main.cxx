@@ -12,6 +12,8 @@
 #include "utils\f_json.hpp"
 #include "scene/camera/f_camera.hpp"
 
+#include "resources/f_resource_loader.hpp"
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
@@ -19,6 +21,16 @@ namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
+	FE::FResourceLoader resource_loader;
+	std::string file_path = "E:/test1.fbx";
+
+
+	resource_loader.ImportScene(file_path);
+
+
+
+
+	system("pause");
 	auto engine = fengine::Engine::GetInstance();
 
 	//SDL_Joystick* gGameController = nullptr;

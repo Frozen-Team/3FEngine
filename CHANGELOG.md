@@ -1,3 +1,9 @@
+### 09.11.2015
+OlehGol260
+
+ - Add functionality for camera loading
+ - Start working on lod group
+
 ### 03.11.2015
 OlehGol260
 

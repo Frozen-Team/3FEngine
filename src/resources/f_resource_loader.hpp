@@ -27,9 +27,9 @@ namespace fengine {
 		void LoadComponent(FShared<FScene>& scene, FbxNode* node);
 
 	private:
-		FShared<FMesh> LoadLodGroup(FbxNode* node);
+		FShared<FMesh> LoadLodGroup(FbxNode* node) const;
 		FMeshLod LoadLod(FbxNode* node, float threshold) const;
-		FShared<FCamera> LoadCamera(FbxNode* node);
+		FShared<FCamera> LoadCamera(FbxNode* node) const;
 		FShared<FMesh> LoadMesh(FbxNode* node) const;
 		static FPoint3f LoadPosition(FbxNode* node);
 	};
