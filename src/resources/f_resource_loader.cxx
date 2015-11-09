@@ -22,7 +22,7 @@ namespace fengine {
 
 		return res_scene;
 	}
-	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FbxNode * node) const
+	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FbxNode * node)
 	{
 		LOG_IF(!node, FATAL) << "Passed invalid scene";
 		auto node_attr = node->GetNodeAttribute();
@@ -32,10 +32,8 @@ namespace fengine {
 			switch (node_type)
 			{
 			case FbxNodeAttribute::eMesh:
-			{
 				scene->Add(this->LoadMesh(node));
 				break;
-			}
 			case FbxNodeAttribute::eLODGroup:
 				scene->Add(this->LoadLodGroup(node));
 				return; // workaround for now

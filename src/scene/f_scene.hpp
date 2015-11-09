@@ -5,7 +5,7 @@
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh.hpp"
 #include "scene/camera/f_camera.hpp"
-#include "scene/f_scene_node.hpp"
+#include "scene/scene_node/f_scene_node.hpp"
 
 namespace fengine {
 	class FScene{

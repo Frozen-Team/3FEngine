@@ -2,7 +2,7 @@
 #define _3FENGINE_SRC_SCENE_CAMERA_F_CAMERA_HPP_
 
 #include <utils/f_typedefs.hpp>
-#include <scene/f_scene_node.hpp>
+#include <scene/scene_node/f_scene_node.hpp>
 #include <utils/f_angle.hpp>
 
 namespace fengine {

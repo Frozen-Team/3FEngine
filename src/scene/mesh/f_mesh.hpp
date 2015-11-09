@@ -3,7 +3,7 @@
 
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh_lod.hpp"
-#include "scene/f_entity.hpp"
+#include "scene/entity/f_entity.hpp"
 
 namespace fengine {
 	class FMesh 
