@@ -21,7 +21,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "Force shared crt")
 set(BUILD_TESTING OFF CACHE BOOL "Don't build tests")
 
 # Add SDL2
-set(SDL_DIRECTX OFF CACHE BOOL "Don't use DirectX")
+if(WIN32)
+set(SDL_DIRECTX ON CACHE BOOL "Don't use DirectX")
+endif()
 set(SDL_RENDER_D3D OFF CACHE BOOL "Don't use DirectX render")
 set(SDL_SHARED OFF CACHE BOOL "Don't build shared library")
 add_subdirectory(sdl)
@@ -56,5 +58,4 @@ add_subdirectory(eigen/Eigen)
 add_subdirectory(gli)
 
 # Add GLEW
-
 add_subdirectory(glew/build/cmake)
