@@ -4,15 +4,18 @@
   - [X] Add FLogger class.
   - [X] Make better a loggers.cfg file.
 - [ ] Scene loader.
-  - [ ] Scene, meshes, lods, nodes, entities.
-  - [ ] FBX files loader.
-  - [ ] fseq file writer.
-  - [ ] fseq file reader.
-  - [ ] fbx2fseq converter.
+  - [X] Meshes.
+  - [X] Lod groups.
+  - [X] Textures.
+  - [ ] Nodes.
+  - [ ] Entities?
+  - [ ] Scene.
 - [X] Configure RapidJSON and make json settings loader.
-- [ ] Make OpenGL helper class for retrieving harware-specific properties.
+- [X] Event system. 
+- [X] Make OpenGL helper class for retrieving harware-specific properties.
 - [ ] Make classes for windows, I\O and OpenGL management.
-- [ ] Make Camera class.
+- [X] Make Camera class.
+- [ ] Global refactor. Prepare to rendering.
 - [ ] Render simple triangle.
 - [ ] Make ability to move around triangle using mouse, keyboard.
 - [ ] Texturing.
@@ -24,3 +27,6 @@
 - [ ] Shadows.
 - [ ] Shadows optimizations.
 - [ ] Visual effects.
+- [ ] fseq file writer.
+- [ ] fseq file reader.
+- [ ] fbx2fseq converter.
