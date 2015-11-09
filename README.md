@@ -29,7 +29,8 @@ To set variable in Windows type in cmd:
     setx FBXSDK_ROOT "Your_FBX_SDK_path_here"
 5) Download [boost](http://sourceforge.net/projects/boost/files/boost-binaries/1.59.0/). **CAUTION** Use link for the latest version of msvc.  
 6) Repeat steps 3 and 4. Use Boost_ROOT evironment variable.  
-7) For Windows platform it is needed to get [Windows SDK](www.google.com/search?q=windows+sdk). And set DXSDK_DIR variable point to root directory of DirectX. (Repeat steps 3 and 4; use DXSDK_DIR evironment variable)
+7) For Windows platform it is needed to get Windows SDK. Google Windows SDK for your particular windows platform([Windows SDK for Windows10](https://dev.windows.com/en-us/downloads/windows-10-sdk))    
+7a) Set DXSDK_DIR variable point to root directory of DirectX(the directory where you install the Windows SDK. By Default for Windows10: C:\Program Files (x86)\Windows Kits\10).   
 8) Run $ENGINE_ROOT/3dparty/make_all.bat to build 3dparty libraries. You can do this step manually (step 8a).  
 x86-64 architecture set by default. In order to change architecture change generator type in make_all.bat to either "Visual Studio 14 2015" or "Visual Studio 14 2015 Win64" for x86 or x86-64 respectively.  
 8a) Go to 3dparty directory and generate solution using CMake. Build a whole solution in both Debug and Release configurations. After each build make the install step (build INSTALL project).  
