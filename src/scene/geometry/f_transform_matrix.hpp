@@ -14,6 +14,12 @@ namespace fengine
 	class FTransformationMatrix
 	{
 	public:
+		enum Attribute 
+		{
+			kTransition,
+			kRotation,
+			kScale
+		};
 		FTransformationMatrix();
 		FTransformationMatrix(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		virtual ~FTransformationMatrix() = default;
@@ -28,6 +34,7 @@ namespace fengine
 		void Reset();
 		FMatrix4f& value() { return this->value_; }
 	private:
+		
 		void SetPointRow(int row, const FPoint3f& row_to_set);
 		FPoint3f GetPointRow(int row) const;
 	private:

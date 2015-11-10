@@ -17,28 +17,29 @@ namespace fengine
 
 	void FTransformationMatrix::SetTransition(const FPoint3f & transition)
 	{
-		this->SetPointRow(0, transition);
+		this->SetPointRow(Attribute::kTransition, transition);
 	}
 	void FTransformationMatrix::SetRotation(const FPoint3f & rotation)
 	{
-		this->SetPointRow(1, rotation);
-	}
-	FPoint3f FTransformationMatrix::GetTransition() const
-	{
-		return this->GetPointRow(0);
-	}
-	FPoint3f FTransformationMatrix::GetScale() const
-	{
-		return this->GetPointRow(2);
-	}
-	FPoint3f FTransformationMatrix::GetRotation() const
-	{
-		return this->GetPointRow(1);
+		this->SetPointRow(Attribute::kRotation, rotation);
 	}
 	void FTransformationMatrix::SetScale(const FPoint3f & scale)
 	{
-		this->SetPointRow(2, scale);
+		this->SetPointRow(Attribute::kScale, scale);
 	}
+	FPoint3f FTransformationMatrix::GetTransition() const
+	{
+		return this->GetPointRow(Attribute::kTransition);
+	}	
+	FPoint3f FTransformationMatrix::GetRotation() const
+	{
+		return this->GetPointRow(Attribute::kRotation);
+	}
+	FPoint3f FTransformationMatrix::GetScale() const
+	{
+		return this->GetPointRow(Attribute::kScale);
+	}
+	
 	void FTransformationMatrix::Reset()
 	{
 		this->value_ = Eigen::MatrixXf::Zero(4, 4);
@@ -48,21 +49,13 @@ namespace fengine
 	void FTransformationMatrix::SetPointRow(int row, const FPoint3f& row_to_set)
 	{
 		LOG_IF(row < 0, FATAL) << "Index of row must be greater than 0";
-		for (int i = 0; i < 3; i++) 
-		{
-			this->value_(row, i) = row_to_set(i);
-		}
+		this->value_.block<1, 3>(row, 0) = row_to_set;
 	}
 
 	FPoint3f FTransformationMatrix::GetPointRow(int row) const
 	{
 		LOG_IF(row < 0, FATAL) << "Index of row must be greater than 0";
-		FPoint3f result;
-		for (int i = 0; i < 3; i++)
-		{
-			result(i) = this->value_(row, i);
-		}
-		return result;
+		return this->value_.block<1, 3>(row, 0);
 	}
 
 }
