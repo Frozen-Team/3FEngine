@@ -2,11 +2,11 @@
 #define _3FENGINE_SRC_SCENE_CAMERA_F_CAMERA_HPP_
 
 #include <utils/f_typedefs.hpp>
-#include <scene/scene_node/f_scene_node.hpp>
+#include <scene/geometry/f_transform_matrix.hpp>
 #include <utils/f_angle.hpp>
 
 namespace fengine {
-	class FCamera : public FSceneNode 
+	class FCamera : public FTransformationMatrix
 	{
 	public:
 		FCamera() ;
@@ -42,7 +42,6 @@ namespace fengine {
 		FMatrix4f projection_;
 		FMatrix4f view_projection_;
 
-		FPoint3f position_;
 		FPoint3f target_;
 		FPoint2f aperture_; // in meters
 

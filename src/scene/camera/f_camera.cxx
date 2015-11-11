@@ -4,16 +4,17 @@
 namespace fengine{
 	const FPoint3f FCamera::kUpVector = { 0.0f, 1.0f, 0.0f };
 	
-	FCamera::FCamera() : position_(0, 0 ,0), target_(0, 0, 0), aperture_(0, 0), film_aspect_ratio_(0), focal_length_(0), 
+	FCamera::FCamera() : target_(0, 0, 0), aperture_(0, 0), film_aspect_ratio_(0), focal_length_(0), 
 		aspect_ratio_(0), znear_(0), zfar_(0), fovy_(0)
 	{
 	}
 
 	FCamera::FCamera(const FPoint3f& pos, const FPoint3f& targ, const FPoint2f& aperture_, 
 		float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy)
-		: position_(pos), aperture_(aperture_), film_aspect_ratio_(film_aspect_ratio), focal_length_(focal_length),
+		: aperture_(aperture_), film_aspect_ratio_(film_aspect_ratio), focal_length_(focal_length),
 		aspect_ratio_(aspect_ratio), znear_(znear), zfar_(zfar)
 	{
+		this->SetTransition(pos);
 		this->set_fovy(fovy);
 		this->LookAt(targ);
 		this->UpdatePerspective();
@@ -22,8 +23,8 @@ namespace fengine{
 	void FCamera::LookAt(const FPoint3f & target)
 	{
 		this->target_ = target;
-
-		auto zaxis = (position_ - target_).normalized();
+		auto position = this->GetTransition();
+		auto zaxis = (position - target_).normalized();
 		auto xaxis = (kUpVector.cross(zaxis)).normalized();
 		auto yaxis = zaxis.cross(xaxis);
 		this->view_ = Eigen::MatrixXf::Zero(4, 4);
@@ -33,9 +34,9 @@ namespace fengine{
 		m.col(2) = yaxis;
 		this->view_.topLeftCorner(3, 3) = m;
 		this->view_.col(3) = FPoint4f( 0.0f, 0.0f, 0.0f, 1.0f);
-		this->view_(3, 0) = -xaxis.dot(position_);
-		this->view_(3, 1) = -yaxis.dot(position_);
-		this->view_(3, 2) = -zaxis.dot(position_);
+		this->view_(3, 0) = -xaxis.dot(position);
+		this->view_(3, 1) = -yaxis.dot(position);
+		this->view_(3, 2) = -zaxis.dot(position);
 		this->view_(3, 3) = 1.0f;
 	}
 
@@ -77,8 +78,7 @@ namespace fengine{
 
 	void FCamera::set_aperture(float width, float height)
 	{
-		this->aperture_[0] = width;
-		this->aperture_[1] = height;
+		this->aperture_ = { width, height };
 	}
 
 	void FCamera::set_film_aspect_ratio(float film_aspect_ratio)
