@@ -4,26 +4,22 @@
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh_lod.hpp"
 #include "scene/entity/f_entity.hpp"
+#include "scene/geometry/f_transform_matrix.hpp"
 
 namespace fengine {
-	class FMesh 
+	class FMesh : public FTransformationMatrix
 	{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FMesh)
 
-		explicit FMesh(const FPoint3f& position);
-		const FPoint3f& position() const noexcept { return position_; }
-		const FShared<FGeometry> GetGeometry(float distance) const;
+		explicit FMesh(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+		FShared<FGeometry> GetGeometry(float distance) const;
 
 		void AddLod(const FMeshLod& mesh_lod);
 		void AddLods(const FVector<FMeshLod>& lods);
 		void AddLod(float threshold, FShared<FGeometry> geometry);
 
-		void set_position(const FPoint3f& position);
 	private:
-
-	private:
-		FPoint3f position_;
 		FSortedSet<FMeshLod, std::less<FMeshLod> > lods_;
 	};
 }

@@ -23,7 +23,7 @@ public:
 	static FbxManager* fbx_manager() { return fbx_manager_; }
 	static FbxIOSettings* fbx_io_settings() { return fbx_io_settings_; }
 	static FbxImporter* fbx_importer() { return fbx_importer_; }
-	FbxSceneLoader* fbx_scene() { return fbx_scene_; }
+	FbxSceneLoader* fbx_scene() const { return fbx_scene_; }
 private:
 
 private:

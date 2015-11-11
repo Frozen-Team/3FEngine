@@ -13,6 +13,8 @@
 #include "scene/camera/f_camera.hpp"
 
 #include "resources/f_resource_loader.hpp"
+#include "scene/geometry/f_transform_matrix.hpp"
+#include "utils/f_typedefs.hpp"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -21,7 +23,25 @@ namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
-	auto engine = fengine::Engine::GetInstance();	
+	FE::FResourceLoader resource_loader;
+	std::string file_path = "E:/test1.fbx";
+
+	FE::FTransformationMatrix matr;
+	matr.SetTransition(FE::FPoint3f(1, 2, 3));
+	matr.SetRotation(FE::FPoint3f(4, 5, 6));
+	matr.SetScale(FE::FPoint3f(7, 8, 9));
+
+	std::cout << matr.value() << std::endl;
+
+	std::cout << matr.GetScale() << std::endl;
+
+	resource_loader.ImportScene(file_path);
+
+
+
+
+	system("pause");
+	auto engine = fengine::Engine::GetInstance();
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);

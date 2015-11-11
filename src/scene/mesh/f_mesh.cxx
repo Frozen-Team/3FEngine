@@ -4,9 +4,12 @@
 #include "fcomponents/f_logger.hpp"
 
 namespace fengine {
-	FMesh::FMesh(const FPoint3f& position) : position_(position){}
+	FMesh::FMesh(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
+		FTransformationMatrix(transition, rotation, scale)
+	{
+	}
 
-	const FShared<FGeometry> FMesh::GetGeometry(float distance) const
+	FShared<FGeometry> FMesh::GetGeometry(float distance) const
 	{
 		LOG_IF(lods_.size() == 0, FATAL) << "There is no LOD for current mesh";
 		auto& found = std::find_if(lods_.cbegin(), lods_.cend(), [distance](const FMeshLod& lod) { return lod.IsVisible(distance); });
@@ -28,6 +31,7 @@ namespace fengine {
 
 	void FMesh::AddLods(const FVector<FMeshLod>& lods)
 	{
+		this->lods_.reserve(this->lods_.size() + lods.size());
 		for (const auto& lod : lods)
 		{
 			this->AddLod(lod);
@@ -37,11 +41,6 @@ namespace fengine {
 	void FMesh::AddLod(float threshold, FShared<FGeometry> geometry)
 	{	
 		this->AddLod(FMeshLod(threshold, geometry));
-	}
-
-	void FMesh::set_position(const FPoint3f & position)
-	{
-		this->position_ = position;
 	}
 }
 
