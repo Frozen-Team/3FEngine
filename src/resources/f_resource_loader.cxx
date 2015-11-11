@@ -22,7 +22,7 @@ namespace fengine {
 
 		return res_scene;
 	}
-	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FbxNode * node)
+	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FbxNode * node) const
 	{
 		LOG_IF(!node, FATAL) << "Passed invalid scene";
 		auto node_attr = node->GetNodeAttribute();
@@ -73,7 +73,11 @@ namespace fengine {
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node) const
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
-		auto mesh = std::make_shared<FMesh>(this->LoadPosition(node));
+		auto mesh = std::make_shared<FMesh>(
+			LoadTransition(node),
+			LoadRotation(node),
+			LoadScale(node)
+		);
 		mesh->AddLod(this->LoadLod(node, FLT_MAX));
 		return mesh;
 	}
@@ -91,7 +95,11 @@ namespace fengine {
 			auto threshold = fbx_lod_group->RetrieveThreshold(i);
 			lods.push_back(this->LoadLod(node, threshold));
 		}
-		auto mesh = std::make_shared<FMesh>(this->LoadPosition(node));
+		auto mesh = std::make_shared<FMesh>(
+				LoadTransition(node),
+				LoadRotation(node),
+				LoadScale(node)
+			);
 		mesh->AddLods(lods);
 		return mesh;
 	}
@@ -111,28 +119,37 @@ namespace fengine {
 		LOG_IF(!node, FATAL) << "Invalid node passed to LoadCamera";
 
 		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
-		auto f_camera = std::make_shared<FCamera>(
-			this->LoadPosition(node),
+
+		return std::make_shared<FCamera>(
+			LoadTransition(node),
+			LoadRotation(node),
+			LoadScale(node),
 			fbx_camera->GetTarget(),
 			fbx_camera->GetApperture(),
 			static_cast<float>(fbx_camera->FilmAspectRatio.Get()),
 			static_cast<float>(fbx_camera->FocalLength.Get()),
-			0,//TODO: get aspect ratio
+			0.0f,//TODO: get aspect ratio
 			static_cast<float>(fbx_camera->NearPlane.Get()),
 			static_cast<float>(fbx_camera->FarPlane.Get()),
 			FAngle::Degrees(static_cast<float>(fbx_camera->FieldOfViewY.Get()))
-			);
-
-		return f_camera;
+			);;
 	}
 
-	FPoint3f FResourceLoader::LoadPosition(FbxNode * node)
+	FPoint3f FResourceLoader::LoadTransition(FbxNode * node)
 	{
 		auto position = node->LclTranslation.Get();
-		return FPoint3f(
-			static_cast<float>(position[0]),
-			static_cast<float>(position[1]),
-			static_cast<float>(position[2])
-			);
+		return ToPoint3f(position);
+	}
+
+	FPoint3f FResourceLoader::LoadRotation(FbxNode* node)
+	{
+		auto rotation = node->LclRotation.Get();
+		return ToPoint3f(rotation);
+	}
+
+	FPoint3f FResourceLoader::LoadScale(FbxNode* node)
+	{
+		auto scale = node->LclScaling.Get();
+		return ToPoint3f(scale);
 	}
 }

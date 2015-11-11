@@ -9,9 +9,9 @@ namespace fengine {
 	class FCamera : public FTransformationMatrix
 	{
 	public:
-		FCamera() ;
+		FCamera();
 		//FCamera(const FPoint3f& pos, const FPoint3f& targ, float);
-		FCamera(const FPoint3f& pos, const FPoint3f& targ, const FPoint2f& aperture_, 
+		FCamera(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
 			float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy);
 		void LookAt(const FPoint3f& target);
 		void UpdatePerspective();

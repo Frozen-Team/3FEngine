@@ -4,9 +4,9 @@
 #include "fcomponents/f_logger.hpp"
 
 namespace fengine {
-	FMesh::FMesh(const FPoint3f& position)
+	FMesh::FMesh(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
+		FTransformationMatrix(transition, rotation, scale)
 	{
-		this->SetTransition(position);
 	}
 
 	FShared<FGeometry> FMesh::GetGeometry(float distance) const
@@ -31,6 +31,7 @@ namespace fengine {
 
 	void FMesh::AddLods(const FVector<FMeshLod>& lods)
 	{
+		this->lods_.reserve(this->lods_.size() + lods.size());
 		for (const auto& lod : lods)
 		{
 			this->AddLod(lod);

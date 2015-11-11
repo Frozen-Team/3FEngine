@@ -12,7 +12,7 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FMesh)
 
-		explicit FMesh(const FPoint3f& position);
+		explicit FMesh(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		FShared<FGeometry> GetGeometry(float distance) const;
 
 		void AddLod(const FMeshLod& mesh_lod);
