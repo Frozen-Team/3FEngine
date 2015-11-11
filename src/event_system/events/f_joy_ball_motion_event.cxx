@@ -2,7 +2,7 @@
 
 namespace fengine
 {
-	FBJoyBallMotionEvent::FBJoyBallMotionEvent(unsigned which, unsigned ball, const FPoint2i& delta)
+	FJoyBallMotionEvent::FJoyBallMotionEvent(unsigned which, unsigned ball, const FPoint2i& delta)
 		: FEvent(fevents::EventType::kJoyBallMotion, which), ball_(ball), delta_(delta)
 	{}
 }

@@ -51,8 +51,8 @@ namespace fengine
 			kJoyAxisMotion		= 0x600,
 			kJoyBallMotion,
 			kJoyHatMotion,
-			kJoyButtonDown,
-			kJoyButtonUp,
+			kJoyButtonPressed,
+			kJoyButtonReleased,
 			kJoyDeviceAdded,
 			kJoyDeviceRemoved,
 		};

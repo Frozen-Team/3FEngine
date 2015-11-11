@@ -7,6 +7,6 @@ namespace fengine
 	FJoyButtonEvent::FJoyButtonEvent(fevents::EventType type, unsigned which, unsigned button)
 		: FEvent(type, which), button_(button)
 	{
-		LOG_IF(type != fevents::kJoyButtonDown && type != fevents::kJoyButtonUp, FATAL) << "Invalid joystick button event type: " << type;
+		LOG_IF(type != fevents::kJoyButtonPressed && type != fevents::kJoyButtonReleased, FATAL) << "Invalid joystick button event type: " << type;
 	}
 }

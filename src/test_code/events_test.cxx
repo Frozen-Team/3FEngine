@@ -106,3 +106,39 @@ void main_app()
 	//fengine::FEventsManager::GetInstance()->Register<MouseEventListener>();
 	//fengine::FEventsManager::GetInstance()->Register<WindowEventListener>();
 };
+
+//FE::FJson j;
+//
+//j.LoadRaw("{\"kuku\": 80802, \"kaka\":{\"hi\": 123}}");
+//j.SaveFile("test.json");
+//
+//auto t = j.FindMember("kuku");
+//std::cout << t->value.GetInt() << std::endl;
+//
+//auto& val = j["kuku"];
+//std::cout << val.GetInt() << std::endl;
+//
+//val.SetInt(100500);
+//
+//std::cout << j["kuku"].GetInt() << std::endl;
+//
+//auto& l = j["kaka"]["hi"];
+//
+//std::cout << l.GetInt() << std::endl;
+//
+//fengine::FSettings s;
+//s.LoadDefaultSettings();
+//std::cout << s.Get<int>(fengine::FSettings::SettingsNames::WindowHeight) << std::endl;
+//std::cout << s.Get<int>(fengine::FSettings::SettingsNames::WindowWidth) << std::endl;
+//
+//s.Set<int>("param1", 5006600);
+//std::cout << s.Get<int>("param1");
+//s.Set<float>("param1", 1.2f);
+//std::cout << s.Get<float>("param1");
+//
+//system("pause");
+//if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
+//{
+//	printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+//	return -1;
+//}

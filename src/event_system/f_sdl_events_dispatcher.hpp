@@ -18,7 +18,7 @@ namespace fengine
 		bool PollEvent();
 
 		fevents::EventType GetEventType() const noexcept { return event_type_union_.type; }
-		// Unsafe direct conversion.
+		// TODO: Fix unsafe direct conversion.
 		fevents::KeyboardKey GetKeyboardScanCode() const { return static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode); }
 
 		int GetKeyboardSymbol() const { return event_.key.keysym.sym; }

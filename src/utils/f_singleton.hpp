@@ -19,7 +19,7 @@ namespace fengine
 			static FShared<T> GetInstance()
 			{
 				if (!instance) {
-					instance = FShared<T>(new T());
+					instance = std::make_shared<T>();
 				}
 				assert(instance && "Error creating instance.");
 				return instance;

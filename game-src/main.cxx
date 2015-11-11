@@ -21,34 +21,7 @@ namespace FE = fengine;
 
 int main(int argc, char* args[])
 {
-	FE::FResourceLoader resource_loader;
-	std::string file_path = "E:/test1.fbx";
-
-
-	resource_loader.ImportScene(file_path);
-
-
-
-
-	system("pause");
-	auto engine = fengine::Engine::GetInstance();
-
-	//SDL_Joystick* gGameController = nullptr;
-	////Check for joysticks
-	//if (SDL_NumJoysticks() < 1)
-	//{
-	//	printf("Warning: No joysticks connected!\n");
-	//}
-	//else
-	//{
-	//	//Load joystick
-	//	gGameController = SDL_JoystickOpen(0);
-	//	if (gGameController == NULL)
-	//	{
-	//		printf("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
-	//	}
-	//}
-	
+	auto engine = fengine::Engine::GetInstance();	
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
@@ -90,11 +63,8 @@ int main(int argc, char* args[])
 	}
 
 	//SDL_JoystickClose(gGameController);
-
 	SDL_DestroyWindow(window);
-
 	SDL_GL_DeleteContext(context);
-
 	SDL_Quit();
 
 	return 0;
