@@ -20,6 +20,7 @@ namespace fengine
 			kRotation,
 			kScale
 		};
+
 		FTransformationMatrix();
 		FTransformationMatrix(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		virtual ~FTransformationMatrix() = default;
@@ -31,6 +32,9 @@ namespace fengine
 		FPoint3f GetTransition() const;
 		FPoint3f GetScale() const;
 		FPoint3f GetRotation() const;
+		/*
+			Set each element to zero and the element in right bottom conner to 1.0f
+		*/
 		void Reset();
 		FMatrix4f& value() { return this->value_; }
 	private:
