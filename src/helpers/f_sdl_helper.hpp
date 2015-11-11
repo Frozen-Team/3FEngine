@@ -20,6 +20,10 @@ namespace fengine
 		static const FString& GetLastError() noexcept;
 
 	private:
+		friend class Engine;
+
+		static int Initialize();
+
 		static FString last_error_;
 	};
 }
