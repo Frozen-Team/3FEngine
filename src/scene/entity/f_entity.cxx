@@ -15,15 +15,16 @@ namespace fengine {
 		this->children_.push_back(child);
 	}
 
-	FShared<FEntity> FEntity::SerachInHierarchy(uint64_t id) const
+	//TODO: need tests
+	FShared<FEntity> FEntity::SearchInHierarchy(uint64_t id) const
 	{
 		auto result = this->GetChild(id);
 		if (result) { return result; }
-		for (auto it = this->cbegin(); it != this->cend(); ++it)
+		for (auto it = this->cbegin(); it != this->cend() || !result; ++it)
 		{
-			this->SerachInHierarchy(id);
+			result = this->SearchInHierarchy(id);
 		}
-		return nullptr;
+		return result;
 	}
 
 	FShared<FEntity> FEntity::GetChild(uint64_t id) const

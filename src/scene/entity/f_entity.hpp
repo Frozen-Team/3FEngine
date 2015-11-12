@@ -28,7 +28,8 @@ namespace fengine {
 		FEntity(uint64_t id, FEntityType type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		void AddChild(FShared<FEntity> child);
 
-		FShared<FEntity> GetChild(uint64_t id);
+		FShared<FEntity> SearchInHierarchy(uint64_t id) const;
+		FShared<FEntity> GetChild(uint64_t id) const;
 		bool HasParent() const;
 
 		void set_parent(FShared<FEntity> parent);
