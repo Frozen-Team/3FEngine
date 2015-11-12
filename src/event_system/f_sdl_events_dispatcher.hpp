@@ -5,6 +5,15 @@
 
 #include <utils/f_typedefs.hpp>
 #include <event_system/events/f_events_enums.hpp>
+#include <event_system/events/f_joy_axis_motion_event.hpp>
+#include <event_system/events/f_joy_ball_motion_event.hpp>
+#include <event_system/events/f_joy_button_event.hpp>
+#include <event_system/events/f_joy_device_event.hpp>
+#include <event_system/events/f_joy_hat_motion_event.hpp>
+#include <event_system/events/f_keyboard_event.hpp>
+#include <event_system/events/f_mouse_event.hpp>
+#include <event_system/events/f_mouse_wheel_event.hpp>
+#include <event_system/events/f_window_event.hpp>
 
 namespace fengine
 {
@@ -17,6 +26,7 @@ namespace fengine
 	protected:
 
 		bool PollEvent();
+
 
 		fevents::EventType GetEventType() const noexcept { return event_type_union_.type; }
 		// TODO: Fix unsafe direct conversion.
@@ -34,6 +44,24 @@ namespace fengine
 
 		int GetMouseWheelDelta() const noexcept { return mouse_wheel_delta_; }
 
+		FJoyAxisMotionEvent GetLastJoyAxisMotionEvent() const noexcept { return FJoyAxisMotionEvent(jame_.which, jame_.axis, jame_.value); }
+
+		FJoyBallMotionEvent GetLastJoyBallMotionEvent() const noexcept { return FJoyBallMotionEvent(jbme_.which, jbme_.ball, jbme_.delta); }
+
+		FJoyButtonEvent GetLastJoyButtonEvent() const noexcept { return FJoyButtonEvent(jbe_.type, jbe_.which, jbe_.button); }
+
+		FJoyDeviceEvent GetLastJoyDeviceEvent() const noexcept { return FJoyDeviceEvent(jde_.type, jde_.which); }
+
+		FJoyHatMotionEvent GetLastJoyHatMotionEvent() const noexcept { return FJoyHatMotionEvent(jhme_.which, jhme_.hat, jhme_.value); }
+
+		FKeyboardEvent GetLastKeyboardEvent() const noexcept { return FKeyboardEvent(ke_.type, ke_.which, ke_.key, ke_.modifiers); }
+		
+		FMouseEvent GetLastMouseEvent() const noexcept { return FMouseEvent(me_.type, me_.which, me_.pos, me_.button, me_.buttons, me_.modifiers); }
+
+		FMouseWheelEvent GetLastMouseWheelEvents() const noexcept { return FMouseWheelEvent(mwe_.delta, mwe_.which, mwe_.position, mwe_.buttons, mwe_.modifiers, mwe_.orientation); }
+
+		FWindowEvent GetLastWindowEvent() const noexcept { return FWindowEvent(we_.type, we_.which, we_.pos, we_.size); }
+
 	private:
 		static int JoystickDeviceEventsHandler(void* data, SDL_Event* event);
 
@@ -42,8 +70,77 @@ namespace fengine
 		static void CloseJoystick(unsigned which);
 
 		static FString GetJoystickGuid(unsigned which);
+		
+		struct
+		{
+			unsigned which;
+			unsigned axis;
+			int value;
+		} jame_; // LastJoyAxisMotionEvent
 
-	private:
+		struct
+		{
+			unsigned which;
+			unsigned ball;
+			FPoint2i delta;
+		} jbme_; // LastJoyAxisMotionEvent	
+
+		struct
+		{
+			fevents::EventType type;
+			unsigned which;
+			unsigned button;
+		} jbe_; // FJoyButtonEvent
+
+		struct
+		{
+			fevents::EventType type;
+			unsigned which;
+		} jde_; // FJoyDeviceEvent
+
+		struct
+		{
+			unsigned which;
+			unsigned hat;
+			int value;
+		} jhme_; // FJoyHatMotionEvent
+
+		struct
+		{
+			fevents::EventType type;
+			unsigned which;
+			fevents::KeyboardKey key;
+			fevents::KeyboardModifiers modifiers;
+		} ke_; // FKeyboardEvent
+
+		struct
+		{
+			fevents::EventType type;
+			unsigned which;
+			FPoint2i pos;
+			fevents::MouseButton button;
+			fevents::MouseButtons buttons;
+			fevents::KeyboardModifiers modifiers;
+		} me_; // FMouseEvent
+
+		struct
+		{
+			int delta;
+			unsigned which;
+			FPoint2i position;
+			fevents::MouseButtons buttons;
+			fevents::KeyboardModifiers modifiers;
+			fevents::WheelOrientation orientation;
+		} mwe_; // FMouseWheelEvent
+
+		struct
+		{
+			fevents::EventType type;
+			unsigned which;
+			FPoint2i pos;
+			FPoint2i size;
+		} we_; // FWindowEvent
+
 		static FMap<unsigned, SDL_Joystick*> joystick_handles_;
 
 		int mouse_wheel_delta_;

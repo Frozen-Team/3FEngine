@@ -8,6 +8,53 @@
 
 namespace fengine
 {
+//	struct
+//	{
+//		fevents::EventType type;
+//		unsigned which;
+//		FPoint2i pos;
+//		fevents::MouseButton button;
+//		fevents::MouseButtons buttons;
+//		fevents::KeyboardModifiers modifiers;
+//	} me_; // FMouseEvent
+//
+//	struct
+//	{
+//		int delta;
+//		unsigned which;
+//		FPoint2i position;
+//		fevents::MouseButtons buttons;
+//		fevents::KeyboardModifiers modifiers;
+//		fevents::WheelOrientation orientation;
+//	} mwe_; // FMouseWheelEvent
+
+	FSdlEventsDispatcher::FSdlEventsDispatcher() :
+		jame_({ 0, 0, 0 }), 
+		jbme_({ 0, 0,{ 0, 0 } }),
+		jbe_({ fevents::kNoEvent, 0, 0 }),
+		jde_({ fevents::kNoEvent, 0 }),
+		jhme_({ 0, 0, 0 }),
+		// TODO:
+		//ke_({ fevents::kNoEvent, 0, 0, 0 }),
+		//me_
+		//mwe_
+		we_({ fevents::kNoEvent, 0, {0, 0}, {0, 0}}),
+		mouse_wheel_delta_(0)
+	{
+		auto num_joys = SDL_NumJoysticks();
+		SDL_AddEventWatch(JoystickDeviceEventsHandler, nullptr);
+
+		for (auto i = 0; i < num_joys; ++i)
+		{
+			OpenJoystick(i);
+		}
+	}
+
+	FSdlEventsDispatcher::~FSdlEventsDispatcher()
+	{
+		// TODO: Close opened joysticks
+	}
+
 	FMap<unsigned, SDL_Joystick*> FSdlEventsDispatcher::joystick_handles_ = {};
 	int FSdlEventsDispatcher::JoystickDeviceEventsHandler(void* data, SDL_Event* event)
 	{
@@ -66,22 +113,6 @@ namespace fengine
 		return FString(guid_str, 16);
 	}
 
-	FSdlEventsDispatcher::FSdlEventsDispatcher()
-		: mouse_wheel_delta_(0) 
-	{
-		auto num_joys = SDL_NumJoysticks();
-		SDL_AddEventWatch(JoystickDeviceEventsHandler, nullptr);
-
-		for (auto i = 0; i < num_joys; ++i)
-		{
-			OpenJoystick(i);
-		}
-	}
-
-	FSdlEventsDispatcher::~FSdlEventsDispatcher()
-	{
-	}
-
 	bool FSdlEventsDispatcher::PollEvent()
 	{
 		auto ret = SDL_PollEvent(&this->event_) != 0;
@@ -96,7 +127,6 @@ namespace fengine
 			{
 				if (event_.type == SDL_WINDOWEVENT)
 				{
-					std::cout << "Which: " << event_.window.windowID << std::endl;
 					event_type_union_.sdl_type = event_.type + event_.window.event + 1;
 				} else
 				{
