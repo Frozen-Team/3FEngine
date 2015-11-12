@@ -5,10 +5,10 @@
 
 namespace fengine
 {
-	class FBJoyBallMotionEvent : public FEvent
+	class FJoyBallMotionEvent : public FEvent
 	{
 	public:
-		explicit FBJoyBallMotionEvent(unsigned which, unsigned ball, const FPoint2i& delta);
+		explicit FJoyBallMotionEvent(unsigned which, unsigned ball, const FPoint2i& delta);
 
 		unsigned ball() const noexcept { return ball_; }
 		

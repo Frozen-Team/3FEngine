@@ -11,14 +11,15 @@ namespace fengine
 	class FSdlEventsDispatcher
 	{
 	public:
-		FSdlEventsDispatcher() : mouse_wheel_delta_(0) {}
+		FSdlEventsDispatcher();
+		~FSdlEventsDispatcher();
 		
 	protected:
 
 		bool PollEvent();
 
 		fevents::EventType GetEventType() const noexcept { return event_type_union_.type; }
-		// Unsafe direct conversion.
+		// TODO: Fix unsafe direct conversion.
 		fevents::KeyboardKey GetKeyboardScanCode() const { return static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode); }
 
 		int GetKeyboardSymbol() const { return event_.key.keysym.sym; }
@@ -34,6 +35,17 @@ namespace fengine
 		int GetMouseWheelDelta() const noexcept { return mouse_wheel_delta_; }
 
 	private:
+		static int JoystickDeviceEventsHandler(void* data, SDL_Event* event);
+
+		static void OpenJoystick(unsigned which);
+
+		static void CloseJoystick(unsigned which);
+
+		static FString GetJoystickGuid(unsigned which);
+
+	private:
+		static FMap<unsigned, SDL_Joystick*> joystick_handles_;
+
 		int mouse_wheel_delta_;
 		FPoint2i mouse_pos_;
 		SDL_Event event_;

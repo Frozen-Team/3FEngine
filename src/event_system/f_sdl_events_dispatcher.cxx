@@ -4,9 +4,84 @@
 #include "SDL_mouse.h"
 #include "SDL_keyboard.h"
 #include "SDL_keycode.h"
+#include <helpers/f_sdl_helper.hpp>
 
 namespace fengine
 {
+	FMap<unsigned, SDL_Joystick*> FSdlEventsDispatcher::joystick_handles_ = {};
+	int FSdlEventsDispatcher::JoystickDeviceEventsHandler(void* data, SDL_Event* event)
+	{
+		auto ret_value = 1;
+		switch (event->type)
+		{
+		case SDL_JOYDEVICEADDED:
+		{
+			auto which = event->jdevice.which;
+			SDL_JoystickGetDeviceGUID(which);
+			OpenJoystick(which);
+			ret_value = 0;
+			break;
+		}
+		case SDL_JOYDEVICEREMOVED:
+		{
+			auto joy_instance_id = event->jdevice.which;
+			CloseJoystick(joy_instance_id);
+			ret_value = 0;
+		}
+		}
+		return 1;
+	}
+
+	void FSdlEventsDispatcher::OpenJoystick(unsigned which)
+	{
+		auto p_joystick = SDL_JoystickOpen(which);
+		LOG_IF(p_joystick == nullptr, FATAL) << "Cannot open joystick. Which: " << which;
+		auto joy_instance_id = SDL_JoystickInstanceID(p_joystick);
+		LOG_IF(joy_instance_id < 0, FATAL) << "Cannot retrieve joystick ID. Which : " << which << ". Error: " << (FSdlHelper::CheckError() ? FSdlHelper::GetLastError() : "");
+		joystick_handles_[joy_instance_id] = p_joystick;
+		LOG(INFO) << "Joystick added. ID: " << joy_instance_id;
+	}
+
+	void FSdlEventsDispatcher::CloseJoystick(unsigned joy_instance_id)
+	{
+		auto it = joystick_handles_.find(joy_instance_id);
+		if (it != joystick_handles_.end())
+		{
+			if (SDL_JoystickGetAttached(it->second))
+			{
+				SDL_JoystickClose(it->second);
+				LOG(INFO) << "Joystick closed. ID: " << joy_instance_id;
+			}		
+			joystick_handles_.erase(it);		
+		} else
+		{
+			LOG(WARNING) << "Joystick not found. ID: " << joy_instance_id;
+		}
+	}
+
+	FString FSdlEventsDispatcher::GetJoystickGuid(unsigned which)
+	{
+		auto guid = SDL_JoystickGetDeviceGUID(which);
+		auto guid_str = reinterpret_cast<const char*>(&guid.data[0]);
+		return FString(guid_str, 16);
+	}
+
+	FSdlEventsDispatcher::FSdlEventsDispatcher()
+		: mouse_wheel_delta_(0) 
+	{
+		auto num_joys = SDL_NumJoysticks();
+		SDL_AddEventWatch(JoystickDeviceEventsHandler, nullptr);
+
+		for (auto i = 0; i < num_joys; ++i)
+		{
+			OpenJoystick(i);
+		}
+	}
+
+	FSdlEventsDispatcher::~FSdlEventsDispatcher()
+	{
+	}
+
 	bool FSdlEventsDispatcher::PollEvent()
 	{
 		auto ret = SDL_PollEvent(&this->event_) != 0;
@@ -64,8 +139,10 @@ namespace fengine
 			case SDL_JOYBUTTONDOWN:break;
 			case SDL_JOYBUTTONUP:break;
 
-			case SDL_JOYDEVICEADDED:break;
-			case SDL_JOYDEVICEREMOVED:break;
+			case SDL_JOYDEVICEADDED:
+				break;
+			case SDL_JOYDEVICEREMOVED:
+				break;
 
 			case SDL_CONTROLLERAXISMOTION:break;
 			case SDL_CONTROLLERBUTTONDOWN:break;

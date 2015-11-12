@@ -1,3 +1,16 @@
+### 11.11.2015
+OlehGol260
+
+ - Add FEntity class which encapsulate common info about camera, mesh etc.
+ - Inherit FEntity in FCamera and FMesh
+ - Fix resource loader due to mentioned changes
+
+### 10.11.2015
+OlehGol260
+
+ - Add basic realization of transformation matrix
+ - Use it to store translation, rotation and scale of each entity in a scene
+
 ### 09.11.2015
 OlehGol260
 
