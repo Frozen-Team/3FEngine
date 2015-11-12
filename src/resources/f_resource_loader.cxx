@@ -3,6 +3,7 @@
 #include "resources/components_loader/fbx_lod_group_loader.hpp"
 #include "components_loader/fbx_camera_loader.hpp"
 #include <utils/f_angle.hpp>
+#include "fcomponents/f_logger.hpp"
 
 namespace fengine {
 	FShared<FScene> FResourceLoader::ImportScene(const std::string& fbx_file)
@@ -17,29 +18,47 @@ namespace fengine {
 		auto root_node_ch_count = root_node->GetChildCount();
 		for (auto i = 0; i < root_node_ch_count; i++)
 		{
-			this->LoadComponent(res_scene, root_node->GetChild(i));
+			//as we import from root node, we haven't had a parent yet
+			this->LoadComponent(res_scene, nullptr, root_node->GetChild(i));
 		}
 
 		return res_scene;
 	}
-	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FbxNode * node) const
+
+
+	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode * node) const
 	{
 		LOG_IF(!node, FATAL) << "Passed invalid scene";
 		auto node_attr = node->GetNodeAttribute();
+		FShared<FEntity> current = nullptr;
 		if (node_attr)
 		{
 			auto node_type = node_attr->GetAttributeType();
 			switch (node_type)
 			{
 			case FbxNodeAttribute::eMesh:
-				scene->Add(this->LoadMesh(node));
+			{
+				auto mesh = this->LoadMesh(node);
+				scene->Add(mesh);
+				current = std::static_pointer_cast<FEntity>(mesh);
 				break;
+			}
+			//TODO: LOD group need to be reconsidered
 			case FbxNodeAttribute::eLODGroup:
-				scene->Add(this->LoadLodGroup(node));
+			{
+				auto lod_group_mesh = this->LoadLodGroup(node);
+				scene->Add(lod_group_mesh);
+				current = std::static_pointer_cast<FEntity>(lod_group_mesh);
 				return; // workaround for now
+			}		
 			case FbxNodeAttribute::eCamera:
-				scene->Add(this->LoadCamera(node));
+			{
+				auto camera = this->LoadCamera(node);
+				scene->Add(camera);
+				current = std::static_pointer_cast<FEntity>(camera);
 				break;
+			}
+				
 			case FbxNodeAttribute::eUnknown: break;
 			case FbxNodeAttribute::eNull: break;
 			case FbxNodeAttribute::eMarker: break;
@@ -62,10 +81,15 @@ namespace fengine {
 			default: break;
 			}
 		}
+		if (parent)
+		{
+			current->set_parent(parent);
+			parent->AddChild(current);
+		}
 		auto node_ch_count = node->GetChildCount();
 		for (auto i = 0; i < node_ch_count; i++)
 		{
-			this->LoadComponent(scene, node->GetChild(i));
+			this->LoadComponent(scene, current, node->GetChild(i));
 		}
 
 	}

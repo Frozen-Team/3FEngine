@@ -3,7 +3,7 @@
 
 #include "fbxsdk.h"
 
-#include "fcomponents/f_logger.hpp"
+
 #include "utils/f_typedefs.hpp"
 #include "resources/f_fbx_loader.hpp"
 #include "utils/f_singleton.hpp"
@@ -11,6 +11,7 @@
 #include "scene/f_scene.hpp"
 #include "scene/mesh/f_mesh.hpp"
 #include "scene/mesh/f_mesh_lod.hpp"
+#include "scene/entity/f_entity.hpp"
 
 /*
 	Raw pointers here are used only because of fbxsdk
@@ -24,9 +25,11 @@ namespace fengine {
 		F_DEFAULT_CTOR_V_DTOR(FResourceLoader)
 
 		FShared<FScene> ImportScene(const std::string& fbx_file);
-		void LoadComponent(FShared<FScene>& scene, FbxNode* node) const;
+		
 
 	private:
+		void LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode* node) const;
+
 		FShared<FMesh> LoadLodGroup(FbxNode* node) const;
 		FMeshLod LoadLod(FbxNode* node, float threshold) const;
 		FShared<FCamera> LoadCamera(FbxNode* node) const;

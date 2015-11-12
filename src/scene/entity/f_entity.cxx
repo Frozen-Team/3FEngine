@@ -12,6 +12,7 @@ namespace fengine {
 	void FEntity::AddChild(FShared<FEntity> child)
 	{
 		LOG_IF(child == nullptr, FATAL) << "Attempt to set an invalid child";
+		LOG_IF(!child->HasParent() || child->parent()->id() != id_, FATAL) << "Invalid parent of a child. Parent has to be set before passing to AddChild";
 		this->children_.push_back(child);
 	}
 
