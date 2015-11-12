@@ -9,9 +9,9 @@ namespace fengine{
 	{
 	}
 
-	FCamera::FCamera(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
+	FCamera::FCamera(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
 		float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy)
-		: FTransformationMatrix(transition, rotation, scale), aperture_(aperture_), film_aspect_ratio_(film_aspect_ratio), focal_length_(focal_length),
+		: FEntity(id, FEntityType::kCamera, transition, rotation, scale), aperture_(aperture_), film_aspect_ratio_(film_aspect_ratio), focal_length_(focal_length),
 		aspect_ratio_(aspect_ratio), znear_(znear), zfar_(zfar)
 	{
 		this->set_fovy(fovy);

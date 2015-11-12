@@ -31,10 +31,13 @@ namespace fengine {
 		FMeshLod LoadLod(FbxNode* node, float threshold) const;
 		FShared<FCamera> LoadCamera(FbxNode* node) const;
 		FShared<FMesh> LoadMesh(FbxNode* node) const;
+
+		static uint64_t LoadUniqueId(FbxNode* node);
 		static FPoint3f LoadTransition(FbxNode* node);
 		static FPoint3f LoadRotation(FbxNode* node);
 		static FPoint3f LoadScale(FbxNode* node);
 
+		//pass an array which has at least 3 elements
 		template<typename T>
 		static FPoint3f ToPoint3f(T fbxData3)
 		{

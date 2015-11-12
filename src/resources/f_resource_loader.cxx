@@ -74,12 +74,18 @@ namespace fengine {
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
 		auto mesh = std::make_shared<FMesh>(
+			LoadUniqueId(node),
 			LoadTransition(node),
 			LoadRotation(node),
 			LoadScale(node)
 		);
 		mesh->AddLod(this->LoadLod(node, FLT_MAX));
 		return mesh;
+	}
+
+	uint64_t FResourceLoader::LoadUniqueId(FbxNode* node)
+	{
+		return static_cast<uint64_t>(node->GetUniqueID());
 	}
 
 	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node) const
@@ -96,6 +102,7 @@ namespace fengine {
 			lods.push_back(this->LoadLod(node, threshold));
 		}
 		auto mesh = std::make_shared<FMesh>(
+				LoadUniqueId(node), // id of lod group
 				LoadTransition(node),
 				LoadRotation(node),
 				LoadScale(node)
@@ -121,6 +128,7 @@ namespace fengine {
 		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
 
 		return std::make_shared<FCamera>(
+			LoadUniqueId(node),
 			LoadTransition(node),
 			LoadRotation(node),
 			LoadScale(node),

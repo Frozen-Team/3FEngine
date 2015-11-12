@@ -2,16 +2,15 @@
 #define _3FENGINE_SRC_SCENE_CAMERA_F_CAMERA_HPP_
 
 #include <utils/f_typedefs.hpp>
-#include <scene/geometry/f_transform_matrix.hpp>
+#include <scene/entity/f_entity.hpp>
 #include <utils/f_angle.hpp>
 
 namespace fengine {
-	class FCamera : public FTransformationMatrix
+	class FCamera : public FEntity
 	{
 	public:
 		FCamera();
-		//FCamera(const FPoint3f& pos, const FPoint3f& targ, float);
-		FCamera(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
+		FCamera(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
 			float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy);
 		void LookAt(const FPoint3f& target);
 		void UpdatePerspective();

@@ -16,7 +16,7 @@ class FFbxLoader
 	F_DISABLE_COPY(FFbxLoader)
 public:
 	FFbxLoader();
-	virtual ~FFbxLoader() = default;
+	virtual ~FFbxLoader();
 
 	bool LoadScene(const std::string& filepath);
 public:
