@@ -21,8 +21,8 @@ namespace fengine {
 		
 		bool IsInRange(float value) const { return ((from_ <= value) && (value <= to_)); }
 
-		float from() { return from_; }
-		float to() { return to_; }
+		float from() const { return from_; }
+		float to() const { return to_; }
 	private:
 		float from_;
 		float to_;

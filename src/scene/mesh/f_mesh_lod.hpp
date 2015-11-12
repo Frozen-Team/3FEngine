@@ -14,13 +14,13 @@ namespace fengine {
 	class FMeshLod {
 	public:
 		~FMeshLod() = default;
-		FMeshLod(float threshold = -1.0f, FShared<FGeometry> geometry = nullptr) : threshold_(threshold), geometry_(geometry) {}
+		explicit FMeshLod(float threshold = -1.0f, FShared<FGeometry> geometry = nullptr);
 
-		bool IsVisible(float distance) const { return distance <= threshold_; }
-		const bool IsValid() const;
+		bool IsVisible(float distance) const;
+		bool IsValid() const;
 
-		const float threshold() const { return threshold_; }
-		const auto geometry() const { return geometry_; }
+		float threshold() const { return threshold_; }
+		auto geometry() const { return geometry_; }
 
 		void set_geometry(FShared<FGeometry> geometry) { geometry_ = geometry; }
 		void set_thresold(float threshold) { threshold_ = threshold; }	
@@ -28,10 +28,7 @@ namespace fengine {
 		bool operator<(const FMeshLod& mesh_lod) const {
 			return this->threshold() < mesh_lod.threshold();
 		}
-
-	private:
-
-		
+	
 	private: 
 		float threshold_;
 		FShared<FGeometry> geometry_;

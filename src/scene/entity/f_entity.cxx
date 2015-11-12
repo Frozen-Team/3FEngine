@@ -15,6 +15,28 @@ namespace fengine {
 		this->children_.push_back(child);
 	}
 
+	FShared<FEntity> FEntity::SerachInHierarchy(uint64_t id) const
+	{
+		auto result = this->GetChild(id);
+		if (result) { return result; }
+		for (auto it = this->cbegin(); it != this->cend(); ++it)
+		{
+			this->SerachInHierarchy(id);
+		}
+		return nullptr;
+	}
+
+	FShared<FEntity> FEntity::GetChild(uint64_t id) const
+	{
+		auto result = std::find_if(this->cbegin(), this->cend(), [id](FShared<FEntity> el) { return el->id() == id; });
+		return (result == this->cend()) ? nullptr : *result;
+	}
+
+	bool FEntity::HasParent() const
+	{
+		return this->parent_ != nullptr;
+	}
+
 	void FEntity::set_parent(FShared<FEntity> parent)
 	{
 		LOG_IF(parent == nullptr, FATAL) << "Attempt to set an invalid parent";
