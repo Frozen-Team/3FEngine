@@ -57,7 +57,7 @@ namespace fengine
 			kJoyDeviceRemoved,
 		};
 		//static const FMap<EventType, FString> EventTypeNames
-		enum MouseButton
+		enum MouseButton : unsigned char
 		{
 			kNoButton = 0,
 			kLeftButton = 1,
@@ -95,7 +95,7 @@ namespace fengine
 
 		enum KeyboardKey
 		{
-			kKeyUnknown = 0,
+			kNoKey = 0,
 			kKeyA = 4,
 			kKeyB = 5,
 			kKeyC = 6,

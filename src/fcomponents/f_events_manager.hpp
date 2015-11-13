@@ -45,7 +45,7 @@ namespace fengine
 		int GetNewEventId();
 
 		template<typename EventListener, typename EventType>
-		void DelegateEvent(EventType& event, fevents::EventSourceType source_type)
+		void DelegateEvent(EventType&& event, fevents::EventSourceType source_type)
 		{
 			for (auto it = handlers_.begin(); it != handlers_.end() && !event.accepted(); ++it)
 			{

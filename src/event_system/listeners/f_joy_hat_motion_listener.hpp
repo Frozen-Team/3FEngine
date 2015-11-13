@@ -19,17 +19,13 @@ namespace fengine
 	protected:
 		friend class FEventsManager;
 
-		virtual void OnJoyHatMotion(FJoyDeviceEvent& e) {};
+		virtual void OnJoyHatMotion(FJoyHatMotionEvent& e) {};
 
-		virtual void CallEvent(FJoyDeviceEvent& e)
+		virtual void CallEvent(FJoyHatMotionEvent& e)
 		{
-			switch (e.type())
+			if (e.type() == fevents::kJoyHatMotion)
 			{
-			case fevents::kJoyHatMotion:
 				OnJoyHatMotion(e);
-				break;
-			default:
-				break;
 			}
 		}
 	};

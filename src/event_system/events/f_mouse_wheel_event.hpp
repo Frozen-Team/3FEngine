@@ -11,12 +11,12 @@ namespace fengine
 	{
 	public:
 		
-		explicit FMouseWheelEvent(int delta, unsigned which, const FPoint2i& position, const fevents::MouseButtons& buttons,
-			fevents::KeyboardModifiers modifiers, fevents::WheelOrientation orientation = fevents::WheelOrientation::kWheelVertical);
+		explicit FMouseWheelEvent(const FPoint2i& delta, unsigned which, const FPoint2i& position, const fevents::MouseButtons& buttons,
+			fevents::KeyboardModifiers modifiers);
 
 		virtual ~FMouseWheelEvent() {}
 
-		int delta() const noexcept { return this->delta_; }
+		const FPoint2i& delta() const noexcept { return this->delta_; }
 
 		const FPoint2i& pos() const noexcept { return this->pos_; }
 
@@ -24,14 +24,11 @@ namespace fengine
 
 		const fevents::KeyboardModifiers& modifiers() const noexcept { return this->modifiers_; }
 
-		fevents::WheelOrientation orientation() const noexcept { return this->orientation_; }
-
 	private:
-		int delta_;
+		FPoint2i delta_;
 		FPoint2i pos_;
 		fevents::MouseButtons buttons_;
 		fevents::KeyboardModifiers modifiers_;
-		fevents::WheelOrientation orientation_;
 	};
 
 }

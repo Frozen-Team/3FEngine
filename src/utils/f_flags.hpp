@@ -31,6 +31,10 @@ namespace fengine
 
 		bool IsSet(const EnumType flag) const { return (static_cast<FlagType>(flag) & this->flags_) != 0; }
 
+		void Reset() const noexcept { this->flags_ = static_cast<FlagType>(0); }
+
+		void Reset(FlagType value) noexcept { this->flags_ = value; }
+
 	public:
 		FFlags& operator=(EnumType rhs) noexcept
 		{

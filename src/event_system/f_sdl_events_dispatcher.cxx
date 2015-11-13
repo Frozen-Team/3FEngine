@@ -8,42 +8,25 @@
 
 namespace fengine
 {
-//	struct
-//	{
-//		fevents::EventType type;
-//		unsigned which;
-//		FPoint2i pos;
-//		fevents::MouseButton button;
-//		fevents::MouseButtons buttons;
-//		fevents::KeyboardModifiers modifiers;
-//	} me_; // FMouseEvent
-//
-//	struct
-//	{
-//		int delta;
-//		unsigned which;
-//		FPoint2i position;
-//		fevents::MouseButtons buttons;
-//		fevents::KeyboardModifiers modifiers;
-//		fevents::WheelOrientation orientation;
-//	} mwe_; // FMouseWheelEvent
+	FMap<unsigned, SDL_Joystick*> FSdlEventsDispatcher::joystick_handles_ = {};
 
 	FSdlEventsDispatcher::FSdlEventsDispatcher() :
-		jame_({ 0, 0, 0 }), 
+		// TODO: Init structs with real values from SDL?
+		jame_({ 0, 0, 0 }),
 		jbme_({ 0, 0,{ 0, 0 } }),
 		jbe_({ fevents::kNoEvent, 0, 0 }),
 		jde_({ fevents::kNoEvent, 0 }),
 		jhme_({ 0, 0, 0 }),
-		// TODO:
-		//ke_({ fevents::kNoEvent, 0, 0, 0 }),
-		//me_
-		//mwe_
+		ke_({ fevents::kNoEvent, 0, fevents::KeyboardKey::kNoKey, fevents::KeyboardModifiers() }),
+		me_({ fevents::kNoEvent, 0, { 0, 0 }, fevents::MouseButton::kNoButton, fevents::MouseButtons(), fevents::KeyboardModifiers() }),
+		mwe_({ { 0, 0 }, 0, { 0, 0 }, fevents::MouseButtons(), fevents::KeyboardModifiers() }),
 		we_({ fevents::kNoEvent, 0, {0, 0}, {0, 0}}),
 		mouse_wheel_delta_(0)
-	{
-		auto num_joys = SDL_NumJoysticks();
+	{	
 		SDL_AddEventWatch(JoystickDeviceEventsHandler, nullptr);
+		SDL_SetEventFilter(UnusedEventsFilter, nullptr);
 
+		auto num_joys = SDL_NumJoysticks();
 		for (auto i = 0; i < num_joys; ++i)
 		{
 			OpenJoystick(i);
@@ -52,13 +35,15 @@ namespace fengine
 
 	FSdlEventsDispatcher::~FSdlEventsDispatcher()
 	{
-		// TODO: Close opened joysticks
+		for (auto& key : joystick_handles_)
+		{
+			CloseJoystick(key.first);
+		}
 	}
 
-	FMap<unsigned, SDL_Joystick*> FSdlEventsDispatcher::joystick_handles_ = {};
 	int FSdlEventsDispatcher::JoystickDeviceEventsHandler(void* data, SDL_Event* event)
 	{
-		auto ret_value = 1;
+		LOG_IF(event == nullptr, FATAL) << "Null event passed in handler.";
 		switch (event->type)
 		{
 		case SDL_JOYDEVICEADDED:
@@ -66,17 +51,31 @@ namespace fengine
 			auto which = event->jdevice.which;
 			SDL_JoystickGetDeviceGUID(which);
 			OpenJoystick(which);
-			ret_value = 0;
 			break;
 		}
 		case SDL_JOYDEVICEREMOVED:
 		{
 			auto joy_instance_id = event->jdevice.which;
 			CloseJoystick(joy_instance_id);
-			ret_value = 0;
 		}
 		}
 		return 1;
+	}
+
+	int FSdlEventsDispatcher::UnusedEventsFilter(void* data, SDL_Event* event)
+	{
+		LOG_IF(event == nullptr, FATAL) << "Null event passed in handler.";
+		auto ret_value = 0;
+		switch (event->type)
+		{
+		case SDL_TEXTINPUT:
+		case SDL_TEXTEDITING:
+		case SDL_FINGERUP:
+		case SDL_FINGERDOWN:
+		case SDL_FINGERMOTION:
+			ret_value = 1;
+		}
+		return ret_value;
 	}
 
 	void FSdlEventsDispatcher::OpenJoystick(unsigned which)
@@ -118,88 +117,109 @@ namespace fengine
 		auto ret = SDL_PollEvent(&this->event_) != 0;
 		if (ret)
 		{
-			// Ignore some events
-			if (event_.type == SDL_FINGERMOTION || event_.type == SDL_FINGERDOWN || event_.type == SDL_FINGERUP || event_.type == SDL_TEXTINPUT || event_.type == SDL_TEXTEDITING)
+			if (event_.type == SDL_WINDOWEVENT)
 			{
-				event_type_union_.sdl_type = 0;
-			}
-			else 
+				last_event_.sdl_type = event_.type + event_.window.event + 1;
+			} else
 			{
-				if (event_.type == SDL_WINDOWEVENT)
-				{
-					event_type_union_.sdl_type = event_.type + event_.window.event + 1;
-				} else
-				{
-					event_type_union_.sdl_type = event_.type;
-				}
-				
+				last_event_.sdl_type = event_.type;
 			}
 			switch (event_.type)
 			{
-			case SDL_FIRSTEVENT: break;
-			case SDL_QUIT: break;
-
-			case SDL_APP_TERMINATING: break;
-			case SDL_APP_LOWMEMORY: break;
-			case SDL_APP_WILLENTERBACKGROUND:break;
-			case SDL_APP_DIDENTERBACKGROUND:break;
-			case SDL_APP_WILLENTERFOREGROUND:break;
-			case SDL_APP_DIDENTERFOREGROUND:break;
-
-			case SDL_WINDOWEVENT:break;
-			case SDL_SYSWMEVENT:break;
-
-			case SDL_KEYDOWN:break;
-			case SDL_KEYUP:break;
-			case SDL_TEXTEDITING:break;
-			case SDL_TEXTINPUT:break;
-
-			case SDL_MOUSEMOTION:break;
-			case SDL_MOUSEBUTTONDOWN:break;
-			case SDL_MOUSEBUTTONUP:break;
-
-			case SDL_MOUSEWHEEL:break;
-
-			case SDL_JOYAXISMOTION:break;
-
-			case SDL_JOYBALLMOTION:break;
-
-			case SDL_JOYHATMOTION:break;
-
-			case SDL_JOYBUTTONDOWN:break;
-			case SDL_JOYBUTTONUP:break;
-
-			case SDL_JOYDEVICEADDED:
+			case SDL_MOUSEMOTION:
+				me_.type = last_event_.type;
+				me_.which = event_.motion.which;
+				me_.button = fevents::kNoButton;
+				me_.buttons.Reset(SDL_GetMouseState(&me_.pos.x(), &me_.pos.y()));
+				me_.modifiers.Reset(SDL_GetModState());
 				break;
-			case SDL_JOYDEVICEREMOVED:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+				me_.type = last_event_.type;
+				me_.which = event_.button.which;
+				me_.button = static_cast<fevents::MouseButton>(event_.button.button);
+				me_.buttons.Reset(SDL_GetMouseState(&me_.pos.x(), &me_.pos.y()));
+				me_.modifiers.Reset(event_.button.type);
 				break;
-
-			case SDL_CONTROLLERAXISMOTION:break;
-			case SDL_CONTROLLERBUTTONDOWN:break;
-			case SDL_CONTROLLERBUTTONUP:break;
-			case SDL_CONTROLLERDEVICEADDED:break;
-			case SDL_CONTROLLERDEVICEREMOVED:break;
-			case SDL_CONTROLLERDEVICEREMAPPED:break;
-
-			case SDL_FINGERDOWN:break;
-			case SDL_FINGERUP:break;
-			case SDL_FINGERMOTION:break;
-			case SDL_DOLLARGESTURE:break;
-			case SDL_DOLLARRECORD:break;
-			case SDL_MULTIGESTURE:break;
-			case SDL_CLIPBOARDUPDATE:break;
-			case SDL_DROPFILE:break;
-			case SDL_AUDIODEVICEADDED:break;
-			case SDL_AUDIODEVICEREMOVED:break;
-			case SDL_RENDER_TARGETS_RESET:break;
-			case SDL_RENDER_DEVICE_RESET:break;
-			default: break;
-			}
-			switch (event_.type)
-			{
 			case SDL_MOUSEWHEEL:
-				mouse_wheel_delta_ = event_.wheel.direction;
+				mwe_.which = event_.wheel.which;
+				mwe_.delta.x() = event_.wheel.x;
+				mwe_.delta.y() = event_.wheel.y;
+				mwe_.buttons.Reset(SDL_GetMouseState(&mwe_.pos.x(), &mwe_.pos.y()));
+				mwe_.modifiers.Reset(SDL_GetModState());
 				break;
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+				ke_.type = last_event_.type;
+				ke_.which = 0;
+				ke_.key = static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode);
+				ke_.modifiers.Reset(SDL_GetModState());
+				break;
+			case SDL_JOYAXISMOTION:
+				jame_.which = event_.jaxis.which;
+				jame_.axis = event_.jaxis.axis;
+				jame_.value = event_.jaxis.value;
+				break;
+			case SDL_JOYBALLMOTION:
+				jame_.which = event_.jaxis.which;
+				jame_.axis = event_.jaxis.axis;
+				jame_.value = event_.jaxis.value;
+				break;
+			case SDL_JOYHATMOTION:
+				jhme_.which = event_.jhat.which;
+				jhme_.hat = event_.jhat.which;
+				jhme_.value = event_.jhat.value;
+				break;
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
+				jbe_.type = last_event_.type;
+				jbe_.which = event_.jbutton.which;
+				jbe_.button = event_.jbutton.button;
+				break;
+			case SDL_JOYDEVICEADDED:
+			case SDL_JOYDEVICEREMOVED:
+				jde_.type = last_event_.type;
+				jde_.which = event_.jdevice.which;
+				break;
+			case SDL_WINDOWEVENT:
+			case SDL_QUIT:
+			{
+				we_.type = last_event_.type;
+				we_.which = event_.window.windowID;
+				auto w = SDL_GetWindowFromID(event_.window.windowID);
+				SDL_GetWindowPosition(w, &we_.pos.x(), &we_.pos.y());
+				SDL_GetWindowSize(w, &we_.size.x(), &we_.size.y());
+				break;
+			}
+			//case SDL_SYSWMEVENT:break;
+			//case SDL_TEXTEDITING:break;
+			//case SDL_TEXTINPUT:break;
+			//case SDL_APP_TERMINATING: break;
+			//case SDL_APP_LOWMEMORY: break;
+			//case SDL_APP_WILLENTERBACKGROUND:break;
+			//case SDL_APP_DIDENTERBACKGROUND:break;
+			//case SDL_APP_WILLENTERFOREGROUND:break;
+			//case SDL_APP_DIDENTERFOREGROUND:break;
+			//case SDL_FIRSTEVENT: break;
+			//case SDL_CONTROLLERAXISMOTION:break;
+			//case SDL_CONTROLLERBUTTONDOWN:break;
+			//case SDL_CONTROLLERBUTTONUP:break;
+			//case SDL_CONTROLLERDEVICEADDED:break;
+			//case SDL_CONTROLLERDEVICEREMOVED:break;
+			//case SDL_CONTROLLERDEVICEREMAPPED:break;
+			//case SDL_FINGERDOWN:break;
+			//case SDL_FINGERUP:break;
+			//case SDL_FINGERMOTION:break;
+			//case SDL_DOLLARGESTURE:break;
+			//case SDL_DOLLARRECORD:break;
+			//case SDL_MULTIGESTURE:break;
+			//case SDL_CLIPBOARDUPDATE:break;
+			//case SDL_DROPFILE:break;
+			//case SDL_AUDIODEVICEADDED:break;
+			//case SDL_AUDIODEVICEREMOVED:break;
+			//case SDL_RENDER_TARGETS_RESET:break;
+			//case SDL_RENDER_DEVICE_RESET:break;
+			default: break;
 			}
 		}
 		return ret;

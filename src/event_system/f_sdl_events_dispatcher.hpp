@@ -19,6 +19,7 @@ namespace fengine
 {
 	class FSdlEventsDispatcher
 	{
+		F_DISABLE_COPY(FSdlEventsDispatcher)
 	public:
 		FSdlEventsDispatcher();
 		~FSdlEventsDispatcher();
@@ -28,7 +29,7 @@ namespace fengine
 		bool PollEvent();
 
 
-		fevents::EventType GetEventType() const noexcept { return event_type_union_.type; }
+		fevents::EventType GetEventType() const noexcept { return last_event_.type; }
 		// TODO: Fix unsafe direct conversion.
 		fevents::KeyboardKey GetKeyboardScanCode() const { return static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode); }
 
@@ -58,12 +59,14 @@ namespace fengine
 		
 		FMouseEvent GetLastMouseEvent() const noexcept { return FMouseEvent(me_.type, me_.which, me_.pos, me_.button, me_.buttons, me_.modifiers); }
 
-		FMouseWheelEvent GetLastMouseWheelEvents() const noexcept { return FMouseWheelEvent(mwe_.delta, mwe_.which, mwe_.position, mwe_.buttons, mwe_.modifiers, mwe_.orientation); }
+		FMouseWheelEvent GetLastMouseWheelEvent() const noexcept { return FMouseWheelEvent(mwe_.delta, mwe_.which, mwe_.pos, mwe_.buttons, mwe_.modifiers); }
 
 		FWindowEvent GetLastWindowEvent() const noexcept { return FWindowEvent(we_.type, we_.which, we_.pos, we_.size); }
 
 	private:
 		static int JoystickDeviceEventsHandler(void* data, SDL_Event* event);
+
+		static int UnusedEventsFilter(void* data, SDL_Event* event);
 
 		static void OpenJoystick(unsigned which);
 
@@ -83,27 +86,27 @@ namespace fengine
 			unsigned which;
 			unsigned ball;
 			FPoint2i delta;
-		} jbme_; // LastJoyAxisMotionEvent	
+		} jbme_; // LastJoyBallMotionEvent	
 
 		struct
 		{
 			fevents::EventType type;
 			unsigned which;
 			unsigned button;
-		} jbe_; // FJoyButtonEvent
+		} jbe_; // LastJoyButtonEvent
 
 		struct
 		{
 			fevents::EventType type;
 			unsigned which;
-		} jde_; // FJoyDeviceEvent
+		} jde_; // LastJoyDeviceEvent
 
 		struct
 		{
 			unsigned which;
 			unsigned hat;
 			int value;
-		} jhme_; // FJoyHatMotionEvent
+		} jhme_; // LastJoyHatMotionEvent
 
 		struct
 		{
@@ -111,7 +114,7 @@ namespace fengine
 			unsigned which;
 			fevents::KeyboardKey key;
 			fevents::KeyboardModifiers modifiers;
-		} ke_; // FKeyboardEvent
+		} ke_; // LastKeyboardEvent
 
 		struct
 		{
@@ -121,17 +124,16 @@ namespace fengine
 			fevents::MouseButton button;
 			fevents::MouseButtons buttons;
 			fevents::KeyboardModifiers modifiers;
-		} me_; // FMouseEvent
+		} me_; // LastMouseEvent
 
 		struct
 		{
-			int delta;
+			FPoint2i delta;
 			unsigned which;
-			FPoint2i position;
+			FPoint2i pos;
 			fevents::MouseButtons buttons;
 			fevents::KeyboardModifiers modifiers;
-			fevents::WheelOrientation orientation;
-		} mwe_; // FMouseWheelEvent
+		} mwe_; // LastMouseWheelEvent
 
 		struct
 		{
@@ -139,7 +141,7 @@ namespace fengine
 			unsigned which;
 			FPoint2i pos;
 			FPoint2i size;
-		} we_; // FWindowEvent
+		} we_; // LastWindowEvent
 
 		static FMap<unsigned, SDL_Joystick*> joystick_handles_;
 
@@ -151,7 +153,8 @@ namespace fengine
 		{
 			fevents::EventType type;
 			unsigned int sdl_type;
-		} event_type_union_;
+			EventTypeUnion(): type(fevents::EventType::kNoEvent) { static_assert(sizeof(type) == sizeof(sdl_type), "SDL event type and EventType must have same size."); }
+		} last_event_;
 	};
 }
 #endif // _3FENGINE_SRC_EVENT_SYSTEM_F_SDL_EVENTS_DISPATCHER_HPP_
