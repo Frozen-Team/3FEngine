@@ -3,6 +3,7 @@
 
 #include "utils/f_typedefs.hpp"
 #include "scene/geometry/f_transform_matrix.hpp"
+#include "fcomponents/f_logger.hpp"
 
 namespace fengine {
 	class FEntity : public FTransformationMatrix
@@ -34,11 +35,18 @@ namespace fengine {
 
 		void set_parent(FShared<FEntity> parent);
 		void set_id(uint64_t id);
-
+		void set_type(FEntityType type);
 		auto parent() const	{ return this->parent_; }
 		auto children() const { return this->children_; }
 		auto id() const { return this->id_; }
 
+		template<typename T>
+		static FShared<FEntity> FindEntityById(const FVector<FShared<T>>& entity_vec, uint64_t id)
+		{
+			LOG_IF(id < 0, FATAL) << "Unique id must be >= 0";
+			auto result = std::find_if(entity_vec.cbegin(), entity_vec.cend(), [id](FShared<T> el) { return el->id() == id; });
+			return (result == entity_vec.cend()) ? nullptr : std::static_pointer_cast<FEntity>(*result);
+		}
 	private:
 		uint64_t id_;
 		FEntityType type_;

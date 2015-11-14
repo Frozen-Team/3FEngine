@@ -1,5 +1,5 @@
 #include "scene/entity/f_entity.hpp"
-#include "fcomponents/f_logger.hpp"
+
 namespace fengine {
 	FEntity::FEntity() : id_(0), type_(FEntityType::kNull) {}
 
@@ -30,8 +30,7 @@ namespace fengine {
 
 	FShared<FEntity> FEntity::GetChild(uint64_t id) const
 	{
-		auto result = std::find_if(this->cbegin(), this->cend(), [id](FShared<FEntity> el) { return el->id() == id; });
-		return (result == this->cend()) ? nullptr : *result;
+		return FindEntityById(this->children_, id);
 	}
 
 	bool FEntity::HasParent() const
@@ -49,5 +48,10 @@ namespace fengine {
 	{
 		LOG_IF(id < 0, FATAL) << "Unique id must be >= 0";
 		this->id_ = id;
+	}
+
+	void FEntity::set_type(FEntityType type)
+	{
+		this->type_ = type;
 	}
 }
