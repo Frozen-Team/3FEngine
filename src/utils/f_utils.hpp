@@ -8,12 +8,8 @@ namespace fengine
 {
 	namespace futils
 	{
-		inline FString ToLower(const FString & str)
-		{
-			auto lower_case = str;
-			std::transform(lower_case.begin(), lower_case.end(), lower_case.begin(), ::tolower);
-			return lower_case;
-		}
+		FString ToLower(const FString & str);
+		
 		template<typename T>
 		inline T DegreesToRadians(T degrees)
 		{

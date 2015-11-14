@@ -23,7 +23,6 @@ namespace fengine
 
 	private:
 		SDL_Window* window_;
-
 	};
 }
 

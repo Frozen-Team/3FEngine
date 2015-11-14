@@ -6,6 +6,11 @@
 #include <event_system/listeners/f_mouse_listener.hpp>
 #include <event_system/listeners/f_mouse_wheel_listener.hpp>
 #include <event_system/listeners/f_window_listener.hpp>
+#include <event_system/listeners/f_joy_axis_motion_listener.hpp>
+#include <event_system/listeners/f_joy_ball_motion_listener.hpp>
+#include <event_system/listeners/f_joy_hat_motion_listener.hpp>
+#include <event_system/listeners/f_joy_button_listener.hpp>
+#include <event_system/listeners/f_joy_device_listener.hpp>
 
 namespace fengine
 {
@@ -19,37 +24,52 @@ namespace fengine
 		}
 		return -1;
 	}
-	// TODO: remove 'which' workaround
+
 	void FEventsManager::HandleEvents()
 	{
 		while (PollEvent())
 		{
 			auto t = this->GetEventType();
-
+			// TODO: Should we replace switch case to FMap. Perfomance issue?
+			// TODO: Replace all fevents::k*Source with constexpr
 			switch (t)
 			{
 			case fevents::kNoEvent: break;
 			case fevents::kKeyPress:
 			case fevents::kKeyRelease:
 			{
-				FKeyboardEvent keyboard_event(t, 0, this->GetKeyboardScanCode(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
-				DelegateEvent<FKeyboardListener>(keyboard_event, fevents::kKeyboardSource);
+				DelegateEvent<FKeyboardListener>(GetLastKeyboardEvent(), fevents::kKeyboardSource);
 				break;
 			}
 			case fevents::kMouseMove:
 			case fevents::kMouseButtonPress:
 			case fevents::kMouseButtonRelease:
 			{
-				FMouseEvent mouse_event(t, 0, this->GetMousePos(), this->GetMouseButton(), this->GetMouseButtons(), fevents::KeyboardModifiers(this->GetKeyboardModifiers()));
-				DelegateEvent<FMouseListener>(mouse_event, fevents::kMouseSource);
+				DelegateEvent<FMouseListener>(GetLastMouseEvent(), fevents::kMouseSource);
 				break;
 			}
 			case fevents::kMouseWheel:
 			{
-				FMouseWheelEvent wheel_event(0, this->GetMouseWheelDelta(), this->GetMousePos(), this->GetMouseButtons(), this->GetKeyboardModifiers()); // TODO: Wheel orientation
-				DelegateEvent<FMouseWheelListener>(wheel_event, fevents::kMouseWheelSource);
+				DelegateEvent<FMouseWheelListener>(GetLastMouseWheelEvent(), fevents::kMouseWheelSource);
 				break;
 			}
+			case fevents::kJoyAxisMotion:
+				DelegateEvent<FJoyAxisMotionListener>(GetLastJoyAxisMotionEvent(), fevents::kJoystickSource);
+				break;
+			case fevents::kJoyBallMotion:
+				DelegateEvent<FJoyBallMotionListener>(GetLastJoyBallMotionEvent(), fevents::kJoystickSource);
+				break;
+			case fevents::kJoyHatMotion:
+				DelegateEvent<FJoyHatMotionListener>(GetLastJoyHatMotionEvent(), fevents::kJoystickSource);
+				break;
+			case fevents::kJoyButtonPressed:
+			case fevents::kJoyButtonReleased:
+				DelegateEvent<FJoyButtonListener>(GetLastJoyButtonEvent(), fevents::kJoystickSource);
+				break;
+			case fevents::kJoyDeviceAdded:
+			case fevents::kJoyDeviceRemoved:
+				DelegateEvent<FJoyDeviceListener>(GetLastJoyDeviceEvent(), fevents::kJoystickSource);
+				break;
 			case fevents::kSysWmEvent:
 			case fevents::kWindowShown:
 			case fevents::kWindowHidden:
@@ -65,16 +85,10 @@ namespace fengine
 			case fevents::kWindowFocusGained:
 			case fevents::kWindowFocusLost:
 			case fevents::kWindowClose:
-				//SDL_JOYAXISMOTION
 			{
-				FWindowEvent window_event(t, 0, FPoint2i(), FPoint2i()); // TODO: window pos, window size
-				DelegateEvent<FWindowListener>(window_event, fevents::kWindowSource);
+				DelegateEvent<FWindowListener>(GetLastWindowEvent(), fevents::kWindowSource);
 				break;
 			}
-			case fevents::kJoyAxisMotion:
-				//DelegateEvent(t, kJoystickSource);
-				break;
-
 			default:
 				LOG(WARNING) << "Unhandled event. Type: " << t;
 				break;

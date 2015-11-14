@@ -7,7 +7,7 @@
 
 namespace fengine
 {
-	class FWindow : public FWindowListener, public FSdlWindow
+	class FWindow : public FWindowListener, private FSdlWindow
 	{
 		const static FString kDefaultTitle;
 		enum
@@ -32,7 +32,7 @@ namespace fengine
 
 		const FPoint2i& size() const noexcept { return size_; }
 
-		const fgui::WindowFlags& flags() const noexcept { return flags_; }
+		const fgui::WindowFlags& flags() const noexcept { return GetSdlWindowFlags(); }
 
 	protected:
 		virtual void CallEvent(FWindowEvent& e) override;
@@ -45,7 +45,7 @@ namespace fengine
 		FString title_;
 		FPoint2i pos_;
 		FPoint2i size_;
-		fgui::WindowFlags flags_;
+		//fgui::WindowFlags flags_;
 	};
 }
 #endif // _3FENGINE_SRC_GUI_F_WINDOW_HPP_

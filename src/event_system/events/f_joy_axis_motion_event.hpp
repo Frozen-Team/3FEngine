@@ -8,7 +8,7 @@ namespace fengine
 	class FJoyAxisMotionEvent : public FEvent
 	{
 	public:
-		explicit FJoyAxisMotionEvent(fevents::EventType type, unsigned which, unsigned axis, int value);
+		explicit FJoyAxisMotionEvent(unsigned which, unsigned axis, int value);
 
 	private:
 		unsigned axis_;

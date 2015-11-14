@@ -121,5 +121,3 @@ target_include_directories(3FEngine PUBLIC ${FBXSDK_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLI_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${GLEW_INCLUDE_DIR})
 target_include_directories(3FEngine PUBLIC ${Boost_INCLUDE_DIRS})
-
-
