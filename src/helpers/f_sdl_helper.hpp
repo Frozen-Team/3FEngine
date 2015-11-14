@@ -3,7 +3,6 @@
 
 #include <utils/f_typedefs.hpp>
 #include <utils/f_singleton.hpp>
-#include <renderer/f_renderer_enums.hpp>
 
 namespace fengine
 {
@@ -13,7 +12,7 @@ namespace fengine
 	public:
 		FSdlHelper() = default;
 
-		virtual ~FSdlHelper() = default;
+		virtual ~FSdlHelper();
 
 		static bool CheckError() noexcept;
 

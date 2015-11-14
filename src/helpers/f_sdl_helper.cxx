@@ -1,8 +1,8 @@
 #include "f_sdl_helper.hpp"
 
 #include "SDL.h"
-
 #include <fcomponents/f_logger.hpp>
+
 #if defined SDL_JOYSTICK_DISABLED 
 #error SDL compiled with no joystick support!
 #endif
@@ -13,6 +13,11 @@
 namespace fengine
 {
 	FString FSdlHelper::last_error_ = "";
+
+	FSdlHelper::~FSdlHelper()
+	{
+		SDL_Quit();
+	}
 
 	bool FSdlHelper::CheckError() noexcept
 	{

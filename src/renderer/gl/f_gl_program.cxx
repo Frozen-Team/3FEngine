@@ -19,10 +19,7 @@ namespace fengine
 	{
 		auto shader_id = shader.GetShaderId();
 		glAttachShader(this->program_id_, shader_id);
-		if (FGlHelper::CheckErrors())
-		{
-			LOG(FATAL) << "Attach shader error:\n" << FGlHelper::GetErrorsDescription();
-		}
+		LOG_IF(FGlHelper::CheckErrors(), FATAL) << "Attach shader error:\n" << FGlHelper::GetErrorsDescription();
 		attached_shaders_.push_back(shader_id);
 	}
 

@@ -13,11 +13,16 @@
 
 namespace fengine
 {
-	class FEventsManager : public futils::FSingleton<FEventsManager>, FSdlEventsDispatcher
+	class FEventsManager : FSdlEventsDispatcher, public futils::FSingleton<FEventsManager>
 	{
 		F_DISABLE_COPY(FEventsManager)
 	public:
 		FEventsManager() : last_id_(0) {}
+
+		virtual ~FEventsManager()
+		{
+			std::cout << "FEventsManager dtro" << std::endl;
+		}
 
 		template<typename EventHandler>
 		int Register()

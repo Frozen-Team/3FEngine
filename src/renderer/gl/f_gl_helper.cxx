@@ -17,6 +17,12 @@ namespace fengine {
 
 	FGlHelper::FGlHelper()
 	{
+
+		GLenum rev;
+		glewExperimental = GL_TRUE;
+		auto err = GLEW_OK;
+		LOG_IF((err = glewInit()) != GLEW_OK, FATAL) << "GLEW initialization error: " << glewGetErrorString(err);
+
 		last_errors_.reserve(256);
 		// TODO: Assert OpenGL version
 		glGetIntegerv(GL_MAJOR_VERSION, &this->major_);

@@ -24,9 +24,7 @@ namespace fengine
 	template<typename T>
 	class FSettingField : public FSettingInterface
 	{
-
-	public:
-		
+	public:	
 		FSettingField() : t_(typeid(T)) {}
 		FSettingField(const T& value) : t_(typeid(T)) { set_value(value); }
 		FSettingField(const FSettingField& ref) : t_(ref.t_), value_(ref.value_) {}
@@ -43,7 +41,8 @@ namespace fengine
 			this->value_ = v;
 		}
 	private:
-		void CheckTypes() {
+		void CheckTypes() const
+		{
 			auto a = typeid(T) == t_;
 			if (!a) {
 				std::cout << "Incompatible types: holds(" << typeid(T).name() << ") and requests(" << t_.name() << ")." << std::endl;
@@ -85,7 +84,7 @@ namespace fengine
 		struct SettingTraits<SettingsNames>
 		{
 			static std::string setting(SettingsNames s) {
-				auto &found = default_settings_.find(s);
+				auto found = default_settings_.find(s);
 				assert(found != default_settings_.end());
 				return found->second;
 			}

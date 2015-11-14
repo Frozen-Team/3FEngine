@@ -1,29 +1,17 @@
-#include <renderer/gl/f_gl_shader.hpp>
-#include "SDL_main.h"
-#include <stdio.h>
-#include <iostream>
-#include <assert.h>
-#include "settings\f_settings.hpp"
-#include "Eigen\Dense"
-#include "utils\f_singleton.hpp"
-#include <memory>
+#include "renderer/gl/f_gl_include.hpp"
 #include "engine.hpp"
-#include "utils\f_json.hpp"
-#include "scene/camera/f_camera.hpp"
+#include "GameLoop.hpp"
+#include <fcomponents/f_events_manager.hpp>
 
-#include "resources/f_resource_loader.hpp"
-#include "scene/geometry/f_transform_matrix.hpp"
-#include "utils/f_typedefs.hpp"
-
-
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
-namespace FE = fengine;
+namespace fe = fengine;
 
 int main(int argc, char* args[])
 {
-	auto engine = fengine::Engine::GetInstance();
+	auto& engine = fe::Engine::GetInstance();
+	engine.Initialize<GameLoop>();
+	auto ret_code = engine.Exec();
+	fe::Engine::Release();
+	return ret_code;
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
@@ -31,7 +19,7 @@ int main(int argc, char* args[])
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	auto window = SDL_CreateWindow("Main window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+	auto window = SDL_CreateWindow("Main window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 200, 200, SDL_WINDOW_OPENGL);
 	if (window == NULL)
 	{
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -53,7 +41,7 @@ int main(int argc, char* args[])
 	while (true)
 	{
 		i++;
-		if (i > 100000) {
+		if (i > 10) {
 			break;
 		}
 		SDL_Delay(1);
@@ -61,14 +49,14 @@ int main(int argc, char* args[])
 		glClear(GL_COLOR_BUFFER_BIT);
 		SDL_GL_SwapWindow(window);
 
-		fengine::FEventsManager::GetInstance()->HandleEvents();
+		fengine::FEventsManager::GetInstance().HandleEvents();
 	}
 
-	fengine::FGlShader shader(ShaderType::kVertexShader);
+	//fengine::FGlShader shader(ShaderType::kVertexShader);
 
 	SDL_DestroyWindow(window);
 	SDL_GL_DeleteContext(context);
-	SDL_Quit();
+	
 
-	return 0;
+	return 100500;
 }

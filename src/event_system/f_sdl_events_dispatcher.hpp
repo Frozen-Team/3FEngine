@@ -22,7 +22,7 @@ namespace fengine
 		F_DISABLE_COPY(FSdlEventsDispatcher)
 	public:
 		FSdlEventsDispatcher();
-		~FSdlEventsDispatcher();
+		virtual ~FSdlEventsDispatcher();
 		
 	protected:
 

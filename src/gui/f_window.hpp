@@ -18,9 +18,9 @@ namespace fengine
 	public:
 		FWindow();
 
-		virtual ~FWindow() = default;
+		explicit FWindow(const FString& title, const FPoint2i& pos, const FPoint2i& size, const fgui::WindowFlags& flags);
 
-		FWindow(const FString& title, const FPoint2i& pos, const FPoint2i& size, const fgui::WindowFlags& flags);
+		virtual ~FWindow() = default;
 
 		unsigned id() const noexcept { return id_; }
 

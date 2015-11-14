@@ -14,15 +14,15 @@ namespace fengine
 			F_DISABLE_COPY(FSingleton)
 		public:
 
-			virtual ~FSingleton() {}
+			virtual ~FSingleton() = default;
 
-			static FShared<T> GetInstance()
+			static T& GetInstance()
 			{
 				if (!instance) {
-					instance = std::make_shared<T>();
+					instance = std::make_unique<T>();
 				}
 				assert(instance && "Error creating instance.");
-				return instance;
+				return *instance;
 			}
 
 			static void Release() {
@@ -34,11 +34,11 @@ namespace fengine
 			FSingleton() {};
 
 		private:
-			static FShared<T> instance;
+			static FUnique<T> instance;
 		};
 
 		template<typename T>
-		FShared<T> FSingleton<T>::instance = nullptr;
+		FUnique<T> FSingleton<T>::instance = nullptr;
 	};
 }
 

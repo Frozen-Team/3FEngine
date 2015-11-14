@@ -42,8 +42,7 @@ file(GLOB_RECURSE GAME_SOURCES 	${CMAKE_CURRENT_SOURCE_DIR}/game-src/*.cpp
 								${CMAKE_CURRENT_SOURCE_DIR}/game-src/*.hpp 
 )
 
-ADD_FILTERS(${GAME_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/game-src)
-
+ADD_FILTERS("${GAME_SOURCES}" "${CMAKE_CURRENT_SOURCE_DIR}/game-src")
 add_executable(game ${GAME_SOURCES})
 set_target_properties(game PROPERTIES DEBUG_POSTFIX -d)
 if(MSVC)

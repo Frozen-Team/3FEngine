@@ -1,6 +1,7 @@
-#include <iostream>
-
-#include "engine.hpp"
+#include <engine.hpp>
+#include "fcomponents/f_logger.hpp"
+#include "helpers/f_sdl_helper.hpp"
+#include "fcomponents/f_events_manager.hpp"
 
 
 namespace fengine
@@ -8,21 +9,25 @@ namespace fengine
 	Engine::Engine()
 	{
 		// Construct logger
-		this->logger_ = FLogger::GetInstance();	
+		FLogger::GetInstance();	
 		FLogger::LoadConfiguration("loggers.cfg");
 		LOG(INFO) << "========== LOG START  ==========";
 		// Construct Settings
 		this->settings_ = std::make_shared<FSettings>();
-
-		if (this->sdl_helper_->Initialize() != 0)
+		// Construct SDL helper
+		FSdlHelper::GetInstance();
+		if (FSdlHelper::Initialize() != 0)
 		{
 			LOG(ERROR) << "SDL helper initialization error.";
-			if (this->sdl_helper_->CheckError())
+			if (FSdlHelper::CheckError())
 			{
-				LOG(FATAL) << "SDL error: " << this->sdl_helper_->GetLastError();
+				LOG(FATAL) << "SDL error: " << FSdlHelper::GetLastError();
 			}
 			LOG(FATAL) << "Terminating.";
 		}
+
+		// Construct Events Manager
+		FEventsManager::GetInstance();
 
 		/*auto ret_code = -1;
 		switch (renderer_type)
@@ -34,17 +39,14 @@ namespace fengine
 			break;
 		default: break;
 		}
-		return ret_code;*/
-
-		// Construct Events Manager
-		this->events_manager_ = FEventsManager::GetInstance();
+		return ret_code;*/	
 	}
-	Engine::~Engine() {}
 
-	void Engine::Initialize(FUnique<FMainLoopInterface> main_loop)
+	Engine::~Engine()
 	{
-		LOG_IF(!main_loop_, FATAL) << "Passed main loop is null.";
-		main_loop_ = std::move(main_loop);	
+		FEventsManager::Release();
+		FSdlHelper::Release();
+		FLogger::Release();
 	}
 
 	int Engine::Exec() const
