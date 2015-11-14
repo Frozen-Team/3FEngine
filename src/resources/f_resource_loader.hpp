@@ -32,7 +32,7 @@ namespace fengine {
 
 		FShared<FMesh> LoadLodGroup(FbxNode* node) const;
 		FMeshLod LoadLod(FbxNode* node, float threshold) const;
-		FShared<FCamera> LoadCamera(FbxNode* node) const;
+		FShared<FCamera> LoadCamera(FbxNode* node, FShared<FScene>& scene) const;
 		FShared<FMesh> LoadMesh(FbxNode* node) const;
 
 		static uint64_t LoadUniqueId(FbxNode* node);

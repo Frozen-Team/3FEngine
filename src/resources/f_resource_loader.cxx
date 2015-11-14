@@ -53,7 +53,7 @@ namespace fengine {
 			}		
 			case FbxNodeAttribute::eCamera:
 			{
-				auto camera = this->LoadCamera(node);
+				auto camera = this->LoadCamera(node, scene);
 				scene->Add(camera);
 				current = std::static_pointer_cast<FEntity>(camera);
 				break;
@@ -81,7 +81,9 @@ namespace fengine {
 			default: break;
 			}
 		}
-		if (parent)
+		//TODO: better way to handle current, cause not all variants are listed in switch-case
+		//LOG_IF(!current, FATAL) << "Failed to cast to FEntity";
+		if (parent && current)
 		{
 			current->set_parent(parent);
 			parent->AddChild(current);
@@ -91,7 +93,6 @@ namespace fengine {
 		{
 			this->LoadComponent(scene, current, node->GetChild(i));
 		}
-
 	}
 
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node) const
@@ -112,18 +113,30 @@ namespace fengine {
 		return static_cast<uint64_t>(node->GetUniqueID());
 	}
 
+	/*
+		Lod group of fbx can contain any object
+		For us it's not relevant to handle any object as we need to load only meshes. If not mesh is met, a warning will be given. 
+		Moreover, Maya allows to attach children to meshes of the lod group(in our case we call
+		them "lods of the lod group")s. This method also doesn't take it into account and give a warning 
+		if any mesh contain children.
+	*/
 	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node) const
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLodGroup";
 		
-		auto node_ch_count = node->GetChildCount();
 		auto fbx_lod_group = static_cast<FbxLodGroupLoader*>(node->GetNodeAttribute());
+		LOG_IF(!fbx_lod_group, FATAL) << "Failed to cast to FbxLodGroupLoader";
+
 		FVector<FMeshLod> lods;
+		auto node_ch_count = node->GetChildCount();
 		lods.reserve(node_ch_count);
 		for (auto i = 0; i < node_ch_count; i++)
 		{
+			auto nodeChild = node->GetChild(i);
+			LOG_IF(nodeChild->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eMesh, WARNING) << "Invalid element of LOD group. Must be mesh only";
+			LOG_IF(nodeChild->GetChildCount() != 0, WARNING) << "Lods of lod group must not contain children";
 			auto threshold = fbx_lod_group->RetrieveThreshold(i);
-			lods.push_back(this->LoadLod(node, threshold));
+			lods.push_back(this->LoadLod(nodeChild, threshold));
 		}
 		auto mesh = std::make_shared<FMesh>(
 				LoadUniqueId(node), // id of lod group
@@ -145,26 +158,39 @@ namespace fengine {
 			fbx_mesh->LoadUvs()));
 	}
 
-	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node) const
+	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node, FShared<FScene>& scene) const
 	{
 		LOG_IF(!node, FATAL) << "Invalid node passed to LoadCamera";
 
 		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
 
-		return std::make_shared<FCamera>(
+		auto camera = std::make_shared<FCamera>(
 			LoadUniqueId(node),
 			LoadTransition(node),
 			LoadRotation(node),
-			LoadScale(node),
-			fbx_camera->GetTarget(),
-			fbx_camera->GetApperture(),
-			static_cast<float>(fbx_camera->FilmAspectRatio.Get()),
-			static_cast<float>(fbx_camera->FocalLength.Get()),
-			0.0f,//TODO: get aspect ratio
-			static_cast<float>(fbx_camera->NearPlane.Get()),
-			static_cast<float>(fbx_camera->FarPlane.Get()),
-			FAngle::Degrees(static_cast<float>(fbx_camera->FieldOfViewY.Get()))
-			);;
+			LoadScale(node)
+			);
+
+		//if camera has aim, attach aimed entity to the camera`s target field
+		//otherwise set target to specified position
+		auto camera_target = node->GetTarget();
+		if (camera_target)
+		{
+			camera->set_target(scene->FindEntityById(camera_target->GetParent()->GetUniqueID()));
+		} 
+		else
+		{
+			camera->set_target(fbx_camera->GetTarget());
+		}	
+		camera->set_aperture(fbx_camera->GetApperture());
+		camera->set_aspect_ratio(static_cast<float>(fbx_camera->FilmAspectRatio.Get()));
+		camera->set_focal_length(static_cast<float>(fbx_camera->FocalLength.Get()));
+		camera->set_aspect_ratio(0.0f);		//TODO: get aspect ratio
+		camera->set_znear(static_cast<float>(fbx_camera->NearPlane.Get()));
+		camera->set_zfar(static_cast<float>(fbx_camera->FarPlane.Get()));
+		camera->set_fovy(FAngle::Degrees(static_cast<float>(fbx_camera->FieldOfViewY.Get())));
+
+		return camera;
 	}
 
 	FPoint3f FResourceLoader::LoadTransition(FbxNode * node)

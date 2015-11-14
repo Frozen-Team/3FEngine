@@ -24,7 +24,7 @@ namespace FE = fengine;
 int main(int argc, char* args[])
 {
 	FE::FResourceLoader resource_loader;
-	std::string file_path = "E:/abc.fbx";
+	std::string file_path = "E:/camera_aim.fbx";
 
 	FE::FTransformationMatrix matr;
 	matr.SetTransition(FE::FPoint3f(1, 2, 3));
