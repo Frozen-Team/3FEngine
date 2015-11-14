@@ -45,7 +45,7 @@ namespace fengine
 		FString title_;
 		FPoint2i pos_;
 		FPoint2i size_;
-		//fgui::WindowFlags flags_;
+		fgui::WindowFlags flags_;
 	};
 }
 #endif // _3FENGINE_SRC_GUI_F_WINDOW_HPP_

@@ -1,7 +1,6 @@
 #ifndef _3FENGINE_SRC_SCENE_F_SCENE_
 #define _3FENGINE_SRC_SCENE_F_SCENE_
 
-
 #include "utils/f_typedefs.hpp"
 #include "scene/mesh/f_mesh.hpp"
 #include "scene/camera/f_camera.hpp"
@@ -12,6 +11,7 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_DTOR(FScene)
 
+		FShared<FEntity> FindEntityById(uint64_t id) const;
 
 		void Add(FShared<FMesh> mesh) { this->meshes_.push_back(move(mesh)); }
 		void Add(FShared<FCamera> camera) { this->cameras_.push_back(move(camera)); }

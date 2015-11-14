@@ -1,10 +1,10 @@
 #include "scene/entity/f_entity.hpp"
-#include "fcomponents/f_logger.hpp"
+
 namespace fengine {
 	FEntity::FEntity() : id_(0), type_(FEntityType::kNull) {}
 
-	FEntity::FEntity(uint64_t id, FEntityType type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) : 
-		FTransformationMatrix(transition, rotation, scale), type_(type), parent_(nullptr)
+	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
+		FTransformationMatrix(transition, rotation, scale), name_(name), type_(type), parent_(nullptr)
 	{
 		this->set_id(id);
 	}
@@ -12,6 +12,7 @@ namespace fengine {
 	void FEntity::AddChild(FShared<FEntity> child)
 	{
 		LOG_IF(child == nullptr, FATAL) << "Attempt to set an invalid child";
+		LOG_IF(!child->HasParent() || child->parent()->id() != id_, FATAL) << "Invalid parent of a child. Parent has to be set before passing to AddChild";
 		this->children_.push_back(child);
 	}
 
@@ -29,13 +30,17 @@ namespace fengine {
 
 	FShared<FEntity> FEntity::GetChild(uint64_t id) const
 	{
-		auto result = std::find_if(this->cbegin(), this->cend(), [id](FShared<FEntity> el) { return el->id() == id; });
-		return (result == this->cend()) ? nullptr : *result;
+		return FindEntityById(this->children_, id);
 	}
 
 	bool FEntity::HasParent() const
 	{
 		return this->parent_ != nullptr;
+	}
+
+	void FEntity::set_name(const FString& name)
+	{
+		this->name_ = name;
 	}
 
 	void FEntity::set_parent(FShared<FEntity> parent)
@@ -48,5 +53,10 @@ namespace fengine {
 	{
 		LOG_IF(id < 0, FATAL) << "Unique id must be >= 0";
 		this->id_ = id;
+	}
+
+	void FEntity::set_type(FEntityType type)
+	{
+		this->type_ = type;
 	}
 }

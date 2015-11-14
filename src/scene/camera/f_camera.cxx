@@ -4,26 +4,36 @@
 namespace fengine{
 	const FPoint3f FCamera::kUpVector = { 0.0f, 1.0f, 0.0f };
 	
-	FCamera::FCamera() : target_(0, 0, 0), aperture_(0, 0), film_aspect_ratio_(0), focal_length_(0), 
-		aspect_ratio_(0), znear_(0), zfar_(0), fovy_(0)
+	FCamera::FCamera()
 	{
+		this->set_type(FEntityType::kCamera);
+		this->ResetSecondaryAttrToDefault();
 	}
 
-	FCamera::FCamera(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
-		float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy)
-		: FEntity(id, FEntityType::kCamera, transition, rotation, scale), aperture_(aperture_), film_aspect_ratio_(film_aspect_ratio), focal_length_(focal_length),
-		aspect_ratio_(aspect_ratio), znear_(znear), zfar_(zfar)
+	FCamera::FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
+		: FEntity(id, name, FEntityType::kCamera, transition, rotation, scale)
 	{
-		this->set_fovy(fovy);
-		this->LookAt(targ);
-		this->UpdatePerspective();
+		this->ResetSecondaryAttrToDefault();
+	}
+
+
+	void FCamera::ResetSecondaryAttrToDefault()
+	{
+		set_target(nullptr);
+		set_aperture(FPoint2f(0.0f, 0.0f));
+		set_film_aspect_ratio(0.0f);
+		set_focal_length(0.0f);
+		set_aspect_ratio(0.0f);
+		set_znear(0.0f);
+		set_zfar(0.0f);
+		this->fovy_ = 0.0f;
 	}
 
 	void FCamera::LookAt(const FPoint3f & target)
 	{
-		this->target_ = target;
+		this->target_point_ = target;
 		auto position = this->GetTransition();
-		auto zaxis = (position - target_).normalized();
+		auto zaxis = (position - target_point_).normalized();
 		auto xaxis = (kUpVector.cross(zaxis)).normalized();
 		auto yaxis = zaxis.cross(xaxis);
 		this->view_ = Eigen::MatrixXf::Zero(4, 4);
@@ -105,6 +115,21 @@ namespace fengine{
 		this->fovy_ = angle.radians();
 	}
 
+	void FCamera::set_aspect_ratio(float aspect_ratio)
+	{
+		this->aspect_ratio_ = aspect_ratio_;
+	}
+
+	void FCamera::set_target(const FPoint3f & target)
+	{
+		this->target_point_ = target;
+	}
+
+	void FCamera::set_target(FShared<FEntity> target)
+	{
+		this->target_entity_ = target;
+		this->target_point_ = target != nullptr ? target->GetTransition() : FPoint3f(0.0f, 0.0f, 0.0f);
+	}
 
 	void FCamera::updateViewProjectionMatrix()
 	{

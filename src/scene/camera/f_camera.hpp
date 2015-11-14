@@ -10,8 +10,9 @@ namespace fengine {
 	{
 	public:
 		FCamera();
-		FCamera(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale, const FPoint3f& targ, const FPoint2f& aperture_,
-			float film_aspect_ratio, float focal_length, float aspect_ratio, float znear, float zfar, const FAngle& fovy);
+		explicit FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+
+		void ResetSecondaryAttrToDefault();
 		void LookAt(const FPoint3f& target);
 		void UpdatePerspective();
 		void UpdateOrtho(float left, float right, float bottom, float top);
@@ -23,6 +24,11 @@ namespace fengine {
 		void set_znear(float znear);
 		void set_zfar(float zfar);
 		void set_fovy(const FAngle& angle);
+		void set_aspect_ratio(float aspect_ratio);
+
+
+		void set_target(const FPoint3f& target);
+		void set_target(FShared<FEntity> target);
 
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		FMatrix4f& view() noexcept { return view_; }
@@ -41,7 +47,13 @@ namespace fengine {
 		FMatrix4f projection_;
 		FMatrix4f view_projection_;
 
-		FPoint3f target_;
+		// if the camera has aim, bind an aimed entity to target_entity_ field
+		// in this case target_point_ will be set to a transition value of the target_entity_
+		FShared<FEntity> target_entity_;
+		
+		// if its an ordinar camera, target_entity_ is set to nullptr, and target_point_ to a certain position
+		FPoint3f target_point_;
+		
 		FPoint2f aperture_; // in meters
 
 		float film_aspect_ratio_;

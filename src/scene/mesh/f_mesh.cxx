@@ -4,8 +4,8 @@
 #include "fcomponents/f_logger.hpp"
 
 namespace fengine {
-	FMesh::FMesh(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
-		FEntity(id, FEntityType::kMesh, transition, rotation, scale)
+	FMesh::FMesh(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
+		FEntity(id, name, FEntityType::kMesh, transition, rotation, scale)
 	{
 	}
 

@@ -3,7 +3,7 @@
 
 #include "fbxsdk.h"
 
-#include "fcomponents/f_logger.hpp"
+
 #include "utils/f_typedefs.hpp"
 #include "resources/f_fbx_loader.hpp"
 #include "utils/f_singleton.hpp"
@@ -11,6 +11,7 @@
 #include "scene/f_scene.hpp"
 #include "scene/mesh/f_mesh.hpp"
 #include "scene/mesh/f_mesh_lod.hpp"
+#include "scene/entity/f_entity.hpp"
 
 /*
 	Raw pointers here are used only because of fbxsdk
@@ -19,24 +20,38 @@
 namespace fengine {
 	class FResourceLoader : public FFbxLoader, public futils::FSingleton<FResourceLoader> {
 		F_DISABLE_COPY(FResourceLoader)
-	
+
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FResourceLoader)
 
-		FShared<FScene> ImportScene(const std::string& fbx_file);
-		void LoadComponent(FShared<FScene>& scene, FbxNode* node) const;
+			FShared<FScene> ImportScene(const std::string& fbx_file);
+
 
 	private:
+		void LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode* node) const;
+
 		FShared<FMesh> LoadLodGroup(FbxNode* node) const;
 		FMeshLod LoadLod(FbxNode* node, float threshold) const;
-		FShared<FCamera> LoadCamera(FbxNode* node) const;
+		FShared<FCamera> LoadCamera(FbxNode* node, FShared<FScene>& scene) const;
 		FShared<FMesh> LoadMesh(FbxNode* node) const;
 
 		static uint64_t LoadUniqueId(FbxNode* node);
+		static FString	LoadName(FbxNode* node);
 		static FPoint3f LoadTransition(FbxNode* node);
 		static FPoint3f LoadRotation(FbxNode* node);
 		static FPoint3f LoadScale(FbxNode* node);
 
+		template<class T>
+		static FShared<T> LoadEntityBase(FbxNode* base_node)
+		{
+			return std::make_shared<T>(
+				LoadUniqueId(base_node),
+				LoadName(base_node),
+				LoadTransition(base_node),
+				LoadRotation(base_node),
+				LoadScale(base_node)
+			);
+		}
 		//pass an array which has at least 3 elements
 		template<typename T>
 		static FPoint3f ToPoint3f(T fbxData3)
