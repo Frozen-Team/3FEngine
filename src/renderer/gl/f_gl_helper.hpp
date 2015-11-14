@@ -1,28 +1,36 @@
 #ifndef _3FENGINE_SRC_RENDERER_GL_F_GL_HELPER_HPP_
 #define _3FENGINE_SRC_RENDERER_GL_F_GL_HELPER_HPP_
 
-#include "GL\glew.h"
-#include "SDL.h"
-#include "SDL_opengl.h"
+#include <renderer/gl/f_gl_include.hpp>
 
 #include "utils/f_typedefs.hpp"
 #include "utils/f_singleton.hpp"
 
 namespace fengine {
 	// Helper must be constructed right after context creation.
-	class GlHelper : public futils::FSingleton<GlHelper>
+	class FGlHelper : public futils::FSingleton<FGlHelper>
 	{
+
 	public:
-		typedef enum
+		enum class GlExtension
 		{
 			kGlExtFramebufferBlit,
-		} GlExtension;
+		};
 	public:
-		GlHelper();
+		FGlHelper();
 		
 		static bool IsExtensionSupported(const FString& ext_name);
 
 		static bool IsExtensionSupported(GlExtension ext);
+
+		static bool CheckErrors();
+
+		static const FString& GetLastErrors() { return last_errors_; }
+
+		static FString GetErrorsDescription();
+
+	private:
+		static FString GetGlErrorDescription(GLenum err);
 
 	private:
 		static const FMap<GlExtension, FString> ext_names_;
@@ -33,6 +41,7 @@ namespace fengine {
 		static FString gl_shading_lang_ver_;
 		int major_;
 		int minor_;
+		static FString last_errors_;
 	};
 }
 

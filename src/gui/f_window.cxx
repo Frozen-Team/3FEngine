@@ -4,11 +4,11 @@ namespace fengine
 {
 	const FString FWindow::kDefaultTitle = "Default title";
 	FWindow::FWindow()
-		: id_(GetSdlWindowId()), active_(false), visible_(false), exposed_(false), title_(kDefaultTitle), pos_(0, 0), size_(kDefaultWidth, kDefaultHeight), flags_()
+		: id_(GetSdlWindowId()), active_(false), visible_(false), exposed_(false), title_(kDefaultTitle), pos_(0, 0), size_(kDefaultWidth, kDefaultHeight)
 	{}
 
 	FWindow::FWindow(const FString& title, const FPoint2i& pos, const FPoint2i& size, const fgui::WindowFlags& flags)
-		: id_(0), active_(false), visible_(false), exposed_(false), pos_(pos), size_(size), flags_(flags)
+		: id_(0), active_(false), visible_(false), exposed_(false), pos_(pos), size_(size)
 	{}
 
 	void FWindow::CallEvent(FWindowEvent& e)
@@ -35,7 +35,6 @@ namespace fengine
 			case fevents::kWindowSizeChanged:
 				size_ = e.size();
 				break;
-				// TODO: store flags
 			case fevents::kWindowMinimized: break;
 			case fevents::kWindowMaximized: break;
 			case fevents::kWindowRestored: break;

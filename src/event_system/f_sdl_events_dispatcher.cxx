@@ -65,7 +65,7 @@ namespace fengine
 	int FSdlEventsDispatcher::UnusedEventsFilter(void* data, SDL_Event* event)
 	{
 		LOG_IF(event == nullptr, FATAL) << "Null event passed in handler.";
-		auto ret_value = 0;
+		auto ret_value = 1;
 		switch (event->type)
 		{
 		case SDL_TEXTINPUT:
@@ -73,7 +73,8 @@ namespace fengine
 		case SDL_FINGERUP:
 		case SDL_FINGERDOWN:
 		case SDL_FINGERMOTION:
-			ret_value = 1;
+		case SDL_QUIT:
+			ret_value = 0;
 		}
 		return ret_value;
 	}
@@ -182,7 +183,7 @@ namespace fengine
 				jde_.which = event_.jdevice.which;
 				break;
 			case SDL_WINDOWEVENT:
-			case SDL_QUIT:
+			//case SDL_QUIT:
 			{
 				we_.type = last_event_.type;
 				we_.which = event_.window.windowID;
