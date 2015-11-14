@@ -98,12 +98,7 @@ namespace fengine {
 	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node) const
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
-		auto mesh = std::make_shared<FMesh>(
-			LoadUniqueId(node),
-			LoadTransition(node),
-			LoadRotation(node),
-			LoadScale(node)
-		);
+		auto mesh = LoadEntityBase<FMesh>(node);
 		mesh->AddLod(this->LoadLod(node, FLT_MAX));
 		return mesh;
 	}
@@ -111,6 +106,11 @@ namespace fengine {
 	uint64_t FResourceLoader::LoadUniqueId(FbxNode* node)
 	{
 		return static_cast<uint64_t>(node->GetUniqueID());
+	}
+
+	FString FResourceLoader::LoadName(FbxNode* node)
+	{
+		return FString(node->GetName());
 	}
 
 	/*
@@ -138,12 +138,7 @@ namespace fengine {
 			auto threshold = fbx_lod_group->RetrieveThreshold(i);
 			lods.push_back(this->LoadLod(nodeChild, threshold));
 		}
-		auto mesh = std::make_shared<FMesh>(
-				LoadUniqueId(node), // id of lod group
-				LoadTransition(node),
-				LoadRotation(node),
-				LoadScale(node)
-			);
+		auto mesh = LoadEntityBase<FMesh>(node);
 		mesh->AddLods(lods);
 		return mesh;
 	}
@@ -164,12 +159,7 @@ namespace fengine {
 
 		auto fbx_camera = static_cast<FbxCameraLoader*>(node->GetNodeAttribute());
 
-		auto camera = std::make_shared<FCamera>(
-			LoadUniqueId(node),
-			LoadTransition(node),
-			LoadRotation(node),
-			LoadScale(node)
-			);
+		auto camera = LoadEntityBase<FCamera>(node);
 
 		//if camera has aim, attach aimed entity to the camera`s target field
 		//otherwise set target to specified position
@@ -195,19 +185,16 @@ namespace fengine {
 
 	FPoint3f FResourceLoader::LoadTransition(FbxNode * node)
 	{
-		auto position = node->LclTranslation.Get();
-		return ToPoint3f(position);
+		return ToPoint3f(node->LclTranslation.Get());
 	}
 
 	FPoint3f FResourceLoader::LoadRotation(FbxNode* node)
 	{
-		auto rotation = node->LclRotation.Get();
-		return ToPoint3f(rotation);
+		return ToPoint3f(node->LclRotation.Get());
 	}
 
 	FPoint3f FResourceLoader::LoadScale(FbxNode* node)
 	{
-		auto scale = node->LclScaling.Get();
-		return ToPoint3f(scale);
+		return ToPoint3f(node->LclScaling.Get());
 	}
 }

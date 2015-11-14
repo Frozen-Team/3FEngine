@@ -10,8 +10,8 @@ namespace fengine{
 		this->ResetSecondaryAttrToDefault();
 	}
 
-	FCamera::FCamera(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
-		: FEntity(id, FEntityType::kCamera, transition, rotation, scale)
+	FCamera::FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
+		: FEntity(id, name, FEntityType::kCamera, transition, rotation, scale)
 	{
 		this->ResetSecondaryAttrToDefault();
 	}

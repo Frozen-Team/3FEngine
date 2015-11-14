@@ -26,19 +26,21 @@ namespace fengine {
 
 		virtual ~FEntity() = default;
 		FEntity();
-		FEntity(uint64_t id, FEntityType type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+		FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		void AddChild(FShared<FEntity> child);
 
 		FShared<FEntity> SearchInHierarchy(uint64_t id) const;
 		FShared<FEntity> GetChild(uint64_t id) const;
 		bool HasParent() const;
 
+		void set_name(const FString& name);
 		void set_parent(FShared<FEntity> parent);
 		void set_id(uint64_t id);
 		void set_type(FEntityType type);
 		auto parent() const	{ return this->parent_; }
 		auto children() const { return this->children_; }
 		auto id() const { return this->id_; }
+		auto name() const { return this->name_; }
 
 		template<typename T>
 		static FShared<FEntity> FindEntityById(const FVector<FShared<T>>& entity_vec, uint64_t id)
@@ -49,6 +51,7 @@ namespace fengine {
 		}
 	private:
 		uint64_t id_;
+		FString name_;
 		FEntityType type_;
 		FShared<FEntity> parent_;
 		FVector<FShared<FEntity>> children_;

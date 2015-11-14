@@ -20,12 +20,12 @@
 namespace fengine {
 	class FResourceLoader : public FFbxLoader, public futils::FSingleton<FResourceLoader> {
 		F_DISABLE_COPY(FResourceLoader)
-	
+
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FResourceLoader)
 
-		FShared<FScene> ImportScene(const std::string& fbx_file);
-		
+			FShared<FScene> ImportScene(const std::string& fbx_file);
+
 
 	private:
 		void LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode* node) const;
@@ -36,10 +36,22 @@ namespace fengine {
 		FShared<FMesh> LoadMesh(FbxNode* node) const;
 
 		static uint64_t LoadUniqueId(FbxNode* node);
+		static FString	LoadName(FbxNode* node);
 		static FPoint3f LoadTransition(FbxNode* node);
 		static FPoint3f LoadRotation(FbxNode* node);
 		static FPoint3f LoadScale(FbxNode* node);
 
+		template<class T>
+		static FShared<T> LoadEntityBase(FbxNode* base_node)
+		{
+			return std::make_shared<T>(
+				LoadUniqueId(base_node),
+				LoadName(base_node),
+				LoadTransition(base_node),
+				LoadRotation(base_node),
+				LoadScale(base_node)
+			);
+		}
 		//pass an array which has at least 3 elements
 		template<typename T>
 		static FPoint3f ToPoint3f(T fbxData3)

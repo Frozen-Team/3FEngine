@@ -10,7 +10,7 @@ namespace fengine {
 	{
 	public:
 		FCamera();
-		explicit FCamera(uint64_t id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+		explicit FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 
 		void ResetSecondaryAttrToDefault();
 		void LookAt(const FPoint3f& target);

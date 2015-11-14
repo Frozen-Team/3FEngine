@@ -3,8 +3,8 @@
 namespace fengine {
 	FEntity::FEntity() : id_(0), type_(FEntityType::kNull) {}
 
-	FEntity::FEntity(uint64_t id, FEntityType type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) : 
-		FTransformationMatrix(transition, rotation, scale), type_(type), parent_(nullptr)
+	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
+		FTransformationMatrix(transition, rotation, scale), name_(name), type_(type), parent_(nullptr)
 	{
 		this->set_id(id);
 	}
@@ -36,6 +36,11 @@ namespace fengine {
 	bool FEntity::HasParent() const
 	{
 		return this->parent_ != nullptr;
+	}
+
+	void FEntity::set_name(const FString& name)
+	{
+		this->name_ = name;
 	}
 
 	void FEntity::set_parent(FShared<FEntity> parent)
