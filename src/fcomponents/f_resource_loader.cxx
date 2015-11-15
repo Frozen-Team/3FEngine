@@ -14,7 +14,8 @@ namespace fengine {
 		if (!scene)
 		{
 			scene = std::make_shared<FScene>();
-		}
+		}	
+		//scene->set_busy();
 		LOG_IF(!ImportScene(fbx_file), FATAL) << "Failed to import the scene from file: " << fbx_file;
 
 		auto root_node = fbx_scene()->GetRootNode();
@@ -26,6 +27,7 @@ namespace fengine {
 			//as we import from root node, we haven't had a parent yet
 			LoadComponent(scene, nullptr, root_node->GetChild(i));
 		}
+		//scene->set_free();
 		return scene;
 	}
 
@@ -170,11 +172,11 @@ namespace fengine {
 		auto camera_target = node->GetTarget();
 		if (camera_target)
 		{
-			camera->set_target(scene->FindEntityById(camera_target->GetParent()->GetUniqueID()));
+			camera->LookAt(scene->FindEntityById(camera_target->GetParent()->GetUniqueID()));
 		} 
 		else
 		{
-			camera->set_target(fbx_camera->GetTarget());
+			camera->LookAt(fbx_camera->GetTarget());
 		}	
 		camera->set_aperture(fbx_camera->GetApperture());
 		camera->set_aspect_ratio(static_cast<float>(fbx_camera->FilmAspectRatio.Get()));

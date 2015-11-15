@@ -14,6 +14,7 @@ namespace fengine {
 
 		void ResetSecondaryAttrToDefault();
 		void LookAt(const FPoint3f& target);
+		void LookAt(FShared<FEntity> target);
 		void UpdatePerspective();
 		void UpdateOrtho(float left, float right, float bottom, float top);
 
@@ -26,10 +27,6 @@ namespace fengine {
 		void set_fovy(const FAngle& angle);
 		void set_aspect_ratio(float aspect_ratio);
 
-
-		void set_target(const FPoint3f& target);
-		void set_target(FShared<FEntity> target);
-
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		FMatrix4f& view() noexcept { return view_; }
 		FMatrix4f& projection() noexcept { return projection_; }
@@ -38,6 +35,7 @@ namespace fengine {
 
 	private:
 		void updateViewProjectionMatrix();
+		void UpdateViewMatrix();
 
 	public:
 		const static FPoint3f kUpVector; 
