@@ -9,7 +9,7 @@ namespace fengine {
 	class FGeometry
 	{
 	public:
-		FGeometry(const FIndices3& indices, const FVertices3f& vertices, const FUvsf& uvs);
+		FGeometry(const FVertices3f& vertices, const FIndices3& indices, const FUvsf& uvs);
 		FGeometry() = default;
 		virtual ~FGeometry() = default;
 		FIndices3& indices() { return indices_; }

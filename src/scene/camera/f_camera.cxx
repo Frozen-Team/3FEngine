@@ -1,9 +1,8 @@
 #include "f_camera.hpp"
 #include "utils/f_utils.hpp"
 
-namespace fengine{
-	const FPoint3f FCamera::kUpVector = { 0.0f, 1.0f, 0.0f };
-	
+namespace fengine
+{
 	FCamera::FCamera()
 	{
 		this->set_type(FEntityType::kCamera);
@@ -28,6 +27,15 @@ namespace fengine{
 		set_zfar(0.0f);
 		this->fovy_ = 0.0f;
 	}
+	/*
+		Move camera at position \param pos and set target \param target
+	*/
+	void FCamera::LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up)
+	{
+		this->SetTransition(pos);
+		this->up_vector_ = up;
+		LookAt(target);	
+	}
 
 	void FCamera::LookAt(const FPoint3f & target)
 	{
@@ -40,6 +48,15 @@ namespace fengine{
 		this->target_entity_ = target;
 		this->target_point_ = target != nullptr ? target->GetTransition() : FPoint3f(0.0f, 0.0f, 0.0f);
 		UpdateViewMatrix();
+	}
+
+	void FCamera::SetPerspective(const FAngle& fovy, float aspect, float z_near, float z_far)
+	{
+		set_fovy(fovy);
+		set_aspect_ratio(aspect);
+		set_znear(z_near);
+		set_zfar(z_far);
+		UpdatePerspective();
 	}
 
 	void FCamera::UpdatePerspective()
@@ -58,15 +75,25 @@ namespace fengine{
 		updateViewProjectionMatrix();
 	}
 
-	void FCamera::UpdateOrtho(float left, float right, float bottom, float top)
+	void FCamera::SetOrtho(float left, float right, float bottom, float top)
+	{
+		this->ortho_left_ = left;
+		this->ortho_right_ = right;
+		this->ortho_bottom_ = bottom;
+		this->ortho_top_ = top;
+		UpdateOrtho();
+	}
+
+	void FCamera::UpdateOrtho()
 	{
 		this->projection_ = Eigen::MatrixXf::Zero(4, 4);
 
-		projection_(0, 0) = 2.0f / (right - left);
-		projection_(1, 1) = 2.0f / (top - bottom);
+		projection_(0, 0) = 2.0f / (this->ortho_right_ - this->ortho_left_);
+		projection_(1, 1) = 2.0f / (this->ortho_top_ - this->ortho_bottom_);
 		projection_(2, 2) = -2.0f / (zfar_ - znear_);
-		projection_(3, 0) = -(right + left) / (right - left);
-		projection_(3, 1) = -(top + bottom) / (top - bottom);
+		projection_(3, 0) = -(this->ortho_right_ + this->ortho_left_) / (this->ortho_right_ - this->ortho_left_);
+		projection_(3, 1) = -(this->ortho_top_ + this->ortho_bottom_) / (this->ortho_top_ - this->ortho_bottom_);
+		// TODO: IS IT NEEDED TO USE zfar and znear IN orth projection?? 
 		projection_(3, 2) = -(zfar_ + znear_) / (zfar_ - znear_);
 		projection_(3, 3) = 1.0f;
 
@@ -122,7 +149,7 @@ namespace fengine{
 	{
 		auto position = this->GetTransition();
 		auto zaxis = (position - target_point_).normalized();
-		auto xaxis = (kUpVector.cross(zaxis)).normalized();
+		auto xaxis = (up_vector_.cross(zaxis)).normalized();
 		auto yaxis = zaxis.cross(xaxis);
 		this->view_ = Eigen::MatrixXf::Zero(4, 4);
 		FMatrix3f m;

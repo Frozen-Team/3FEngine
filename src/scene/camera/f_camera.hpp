@@ -13,10 +13,12 @@ namespace fengine {
 		explicit FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 
 		void ResetSecondaryAttrToDefault();
+		void LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up = { 0.0f, 1.0f, 0.0f });
 		void LookAt(const FPoint3f& target);
 		void LookAt(FShared<FEntity> target);
+		void SetPerspective(const FAngle& fovy, float aspect, float z_near, float z_far);
 		void UpdatePerspective();
-		void UpdateOrtho(float left, float right, float bottom, float top);
+		void SetOrtho(float left, float right, float bottom, float top);
 
 		void set_aperture(const FPoint2f& apperture);
 		void set_aperture(float width, float height);
@@ -36,14 +38,14 @@ namespace fengine {
 	private:
 		void updateViewProjectionMatrix();
 		void UpdateViewMatrix();
-
-	public:
-		const static FPoint3f kUpVector; 
+		void UpdateOrtho();
 
 	private:
 		FMatrix4f view_;
 		FMatrix4f projection_;
 		FMatrix4f view_projection_;
+
+		FPoint3f up_vector_;
 
 		// if the camera has aim, bind an aimed entity to target_entity_ field
 		// in this case target_point_ will be set to a transition value of the target_entity_
@@ -56,10 +58,16 @@ namespace fengine {
 
 		float film_aspect_ratio_;
 		float focal_length_;
+		// Perpective projection
 		float aspect_ratio_;
 		float znear_;
 		float zfar_;
 		float fovy_; // in radians
+		// Ortho projection
+		float ortho_left_;
+		float ortho_right_;
+		float ortho_bottom_;
+		float ortho_top_;
 		
 	};
 }
