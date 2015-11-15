@@ -12,7 +12,7 @@
 #include <utils/f_singleton.hpp>
 
 namespace fengine {
-	class FLogger : public futils::FSingleton<FLogger>
+	class FLogger final: public futils::FSingleton<FLogger>
 	{
 		F_DISABLE_COPY(FLogger)
 	public:

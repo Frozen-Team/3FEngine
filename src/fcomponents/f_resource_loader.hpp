@@ -18,7 +18,9 @@
 	Unnecessary to wrap raw pointers into smart pointers for now
 */
 namespace fengine {
-	class FResourceLoader : public FFbxLoader, public futils::FSingleton<FResourceLoader> {
+	class FResourceLoader : public FFbxLoader, private futils::FSingleton<FResourceLoader> 
+	{
+		friend class Engine;
 		F_DISABLE_COPY(FResourceLoader)
 
 	public:

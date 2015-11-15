@@ -6,10 +6,12 @@
 #include "scene/camera/f_camera.hpp"
 #include "scene/scene_node/f_scene_node.hpp"
 
-namespace fengine {
-	class FScene{
+namespace fengine
+{
+	class FScene
+	{
 	public:
-		F_DEFAULT_CTOR_DTOR(FScene)
+		F_DEFAULT_CTOR_V_DTOR(FScene)
 
 		FShared<FEntity> FindEntityById(uint64_t id) const;
 

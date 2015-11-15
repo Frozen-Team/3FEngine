@@ -14,6 +14,19 @@
 
 namespace fengine
 {
+	std::atomic<int> FEventsManager::last_id_;
+	decltype(FEventsManager::handlers_) FEventsManager::handlers_;
+
+	FEventsManager::FEventsManager()
+	{
+		LOG(INFO) << "FEventsManager ctor";
+	}
+
+	FEventsManager::~FEventsManager()
+	{
+		LOG(INFO) << "FEventsManager dtor";
+	}
+
 	int FEventsManager::Deregister(int id)
 	{
 		const auto& it = handlers_.find(id);
@@ -29,7 +42,7 @@ namespace fengine
 	{
 		while (PollEvent())
 		{
-			auto t = this->GetEventType();
+			auto t = GetEventType();
 			// TODO: Should we replace switch case to FMap. Perfomance issue?
 			// TODO: Replace all fevents::k*Source with constexpr
 			switch (t)

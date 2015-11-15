@@ -9,19 +9,21 @@
 namespace fengine
 {
 	FMap<unsigned, SDL_Joystick*> FSdlEventsDispatcher::joystick_handles_ = {};
+	// TODO: Init structs with real values from SDL?
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, jame_ )	= { 0, 0, 0 };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, jbme_ )	= { 0, 0,{ 0, 0 } };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, jbe_  )	= { fevents::kNoEvent, 0, 0 };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, jde_  )	= { fevents::kNoEvent, 0 };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, jhme_ )	= { 0, 0, 0 };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, ke_   )	= { fevents::kNoEvent, 0, fevents::KeyboardKey::kNoKey, fevents::KeyboardModifiers() };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, me_   )	= { fevents::kNoEvent, 0,{ 0, 0 }, fevents::MouseButton::kNoButton, fevents::MouseButtons(), fevents::KeyboardModifiers() };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, mwe_  )	= { { 0, 0 }, 0,{ 0, 0 }, fevents::MouseButtons(), fevents::KeyboardModifiers() };
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, we_   )	= { fevents::kNoEvent, 0,{ 0, 0 },{ 0, 0 } };
 
-	FSdlEventsDispatcher::FSdlEventsDispatcher() :
-		// TODO: Init structs with real values from SDL?
-		jame_({ 0, 0, 0 }),
-		jbme_({ 0, 0,{ 0, 0 } }),
-		jbe_({ fevents::kNoEvent, 0, 0 }),
-		jde_({ fevents::kNoEvent, 0 }),
-		jhme_({ 0, 0, 0 }),
-		ke_({ fevents::kNoEvent, 0, fevents::KeyboardKey::kNoKey, fevents::KeyboardModifiers() }),
-		me_({ fevents::kNoEvent, 0, { 0, 0 }, fevents::MouseButton::kNoButton, fevents::MouseButtons(), fevents::KeyboardModifiers() }),
-		mwe_({ { 0, 0 }, 0, { 0, 0 }, fevents::MouseButtons(), fevents::KeyboardModifiers() }),
-		we_({ fevents::kNoEvent, 0, {0, 0}, {0, 0}}),
-		mouse_wheel_delta_(0)
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, last_event_);
+	F_STATIC_DECL_INIT(FSdlEventsDispatcher, event_);
+
+	FSdlEventsDispatcher::FSdlEventsDispatcher()		
 	{	
 		SDL_AddEventWatch(JoystickDeviceEventsHandler, nullptr);
 		SDL_SetEventFilter(UnusedEventsFilter, nullptr);
@@ -115,7 +117,7 @@ namespace fengine
 
 	bool FSdlEventsDispatcher::PollEvent()
 	{
-		auto ret = SDL_PollEvent(&this->event_) != 0;
+		auto ret = SDL_PollEvent(&event_) != 0;
 		if (ret)
 		{
 			if (event_.type == SDL_WINDOWEVENT)
@@ -225,8 +227,8 @@ namespace fengine
 		}
 		return ret;
 	}
-	fevents::KeyboardModifiers FSdlEventsDispatcher::GetKeyboardModifiers() const noexcept
+	fevents::KeyboardModifiers FSdlEventsDispatcher::GetKeyboardModifiers() noexcept
 	{
-		return fevents::KeyboardModifiers(event_.key.keysym.mod);
+		return fevents::KeyboardModifiers(SDL_GetModState());
 	}
 }

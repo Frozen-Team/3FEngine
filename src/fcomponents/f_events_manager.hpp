@@ -13,19 +13,17 @@
 
 namespace fengine
 {
-	class FEventsManager : FSdlEventsDispatcher, public futils::FSingleton<FEventsManager>
+	class FEventsManager final : FSdlEventsDispatcher, private futils::FSingleton<FEventsManager>
 	{
+		friend class Engine;
 		F_DISABLE_COPY(FEventsManager)
 	public:
-		FEventsManager() : last_id_(0) {}
+		FEventsManager();
 
-		virtual ~FEventsManager()
-		{
-			std::cout << "FEventsManager dtro" << std::endl;
-		}
+		virtual ~FEventsManager();
 
 		template<typename EventHandler>
-		int Register()
+		static int Register()
 		{
 			static_assert(std::is_base_of<FEventListener, EventHandler>::value, "Not a derived class from FEventListener");
 			auto new_id = GetNewEventId();
@@ -34,23 +32,23 @@ namespace fengine
 		}
 
 		template<typename EventHandler>
-		int Register(FShared<EventHandler> handler)
+		static int Register(FShared<EventHandler> handler)
 		{
 			auto new_id = GetNewEventId();
 			handlers_[new_id] = std::move(handler);
 			return new_id;
 		}
 
-		int Deregister(int id);
+		static int Deregister(int id);
 
-		void HandleEvents();
+		static void HandleEvents();
 
 	private:
 
-		int GetNewEventId();
+		static int GetNewEventId();
 
 		template<typename EventListener, typename EventType>
-		void DelegateEvent(EventType&& event, fevents::EventSourceType source_type)
+		static void DelegateEvent(EventType&& event, fevents::EventSourceType source_type)
 		{
 			for (auto it = handlers_.begin(); it != handlers_.end() && !event.accepted(); ++it)
 			{
@@ -63,8 +61,8 @@ namespace fengine
 		}
 
 	private:
-		std::atomic_int last_id_;
-		FMap<int, FShared<FEventListener>> handlers_;
+		static std::atomic_int last_id_;
+		static FMap<int, FShared<FEventListener>> handlers_;
 
 		constexpr static int kMaxLastId = 1024;
 	};

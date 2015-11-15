@@ -29,6 +29,9 @@ namespace fengine
 	Class() = default; \
 	virtual ~Class() = default;
 
+#define F_STATIC_DECL_INIT(Class,Var)\
+	decltype(Class::Var) Class::Var
+
 	using FPoint4f = Eigen::Matrix<float, 4, 1>;
 	using FPoint3f = Eigen::Matrix<float, 3, 1>;
 	using FPoint2i = Eigen::Matrix<int, 2, 1>;

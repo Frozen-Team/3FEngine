@@ -1,4 +1,4 @@
-#include "GameLoop.hpp"
+#include "game_loop.hpp"
 
 #include <fcomponents/f_logger.hpp>
 
@@ -16,12 +16,17 @@ void GameLoop::OnInit()
 	LOG(INFO) << "GameLoop init";
 }
 
-int GameLoop::Exec()
+void GameLoop::OnPreUpdate()
+{
+}
+
+void GameLoop::OnPostUpdate()
 {
 
+}
 
 
-
-
-	return 100500;
+int GameLoop::OnTerminate()
+{
+	return 0;
 }

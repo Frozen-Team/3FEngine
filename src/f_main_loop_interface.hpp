@@ -7,23 +7,24 @@ namespace fengine
 {
 	class FMainLoopInterface
 	{
+		friend class Engine;
 	public:
 		virtual ~FMainLoopInterface() = default;
 
-		bool running() const noexcept { return running_; }
-
-		int Run();
+		bool is_running() const noexcept { return running_; }
 
 		void Terminate() { running_ = false; }
 
 	protected:
 		explicit FMainLoopInterface(bool running = true) : running_(running) {}
 
-		friend class Engine;
-
 		virtual void OnInit() = 0;
 
-		virtual int Exec() = 0;
+		virtual void OnPreUpdate() = 0;
+
+		virtual void OnPostUpdate() = 0;
+
+		virtual int OnTerminate() = 0;
 
 	private:
 		bool running_;

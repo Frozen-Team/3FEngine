@@ -13,7 +13,11 @@ public:
 protected:
 	void OnInit() override;
 
-	int Exec() override;
+	void OnPreUpdate() override;
+
+	void OnPostUpdate() override;
+
+	int OnTerminate() override;
 };
 
 #endif // _3FENGINE_GAME_SRC_GAME_LOOP_HPP

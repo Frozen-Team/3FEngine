@@ -1,9 +1,0 @@
-#ifndef _3FENGINE_SRC_RESOURCES_F_SCENE_MANAGER_HPP
-#define _3FENGINE_SRC_RESOURCES_F_SCENE_MANAGER_HPP
-
-namespace fengine {
-	class FSceneManager {
-
-	};
-}
-#endif // _3FENGINE_SRC_RESOURCES_F_SCENE_MANAGER_HPP

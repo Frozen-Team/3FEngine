@@ -26,42 +26,42 @@ namespace fengine
 		
 	protected:
 
-		bool PollEvent();
+		static bool PollEvent();
 
 
-		fevents::EventType GetEventType() const noexcept { return last_event_.type; }
-		// TODO: Fix unsafe direct conversion.
-		fevents::KeyboardKey GetKeyboardScanCode() const { return static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode); }
+		static fevents::EventType GetEventType() noexcept { return last_event_.type; }
+		//// TODO: Fix unsafe direct conversion.
+		//fevents::KeyboardKey GetKeyboardScanCode() const { return static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode); }
 
-		int GetKeyboardSymbol() const { return event_.key.keysym.sym; }
+		//int GetKeyboardSymbol() const { return event_.key.keysym.sym; }
 
-		fevents::KeyboardModifiers GetKeyboardModifiers() const noexcept;
+		static fevents::KeyboardModifiers GetKeyboardModifiers() noexcept;
 
-		FPoint2i GetMousePos() const { return FPoint2i(event_.motion.x, event_.motion.y); }
+		//FPoint2i GetMousePos() const { return FPoint2i(event_.motion.x, event_.motion.y); }
 
-		fevents::MouseButton GetMouseButton() const { return fevents::MouseButton(event_.button.button); }
+		//fevents::MouseButton GetMouseButton() const { return fevents::MouseButton(event_.button.button); }
 
-		fevents::MouseButtons GetMouseButtons() const { return fevents::MouseButtons(event_.motion.state); }
+		//fevents::MouseButtons GetMouseButtons() const { return fevents::MouseButtons(event_.motion.state); }
 
-		int GetMouseWheelDelta() const noexcept { return mouse_wheel_delta_; }
+		//int GetMouseWheelDelta() const noexcept { return mouse_wheel_delta_; }
 
-		FJoyAxisMotionEvent GetLastJoyAxisMotionEvent() const noexcept { return FJoyAxisMotionEvent(jame_.which, jame_.axis, jame_.value); }
+		static FJoyAxisMotionEvent GetLastJoyAxisMotionEvent() noexcept { return FJoyAxisMotionEvent(jame_.which, jame_.axis, jame_.value); }
 
-		FJoyBallMotionEvent GetLastJoyBallMotionEvent() const noexcept { return FJoyBallMotionEvent(jbme_.which, jbme_.ball, jbme_.delta); }
+		static FJoyBallMotionEvent GetLastJoyBallMotionEvent() noexcept { return FJoyBallMotionEvent(jbme_.which, jbme_.ball, jbme_.delta); }
 
-		FJoyButtonEvent GetLastJoyButtonEvent() const noexcept { return FJoyButtonEvent(jbe_.type, jbe_.which, jbe_.button); }
+		static FJoyButtonEvent GetLastJoyButtonEvent() noexcept { return FJoyButtonEvent(jbe_.type, jbe_.which, jbe_.button); }
 
-		FJoyDeviceEvent GetLastJoyDeviceEvent() const noexcept { return FJoyDeviceEvent(jde_.type, jde_.which); }
+		static FJoyDeviceEvent GetLastJoyDeviceEvent() noexcept { return FJoyDeviceEvent(jde_.type, jde_.which); }
 
-		FJoyHatMotionEvent GetLastJoyHatMotionEvent() const noexcept { return FJoyHatMotionEvent(jhme_.which, jhme_.hat, jhme_.value); }
+		static FJoyHatMotionEvent GetLastJoyHatMotionEvent() noexcept { return FJoyHatMotionEvent(jhme_.which, jhme_.hat, jhme_.value); }
 
-		FKeyboardEvent GetLastKeyboardEvent() const noexcept { return FKeyboardEvent(ke_.type, ke_.which, ke_.key, ke_.modifiers); }
+		static FKeyboardEvent GetLastKeyboardEvent() noexcept { return FKeyboardEvent(ke_.type, ke_.which, ke_.key, ke_.modifiers); }
 		
-		FMouseEvent GetLastMouseEvent() const noexcept { return FMouseEvent(me_.type, me_.which, me_.pos, me_.button, me_.buttons, me_.modifiers); }
+		static FMouseEvent GetLastMouseEvent() noexcept { return FMouseEvent(me_.type, me_.which, me_.pos, me_.button, me_.buttons, me_.modifiers); }
 
-		FMouseWheelEvent GetLastMouseWheelEvent() const noexcept { return FMouseWheelEvent(mwe_.delta, mwe_.which, mwe_.pos, mwe_.buttons, mwe_.modifiers); }
+		static FMouseWheelEvent GetLastMouseWheelEvent() noexcept { return FMouseWheelEvent(mwe_.delta, mwe_.which, mwe_.pos, mwe_.buttons, mwe_.modifiers); }
 
-		FWindowEvent GetLastWindowEvent() const noexcept { return FWindowEvent(we_.type, we_.which, we_.pos, we_.size); }
+		static FWindowEvent GetLastWindowEvent() noexcept { return FWindowEvent(we_.type, we_.which, we_.pos, we_.size); }
 
 	private:
 		static int JoystickDeviceEventsHandler(void* data, SDL_Event* event);
@@ -74,41 +74,41 @@ namespace fengine
 
 		static FString GetJoystickGuid(unsigned which);
 		
-		struct
+		static struct
 		{
 			unsigned which;
 			unsigned axis;
 			int value;
 		} jame_; // LastJoyAxisMotionEvent
 
-		struct
+		static struct jbme_internal_
 		{
 			unsigned which;
 			unsigned ball;
 			FPoint2i delta;
 		} jbme_; // LastJoyBallMotionEvent	
 
-		struct
+		static struct jbe_internal_
 		{
 			fevents::EventType type;
 			unsigned which;
 			unsigned button;
 		} jbe_; // LastJoyButtonEvent
 
-		struct
+		static struct jde_internal_
 		{
 			fevents::EventType type;
 			unsigned which;
 		} jde_; // LastJoyDeviceEvent
 
-		struct
+		static struct jhme_internal_
 		{
 			unsigned which;
 			unsigned hat;
 			int value;
 		} jhme_; // LastJoyHatMotionEvent
 
-		struct
+		static struct ke_internal_
 		{
 			fevents::EventType type;
 			unsigned which;
@@ -116,7 +116,7 @@ namespace fengine
 			fevents::KeyboardModifiers modifiers;
 		} ke_; // LastKeyboardEvent
 
-		struct
+		static struct me_internal_
 		{
 			fevents::EventType type;
 			unsigned which;
@@ -126,7 +126,7 @@ namespace fengine
 			fevents::KeyboardModifiers modifiers;
 		} me_; // LastMouseEvent
 
-		struct
+		static struct mwe_internal_
 		{
 			FPoint2i delta;
 			unsigned which;
@@ -135,7 +135,7 @@ namespace fengine
 			fevents::KeyboardModifiers modifiers;
 		} mwe_; // LastMouseWheelEvent
 
-		struct
+		static struct we_internal_
 		{
 			fevents::EventType type;
 			unsigned which;
@@ -145,11 +145,9 @@ namespace fengine
 
 		static FMap<unsigned, SDL_Joystick*> joystick_handles_;
 
-		int mouse_wheel_delta_;
-		FPoint2i mouse_pos_;
-		SDL_Event event_;
+		static SDL_Event event_;
 
-		union EventTypeUnion
+		static union EventTypeUnion
 		{
 			fevents::EventType type;
 			unsigned int sdl_type;

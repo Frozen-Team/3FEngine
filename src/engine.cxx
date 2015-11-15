@@ -1,7 +1,12 @@
 #include <engine.hpp>
-#include "fcomponents/f_logger.hpp"
-#include "helpers/f_sdl_helper.hpp"
-#include "fcomponents/f_events_manager.hpp"
+
+#include <SDL.h>
+
+#include <helpers/f_sdl_helper.hpp>
+#include <fcomponents/f_events_manager.hpp>
+#include <fcomponents/f_scenes_manager.hpp>
+#include <fcomponents/f_resource_loader.hpp>
+#include "fcomponents/f_render_system.hpp"
 
 
 namespace fengine
@@ -11,6 +16,7 @@ namespace fengine
 		// Construct logger
 		FLogger::GetInstance();	
 		FLogger::LoadConfiguration("loggers.cfg");
+		LOG(INFO) << "Engine ctor";
 		LOG(INFO) << "========== LOG START  ==========";
 		// Construct Settings
 		this->settings_ = std::make_shared<FSettings>();
@@ -28,6 +34,12 @@ namespace fengine
 
 		// Construct Events Manager
 		FEventsManager::GetInstance();
+		// Construct resource loader
+		FResourceLoader::GetInstance();
+		// Construct scenes manager
+		FScenesManager::GetInstance();
+		// Construct renderer system
+		FRenderSystem::GetInstance();
 
 		/*auto ret_code = -1;
 		switch (renderer_type)
@@ -44,15 +56,27 @@ namespace fengine
 
 	Engine::~Engine()
 	{
+		FResourceLoader::Release();
 		FEventsManager::Release();
 		FSdlHelper::Release();
 		FLogger::Release();
+		LOG(INFO) << "Engine dtor";
 	}
 
 	int Engine::Exec() const
 	{
-		LOG_IF(!main_loop_, FATAL) << "Engine is not initialized: Main loop is not set.";
 		main_loop_->OnInit();
-		return main_loop_->Run();
+		while (main_loop_->is_running())
+		{
+			main_loop_->OnPreUpdate();
+
+			FEventsManager::HandleEvents();
+
+			FRenderSystem::RenderFrame(0.0f);
+				
+			main_loop_->OnPostUpdate();
+			SDL_Delay(1);
+		}
+		return main_loop_->OnTerminate();
 	}
 }

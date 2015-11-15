@@ -17,8 +17,6 @@ namespace fengine {
 
 	FGlHelper::FGlHelper()
 	{
-
-		GLenum rev;
 		glewExperimental = GL_TRUE;
 		auto err = GLEW_OK;
 		LOG_IF((err = glewInit()) != GLEW_OK, FATAL) << "GLEW initialization error: " << glewGetErrorString(err);

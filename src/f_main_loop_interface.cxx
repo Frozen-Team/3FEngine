@@ -2,9 +2,4 @@
 
 namespace fengine
 {
-	int FMainLoopInterface::Run()
-	{
-		running_ = true;
-		return Exec();
-	}
 }
