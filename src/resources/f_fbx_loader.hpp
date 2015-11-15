@@ -18,18 +18,18 @@ public:
 	FFbxLoader();
 	virtual ~FFbxLoader();
 
-	bool LoadScene(const std::string& filepath);
+	static bool ImportScene(const std::string& filepath);
 public:
 	static FbxManager* fbx_manager() { return fbx_manager_; }
 	static FbxIOSettings* fbx_io_settings() { return fbx_io_settings_; }
 	static FbxImporter* fbx_importer() { return fbx_importer_; }
-	FbxSceneLoader* fbx_scene() const { return fbx_scene_; }
+	static FbxSceneLoader* fbx_scene() { return fbx_scene_; }
 private:
 
 private:
 	static FbxManager* fbx_manager_;
 	static FbxIOSettings* fbx_io_settings_;
 	static FbxImporter* fbx_importer_;
-	FbxSceneLoader* fbx_scene_;
+	static FbxSceneLoader* fbx_scene_;
 };
 #endif // FBX2FSEQ_SRC_CORE_FBX_LOADER_HPP_

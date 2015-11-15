@@ -26,16 +26,24 @@ namespace fengine {
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FResourceLoader)
 
-			FShared<FScene> ImportScene(const std::string& fbx_file);
+		/**
+			Import a scene data from a specified file to a specified FShared<FScene> object. If the object doesn't specified(or specified with nullptr)
+			a new scene is created.
+
+			\param[in]	fbx_file filepath to an fbx file, where a scene is stored
+			\param[out]	scene Scene where a content of fbx_file will be stored. By default it's nullptr, so a new scene is created.
+			\return shared pointer to FScene, where the content of the fbx_file is stored.
+		*/
+		static FShared<FScene> LoadScene(const FString& fbx_file, FShared<FScene> scene=nullptr);
 
 
 	private:
-		void LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode* node) const;
+		static void LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode* node);
 
-		FShared<FMesh> LoadLodGroup(FbxNode* node) const;
-		FMeshLod LoadLod(FbxNode* node, float threshold) const;
-		FShared<FCamera> LoadCamera(FbxNode* node, FShared<FScene>& scene) const;
-		FShared<FMesh> LoadMesh(FbxNode* node) const;
+		static FMeshLod LoadLod(FbxNode* node, float threshold);
+		static FShared<FMesh> LoadLodGroup(FbxNode* node);
+		static FShared<FCamera> LoadCamera(FbxNode* node, FShared<FScene>& scene);
+		static FShared<FMesh> LoadMesh(FbxNode* node);
 
 		static uint64_t LoadUniqueId(FbxNode* node);
 		static FString	LoadName(FbxNode* node);
@@ -56,12 +64,12 @@ namespace fengine {
 		}
 		//pass an array which has at least 3 elements
 		template<typename T>
-		static FPoint3f ToPoint3f(T fbxData3)
+		static FPoint3f ToPoint3f(T fbxData)
 		{
 			return FPoint3f(
-				static_cast<float>(fbxData3[0]),
-				static_cast<float>(fbxData3[1]),
-				static_cast<float>(fbxData3[2])
+				static_cast<float>(fbxData[0]),
+				static_cast<float>(fbxData[1]),
+				static_cast<float>(fbxData[2])
 				);
 		}
 	};
