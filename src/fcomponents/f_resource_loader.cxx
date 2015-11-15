@@ -150,8 +150,8 @@ namespace fengine {
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
 		auto fbx_mesh = static_cast<FbxMeshLoader*>(node->GetNodeAttribute());
 		return FMeshLod(threshold, std::make_shared<FGeometry>(
-			fbx_mesh->LoadIndices(),
 			fbx_mesh->LoadVertices(),
+			fbx_mesh->LoadIndices(),			
 			fbx_mesh->LoadUvs()));
 	}
 

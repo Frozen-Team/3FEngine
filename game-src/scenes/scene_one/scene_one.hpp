@@ -6,7 +6,8 @@
 class SceneOne : public fengine::FScene
 {
 public:
-	SceneOne() = default;
+	SceneOne();
+
 	virtual ~SceneOne() = default;
 };
 
