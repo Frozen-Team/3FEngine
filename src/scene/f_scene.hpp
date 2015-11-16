@@ -13,7 +13,7 @@ namespace fengine
 	{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FScene)
-
+		// TODO: Make EntityId class for storing entity id.
 		FShared<FEntity> FindEntityById(uint64_t id) const;
 
 		void Add(FShared<FMesh> mesh) { this->meshes_.push_back(move(mesh)); }

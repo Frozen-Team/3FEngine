@@ -21,8 +21,8 @@ namespace fengine
 
 	FGlRenderer::~FGlRenderer()
 	{
-		//FGlHelper::Release();
 		LOG(INFO) << "FGlRenderer dtor";
+		FGlHelper::Release();	
 	}
 
 	void FGlRenderer::RenderFrame(float delta)

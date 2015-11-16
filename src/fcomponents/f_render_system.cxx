@@ -13,6 +13,7 @@ namespace fengine
 
 	FRenderSystem::~FRenderSystem()
 	{
+		renderer_ = nullptr;
 		LOG(INFO) << "FRenderSystem dtor";
 	}
 
