@@ -29,6 +29,8 @@ namespace fengine
 
 		static void RenderFrame(float delta);
 
+		static bool ExitRequest() { return renderer_->GetActiveWindow().IsCloseRequested(); }
+
 	private:
 		static FUnique<FRendererInterface> renderer_;
 		static FShared<FScene> active_scene_;

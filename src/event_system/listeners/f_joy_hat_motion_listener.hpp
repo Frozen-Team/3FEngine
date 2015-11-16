@@ -3,22 +3,20 @@
 
 #include <event_system/events/f_events_enums.hpp>
 #include <event_system/listeners/f_event_listener.hpp>
-#include <event_system/events/f_joy_device_event.hpp>
 
 #include <fcomponents/f_events_manager.hpp>
 
 namespace fengine
 {
-	class FJoyHatMotionListener : public FEventListener
+	class FJoyHatMotionListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FJoyHatMotionListener() : FEventListener(fevents::EventSourceTypes(fevents::kJoystickSource)) {};
+		FJoyHatMotionListener() { SetListenableSource(fevents::kJoyHatSource); };
 
 		virtual ~FJoyHatMotionListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnJoyHatMotion(FJoyHatMotionEvent& e) {};
 
 		virtual void CallEvent(FJoyHatMotionEvent& e)

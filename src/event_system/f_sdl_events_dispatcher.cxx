@@ -133,30 +133,30 @@ namespace fengine
 				me_.type = last_event_.type;
 				me_.which = event_.motion.which;
 				me_.button = fevents::kNoButton;
-				me_.buttons.Reset(SDL_GetMouseState(&me_.pos.x(), &me_.pos.y()));
-				me_.modifiers.Reset(SDL_GetModState());
+				me_.buttons.ResetFlags(SDL_GetMouseState(&me_.pos.x(), &me_.pos.y()));
+				me_.modifiers.ResetFlags(SDL_GetModState());
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 				me_.type = last_event_.type;
 				me_.which = event_.button.which;
 				me_.button = static_cast<fevents::MouseButton>(event_.button.button);
-				me_.buttons.Reset(SDL_GetMouseState(&me_.pos.x(), &me_.pos.y()));
-				me_.modifiers.Reset(event_.button.type);
+				me_.buttons.ResetFlags(SDL_GetMouseState(&me_.pos.x(), &me_.pos.y()));
+				me_.modifiers.ResetFlags(event_.button.type);
 				break;
 			case SDL_MOUSEWHEEL:
 				mwe_.which = event_.wheel.which;
 				mwe_.delta.x() = event_.wheel.x;
 				mwe_.delta.y() = event_.wheel.y;
-				mwe_.buttons.Reset(SDL_GetMouseState(&mwe_.pos.x(), &mwe_.pos.y()));
-				mwe_.modifiers.Reset(SDL_GetModState());
+				mwe_.buttons.ResetFlags(SDL_GetMouseState(&mwe_.pos.x(), &mwe_.pos.y()));
+				mwe_.modifiers.ResetFlags(SDL_GetModState());
 				break;
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
 				ke_.type = last_event_.type;
 				ke_.which = 0;
 				ke_.key = static_cast<fevents::KeyboardKey>(event_.key.keysym.scancode);
-				ke_.modifiers.Reset(SDL_GetModState());
+				ke_.modifiers.ResetFlags(SDL_GetModState());
 				break;
 			case SDL_JOYAXISMOTION:
 				jame_.which = event_.jaxis.which;

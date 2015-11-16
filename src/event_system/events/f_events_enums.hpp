@@ -7,19 +7,25 @@ namespace fengine
 {
 	namespace fevents
 	{
-		enum EventSourceType
+		// TODO: Combine all joystick sources into one source.
+		enum EventSourceType : unsigned
 		{
-			kNoSource = 0,
-			kKeyboardSource = 1,
-			kMouseSource = 2,
-			kMouseWheelSource = 4,
-			kWindowSource = 8,
-			kJoystickSource = 16
+			kNoSource			= 0,
+			kKeyboardSource		= 1,
+			kMouseSource		= 2,
+			kMouseWheelSource	= 4,
+			kWindowSource		= 8,
+			kJoyAxisSource		= 16,
+			kJoyBallSource		= 32,
+			kJoyHatSource		= 64,
+			kJoyButtonSource	= 128,
+			kJoyDeviceSource	= 128,
+			kCustomSource		= 256
 		};
 
 		F_DECLARE_FLAGS_ENUM(EventSourceType, EventSourceTypes)
 
-		enum EventType
+		enum EventType : unsigned
 		{
 			kNoEvent			= 0x000,
 
@@ -59,36 +65,36 @@ namespace fengine
 		//static const FMap<EventType, FString> EventTypeNames
 		enum MouseButton : unsigned char
 		{
-			kNoButton = 0,
-			kLeftButton = 1,
-			kMiddleButton = 2,
-			kRightButton = 4,
-			kXButton1 = 8,
-			kXButton2 = 16
+			kNoButton		= 0,
+			kLeftButton		= 1,
+			kMiddleButton	= 2,
+			kRightButton	= 4,
+			kXButton1		= 8,
+			kXButton2		= 16
 		};
 
 		F_DECLARE_FLAGS_ENUM(MouseButton, MouseButtons)
 
 		enum class WheelOrientation
 		{
-			kWheelVertical = 1,
-			kWheelHorizontal = 2
+			kWheelVertical		= 1,
+			kWheelHorizontal	= 2
 		};
 
 		enum KeyboardModifier
 		{
-			kNoModifier = 0x0000,
-			kLeftShitModifier = 0x0001,
-			kRightShitModifier = 0x0002,
-			kLeftCtrlModifier = 0x0040,
-			kRightCtrlModifier = 0x0080,
-			kLeftAltModifier = 0x0100,
-			kRightAltModifier = 0x0200,
-			kLeftMetaModifier = 0x0400,
-			kRightMetaModifier = 0x0800,
-			kNumLockModifier = 0x1000,
-			kCapsLockModifier = 0x2000,
-			kModeModifier = 0x4000,
+			kNoModifier			= 0x0000,
+			kLeftShitModifier	= 0x0001,
+			kRightShitModifier	= 0x0002,
+			kLeftCtrlModifier	= 0x0040,
+			kRightCtrlModifier	= 0x0080,
+			kLeftAltModifier	= 0x0100,
+			kRightAltModifier	= 0x0200,
+			kLeftMetaModifier	= 0x0400,
+			kRightMetaModifier	= 0x0800,
+			kNumLockModifier	= 0x1000,
+			kCapsLockModifier	= 0x2000,
+			kModeModifier		= 0x4000,
 		};
 
 		F_DECLARE_FLAGS_ENUM(KeyboardModifier, KeyboardModifiers)

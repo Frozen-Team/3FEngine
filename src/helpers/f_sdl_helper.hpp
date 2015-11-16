@@ -10,7 +10,7 @@ namespace fengine
 	{
 		F_DISABLE_COPY(FSdlHelper)
 	public:
-		FSdlHelper() = default;
+		FSdlHelper();
 
 		virtual ~FSdlHelper();
 

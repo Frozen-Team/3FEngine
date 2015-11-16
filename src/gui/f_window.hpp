@@ -7,7 +7,7 @@
 
 namespace fengine
 {
-	class FWindow : public FWindowListener, private FSdlWindow
+	class FWindow : public FWindowListener, public FSdlWindow
 	{
 		const static FString kDefaultTitle;
 		enum
@@ -22,6 +22,8 @@ namespace fengine
 
 		virtual ~FWindow() = default;
 
+		void Show();
+
 		unsigned id() const noexcept { return id_; }
 
 		bool active() const noexcept { return active_; }
@@ -34,6 +36,12 @@ namespace fengine
 
 		const fgui::WindowFlags& flags() const noexcept { return GetSdlWindowFlags(); }
 
+		bool IsCloseRequested() const
+		{
+			bool close = close_requested_;
+			return close_requested_;
+		}
+
 	protected:
 		virtual void CallEvent(FWindowEvent& e) override;
 
@@ -42,6 +50,7 @@ namespace fengine
 		bool active_;
 		bool visible_;
 		bool exposed_;
+		bool close_requested_;
 		FString title_;
 		FPoint2i pos_;
 		FPoint2i size_;

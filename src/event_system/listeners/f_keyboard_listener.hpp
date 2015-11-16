@@ -9,16 +9,15 @@
 
 namespace fengine
 {
-	class FKeyboardListener : public FEventListener
+	class FKeyboardListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FKeyboardListener() : FEventListener(fevents::EventSourceTypes(fevents::kKeyboardSource)) {};
+		FKeyboardListener() { SetListenableSource(fevents::kKeyboardSource); };
 
 		virtual ~FKeyboardListener() = default;
 
-	protected:
-		friend class FEventsManager;
-		
+	protected:	
 		virtual void OnKeyPressed(FKeyboardEvent& e) {};
 
 		virtual void OnKeyReleased(FKeyboardEvent& e) {};

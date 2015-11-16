@@ -7,6 +7,7 @@
 
 namespace fengine
 {
+	// TODO: Use bitset?
 	template<typename EnumType, typename Enable = void>
 	class FFlags {};
 
@@ -29,11 +30,15 @@ namespace fengine
 
 		FlagType ToNumber() const { return static_cast<FlagType>(this->flags_); }
 
+		void SetFlag(const EnumType flag) noexcept { this->flags_ |= static_cast<FlagType>(flag); }
+
 		bool IsSet(const EnumType flag) const { return (static_cast<FlagType>(flag) & this->flags_) != 0; }
 
-		void Reset() const noexcept { this->flags_ = static_cast<FlagType>(0); }
+		void ResetFlags(const EnumType flag) noexcept { this->flags_ &= ~(static_cast<FlagType>(flag)); }
 
-		void Reset(FlagType value) noexcept { this->flags_ = value; }
+		void ResetFlags() const noexcept { this->flags_ = static_cast<FlagType>(0); }
+
+		void ResetFlags(FlagType flags) noexcept { this->flags_ = flags; }
 
 	public:
 		FFlags& operator=(EnumType rhs) noexcept

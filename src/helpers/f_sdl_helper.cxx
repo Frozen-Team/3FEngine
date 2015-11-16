@@ -14,15 +14,21 @@ namespace fengine
 {
 	FString FSdlHelper::last_error_ = "";
 
+	FSdlHelper::FSdlHelper()
+	{
+		LOG(INFO) << "FSdlHelper ctor";
+	}
+
 	FSdlHelper::~FSdlHelper()
 	{
+		LOG(INFO) << "FSdlHelper dtor";
 		SDL_Quit();
 	}
 
 	bool FSdlHelper::CheckError() noexcept
 	{
 		auto error_str = SDL_GetError();
-		if (error_str != nullptr)
+		if ((error_str != nullptr) & (last_error_.assign(error_str).length() != 0))
 		{
 			last_error_.assign(error_str);
 			SDL_ClearError();
@@ -44,6 +50,7 @@ namespace fengine
 		{
 			return ret_code;
 		}
+		LOG(INFO) << "Initialize SDL: Success.";
 		return 0;
 	}
 }

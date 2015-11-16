@@ -26,6 +26,10 @@ namespace fengine
 		set_znear(0.0f);
 		set_zfar(0.0f);
 		this->fovy_ = 0.0f;
+		this->ortho_left_ = 0.0f;
+		this->ortho_right_ = 0.0f;
+		this->ortho_bottom_ = 0.0f;
+		this->ortho_top_ = 0.0f;
 	}
 	/*
 		Move camera at position \param pos and set target \param target

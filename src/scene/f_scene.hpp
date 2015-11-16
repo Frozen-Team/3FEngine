@@ -8,6 +8,7 @@
 
 namespace fengine
 {
+	// TODO: Ability to retrieve cameras, meshes.. etc
 	class FScene
 	{
 	public:
@@ -18,6 +19,10 @@ namespace fengine
 		void Add(FShared<FMesh> mesh) { this->meshes_.push_back(move(mesh)); }
 		void Add(FShared<FCamera> camera) { this->cameras_.push_back(move(camera)); }
 		void Add(FShared<FSceneNode> scene_node) { this->scene_nodes_.push_back(move(scene_node)); }
+
+		// Workaround
+		FVector<FShared<FCamera> >& GetCameras() { return cameras_; }
+		FVector<FShared<FMesh> >& GetMeshes() { return meshes_; }
 
 	private:
 		FVector<FShared<FMesh> > meshes_;

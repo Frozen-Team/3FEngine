@@ -9,16 +9,15 @@
 
 namespace fengine
 {
-	class FJoyButtonListener : public FEventListener
+	class FJoyButtonListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FJoyButtonListener() : FEventListener(fevents::EventSourceTypes(fevents::kJoystickSource)) {};
+		FJoyButtonListener() { SetListenableSource(fevents::kJoyButtonSource); };
 
 		virtual ~FJoyButtonListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnJoyButtonPressed(FJoyButtonEvent& e) {};
 
 		virtual void OnJoyButtonReleased(FJoyButtonEvent& e) {};

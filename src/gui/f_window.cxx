@@ -4,12 +4,19 @@ namespace fengine
 {
 	const FString FWindow::kDefaultTitle = "Default title";
 	FWindow::FWindow()
-		: id_(GetSdlWindowId()), active_(false), visible_(false), exposed_(false), title_(kDefaultTitle), pos_(0, 0), size_(kDefaultWidth, kDefaultHeight)
+		: id_(GetSdlWindowId()), active_(false), visible_(false), exposed_(false), close_requested_(false), title_(kDefaultTitle), pos_(0, 0), size_(kDefaultWidth, kDefaultHeight)
 	{}
 
 	FWindow::FWindow(const FString& title, const FPoint2i& pos, const FPoint2i& size, const fgui::WindowFlags& flags)
-		: id_(0), active_(false), visible_(false), exposed_(false), pos_(pos), size_(size)
-	{}
+		: id_(0), active_(false), visible_(false), exposed_(false), close_requested_(false), pos_(pos), size_(size)
+	{
+		id_ = CreateSdlWindow(title, pos, size, flags);
+	}
+
+	void FWindow::Show()
+	{
+		
+	}
 
 	void FWindow::CallEvent(FWindowEvent& e)
 	{
@@ -18,6 +25,9 @@ namespace fengine
 			switch (e.type())
 			{
 			case fevents::kNoEvent: break;
+			case fevents::kWindowClose:
+				close_requested_ = true;
+				break;
 				// TODO: is exposed
 			case fevents::kWindowExposed:
 				exposed_ = true;

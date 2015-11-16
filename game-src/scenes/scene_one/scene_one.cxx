@@ -7,4 +7,5 @@ SceneOne::SceneOne()
 	Add(std::make_shared<CubeOne>());
 	auto camera = std::make_shared<CameraOne>();
 	Add(camera);
+	fengine::FEventsManager::Register(camera);
 }

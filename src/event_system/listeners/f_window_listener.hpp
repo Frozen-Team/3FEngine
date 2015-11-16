@@ -9,16 +9,15 @@
 
 namespace fengine
 {
-	class FWindowListener : public FEventListener
+	class FWindowListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FWindowListener() : FEventListener(fevents::EventSourceTypes(fevents::kWindowSource)) {};
+		FWindowListener() { SetListenableSource(fevents::kWindowSource); };
 
 		virtual ~FWindowListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnWindowShown(FWindowEvent& e) {}
 
 		virtual void OnWindowHidden(FWindowEvent& e) {}

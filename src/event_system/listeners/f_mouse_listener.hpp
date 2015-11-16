@@ -8,16 +8,15 @@
 
 namespace fengine
 {
-	class FMouseListener : public FEventListener
+	class FMouseListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FMouseListener() : FEventListener(fevents::EventSourceTypes(fevents::kMouseSource)) {}
+		FMouseListener() { SetListenableSource(fevents::kMouseSource); }
 
 		virtual ~FMouseListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnMouseMove(FMouseEvent& e) {}
 
 		virtual void OnMouseButtonPressed(FMouseEvent& e) {}

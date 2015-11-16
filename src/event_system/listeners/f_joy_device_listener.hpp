@@ -9,16 +9,15 @@
 
 namespace fengine
 {
-	class FJoyDeviceListener : public FEventListener
+	class FJoyDeviceListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FJoyDeviceListener() : FEventListener(fevents::EventSourceTypes(fevents::kJoystickSource)) {};
+		FJoyDeviceListener() { SetListenableSource(fevents::kJoyDeviceSource); };
 
 		virtual ~FJoyDeviceListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnJoyDeviceAdded(FJoyDeviceEvent& e) {};
 
 		virtual void OnJoyDeviceRemoved(FJoyDeviceEvent& e) {};

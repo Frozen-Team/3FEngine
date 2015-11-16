@@ -53,5 +53,5 @@ CubeOne::CubeOne()
 	});
 
 	auto geometry = std::make_unique<fengine::FGeometry>(vertices, indices, colors);
-	AddLod(0.0f, std::move(geometry));
+	AddLod(0.1f, std::move(geometry));
 }

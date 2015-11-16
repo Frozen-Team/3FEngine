@@ -67,21 +67,21 @@ namespace fengine
 				break;
 			}
 			case fevents::kJoyAxisMotion:
-				DelegateEvent<FJoyAxisMotionListener>(GetLastJoyAxisMotionEvent(), fevents::kJoystickSource);
+				DelegateEvent<FJoyAxisMotionListener>(GetLastJoyAxisMotionEvent(), fevents::kJoyAxisSource);
 				break;
 			case fevents::kJoyBallMotion:
-				DelegateEvent<FJoyBallMotionListener>(GetLastJoyBallMotionEvent(), fevents::kJoystickSource);
+				DelegateEvent<FJoyBallMotionListener>(GetLastJoyBallMotionEvent(), fevents::kJoyBallSource);
 				break;
 			case fevents::kJoyHatMotion:
-				DelegateEvent<FJoyHatMotionListener>(GetLastJoyHatMotionEvent(), fevents::kJoystickSource);
+				DelegateEvent<FJoyHatMotionListener>(GetLastJoyHatMotionEvent(), fevents::kJoyHatSource);
 				break;
 			case fevents::kJoyButtonPressed:
 			case fevents::kJoyButtonReleased:
-				DelegateEvent<FJoyButtonListener>(GetLastJoyButtonEvent(), fevents::kJoystickSource);
+				DelegateEvent<FJoyButtonListener>(GetLastJoyButtonEvent(), fevents::kJoyButtonSource);
 				break;
 			case fevents::kJoyDeviceAdded:
 			case fevents::kJoyDeviceRemoved:
-				DelegateEvent<FJoyDeviceListener>(GetLastJoyDeviceEvent(), fevents::kJoystickSource);
+				DelegateEvent<FJoyDeviceListener>(GetLastJoyDeviceEvent(), fevents::kJoyDeviceSource);
 				break;
 			case fevents::kSysWmEvent:
 			case fevents::kWindowShown:

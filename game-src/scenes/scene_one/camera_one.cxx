@@ -3,15 +3,18 @@
 // TODO: Mouse move
 void CameraOne::OnMouseButtonPressed(fengine::FMouseEvent& e)
 {
+	LOG(INFO) << "OnMouseButtonPressed";
 }
 
 void CameraOne::OnMouseButtonReleased(fengine::FMouseEvent& e)
 {
+	LOG(INFO) << "OnMouseButtonReleased";
 }
 
 
 void CameraOne::OnMouseMove(fengine::FMouseEvent& e)
 {
+	LOG(INFO) << "OnMouseMove";
 }
 
 CameraOne::CameraOne()

@@ -7,12 +7,15 @@ namespace fengine
 {
 	class FGlWindow : public FWindow
 	{
+		friend class FGlRenderer;
 	public:
 		FGlWindow() = default;
 		
 		explicit FGlWindow(const FString& title, const FPoint2i& pos, const FPoint2i& size, const fgui::WindowFlags& flags);
 
 		virtual ~FGlWindow() = default;
+	private:
+		SDL_GLContext context_;
 	};
 }
 

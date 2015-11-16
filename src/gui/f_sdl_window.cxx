@@ -14,6 +14,11 @@ namespace fengine
 		return SDL_GetWindowID(window_);
 	}
 
+	void FSdlWindow::SwapWindow() const
+	{
+		SDL_GL_SwapWindow(window_);
+	}
+
 	fgui::WindowFlags FSdlWindow::GetSdlWindowFlags() const noexcept
 	{
 		return fgui::WindowFlags(SDL_GetWindowFlags(window_));
@@ -27,8 +32,9 @@ namespace fengine
 		}
 
 		window_ = SDL_CreateWindow(title.c_str(), pos.x(), pos.y(), size.x(), size.y(), flags.ToNumber());
-		LOG_IF((window_ == nullptr) | (FSdlHelper::CheckError()), FATAL) << "Cannot create window. SDL error: " << FSdlHelper::GetLastError();
-
+		// TODO: Reconsider SDL errors checking & handling
+		//LOG_IF((window_ == nullptr) | (FSdlHelper::CheckError()), FATAL) << "Cannot create window. SDL error: " << FSdlHelper::GetLastError();
+		
 		return GetSdlWindowId();
 	}
 }

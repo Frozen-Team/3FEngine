@@ -28,8 +28,8 @@ namespace fengine
 
 	void FRenderSystem::RenderFrame(float delta)
 	{
-		//LOG_IF(active_camera_ == nullptr, FATAL) << "Active camera is not set.";
-		//LOG_IF(active_scene_ == nullptr, FATAL) << "Active scene is not set.";
+		LOG_IF(active_camera_ == nullptr, FATAL) << "Active camera is not set.";
+		LOG_IF(active_scene_ == nullptr, FATAL) << "Active scene is not set.";
 		LOG_IF(renderer_ == nullptr, FATAL) << "Invalid renderer";
 		renderer_->RenderFrame(delta);
 	}

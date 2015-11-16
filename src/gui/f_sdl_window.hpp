@@ -19,6 +19,8 @@ namespace fengine
 
 		unsigned GetSdlWindowId() const noexcept;
 
+		void SwapWindow() const;
+
 		fgui::WindowFlags GetSdlWindowFlags() const noexcept;
 
 	private:

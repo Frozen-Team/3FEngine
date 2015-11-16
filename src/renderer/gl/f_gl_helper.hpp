@@ -18,6 +18,8 @@ namespace fengine {
 		};
 	public:
 		FGlHelper();
+
+		virtual ~FGlHelper() = default;
 		
 		static bool IsExtensionSupported(const FString& ext_name);
 

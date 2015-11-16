@@ -5,16 +5,15 @@
 
 namespace fengine
 {
-	class FMouseWheelListener : public FEventListener
+	class FMouseWheelListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FMouseWheelListener() : FEventListener(fevents::EventSourceTypes(fevents::kMouseSource)) {}
+		FMouseWheelListener() { SetListenableSource(fevents::kMouseWheelSource); }
 
 		virtual ~FMouseWheelListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnMouseWheelScrolled(FMouseWheelEvent& e) {}
 
 		virtual void CallEvent(FMouseWheelEvent& e)

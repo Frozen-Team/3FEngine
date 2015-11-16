@@ -8,13 +8,16 @@ namespace fengine
 	class FEventListener
 	{
 	public:
-		virtual ~FEventListener() = default;
+		FEventListener() = default;
 
-		explicit FEventListener(fevents::EventSourceTypes types) { this->source_types_ |= types; }
+		virtual ~FEventListener() = default;
 
 		bool IsListenableSource(fevents::EventSourceType type) const { return source_types_.IsSet(type); }
 
 		const fevents::EventSourceTypes& source_types() const noexcept { return source_types_; }
+
+	protected:
+		void SetListenableSource(fevents::EventSourceType type) noexcept { this->source_types_.SetFlag(type); }
 
 	private:
 		fevents::EventSourceTypes source_types_;

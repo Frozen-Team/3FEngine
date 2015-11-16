@@ -9,27 +9,22 @@
 
 namespace fengine
 {
-	class FJoyAxisMotionListener : public FEventListener
+	class FJoyAxisMotionListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FJoyAxisMotionListener() : FEventListener(fevents::EventSourceTypes(fevents::kJoystickSource)) {};
+		FJoyAxisMotionListener() { SetListenableSource(fevents::kJoyAxisSource); };
 
 		virtual ~FJoyAxisMotionListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnJoyAxisMotion(FJoyAxisMotionEvent& e) {};
 
 		virtual void CallEvent(FJoyAxisMotionEvent& e)
 		{
-			switch (e.type())
+			if (e.type() == fevents::kJoyAxisMotion)
 			{
-			case fevents::kJoyAxisMotion:
 				OnJoyAxisMotion(e);
-				break;
-			default:
-				break;
 			}
 		}
 	};

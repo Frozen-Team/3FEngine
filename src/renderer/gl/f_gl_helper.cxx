@@ -25,24 +25,23 @@ namespace fengine {
 		// TODO: Assert OpenGL version
 		glGetIntegerv(GL_MAJOR_VERSION, &this->major_);
 		glGetIntegerv(GL_MAJOR_VERSION, &this->minor_);
-		
+		// TODO:Assign if not nullptr!
 		// Get vendor string
 		auto vendor_str = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
-		LOG_IF(vendor_str != nullptr, ERROR);
+		LOG_IF(vendor_str == nullptr, ERROR);
 		gl_vendor_.assign(vendor_str);
 		// Get renderer string
-		auto renderer_str = reinterpret_cast<const char*>(glGetString(GL_RENDER));
-		LOG_IF(renderer_str != nullptr, ERROR);
+		auto renderer_str = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+		LOG_IF(renderer_str == nullptr, ERROR);
 		gl_renderer_.assign(renderer_str);
 		// Get shading language version string
 		auto shading_lang_ver = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
-		LOG_IF(shading_lang_ver != nullptr, ERROR);
+		LOG_IF(shading_lang_ver == nullptr, ERROR);
 		gl_shading_lang_ver_.assign(shading_lang_ver);
 		// Get OpenGL version string
 		auto gl_ver_str = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-		LOG_IF(gl_ver_str != nullptr, ERROR);
-		gl_ver_.assign(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
-
+		LOG_IF(gl_ver_str == nullptr, ERROR);
+		gl_ver_.assign(reinterpret_cast<const char*>(gl_ver_str));
 		auto num_extensions = 0;
 		glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
 		this->exts_supported_.reserve(num_extensions);
@@ -50,6 +49,8 @@ namespace fengine {
 		{
 			this->exts_supported_.push_back(futils::ToLower(reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i))));
 		}
+		LOG(INFO) << "\tVendor:\t" << gl_vendor_ << "\n\tRenderer:\t" << gl_renderer_ << "\n\tGLSL ver.:\t" <<
+			gl_shading_lang_ver_ << "\n\tGL ver.:\t" << gl_ver_ << "\n\tExtensions:\t" << num_extensions;
 	}
 
 	bool FGlHelper::IsExtensionSupported(const FString & ext_name)

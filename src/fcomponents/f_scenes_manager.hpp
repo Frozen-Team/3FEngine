@@ -12,6 +12,7 @@ namespace fengine
 	public:
 		FScenesManager() = default;
 		virtual ~FScenesManager() = default;
+
 	};
 }
 

@@ -32,10 +32,10 @@ namespace fengine
 		}
 
 		template<typename EventHandler>
-		static int Register(FShared<EventHandler> handler)
+		static int Register(const FShared<EventHandler>& handler)
 		{
 			auto new_id = GetNewEventId();
-			handlers_[new_id] = std::move(handler);
+			handlers_[new_id] = handler;
 			return new_id;
 		}
 
@@ -55,7 +55,8 @@ namespace fengine
 				auto ptr = it->second.get();
 				if (ptr->IsListenableSource(source_type))
 				{
-					static_cast<EventListener*>(it->second.get())->CallEvent(event);
+					// TODO: Avoid dynamic_cast!
+					dynamic_cast<EventListener*>(it->second.get())->CallEvent(event);
 				}
 			}
 		}

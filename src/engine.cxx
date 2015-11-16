@@ -66,7 +66,8 @@ namespace fengine
 	int Engine::Exec() const
 	{
 		main_loop_->OnInit();
-		while (main_loop_->is_running())
+		auto b = FRenderSystem::ExitRequest();
+		while (main_loop_->is_running() && !FRenderSystem::ExitRequest())
 		{
 			main_loop_->OnPreUpdate();
 

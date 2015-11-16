@@ -9,27 +9,22 @@
 
 namespace fengine
 {
-	class FJoyBallMotionListener : public FEventListener
+	class FJoyBallMotionListener : virtual public FEventListener
 	{
+		friend class FEventsManager;
 	public:
-		FJoyBallMotionListener() : FEventListener(fevents::EventSourceTypes(fevents::kJoystickSource)) {};
+		FJoyBallMotionListener() { SetListenableSource(fevents::kJoyBallSource); };
 
 		virtual ~FJoyBallMotionListener() = default;
 
 	protected:
-		friend class FEventsManager;
-
 		virtual void OnJoyBallMotion(FJoyBallMotionEvent& e) {};
 
 		virtual void CallEvent(FJoyBallMotionEvent& e)
 		{
-			switch (e.type())
+			if (e.type() == fevents::kJoyBallMotion)
 			{
-			case fevents::kJoyBallMotion:
 				OnJoyBallMotion(e);
-				break;
-			default:
-				break;
 			}
 		}
 	};
