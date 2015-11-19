@@ -8,27 +8,31 @@
 #include <resources/components_loader/fbx_camera_loader.hpp>
 
 namespace fengine {
-	FShared<FScene> FResourceLoader::ImportScene(const std::string& fbx_file)
+	
+	FShared<FScene> FResourceLoader::LoadScene(const FString& fbx_file, FShared<FScene> scene )
 	{
-		auto res_scene = std::make_shared<FScene>();
+		if (!scene)
+		{
+			scene = std::make_shared<FScene>();
+		}	
+		//scene->set_busy();
+		LOG_IF(!ImportScene(fbx_file), FATAL) << "Failed to import the scene from file: " << fbx_file;
 
-		LOG_IF(!this->LoadScene(fbx_file), FATAL) << "Failed to import the scene from file: " << fbx_file;
-
-		auto root_node = this->fbx_scene()->GetRootNode();
+		auto root_node = fbx_scene()->GetRootNode();
 		LOG_IF(!root_node, FATAL) << "Failed to retrieve a root node";
 
 		auto root_node_ch_count = root_node->GetChildCount();
 		for (auto i = 0; i < root_node_ch_count; i++)
 		{
 			//as we import from root node, we haven't had a parent yet
-			this->LoadComponent(res_scene, nullptr, root_node->GetChild(i));
+			LoadComponent(scene, nullptr, root_node->GetChild(i));
 		}
-
-		return res_scene;
+		//scene->set_free();
+		return scene;
 	}
 
 
-	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode * node) const
+	void FResourceLoader::LoadComponent(FShared<FScene>& scene, FShared<FEntity> parent, FbxNode * node)
 	{
 		LOG_IF(!node, FATAL) << "Passed invalid scene";
 		auto node_attr = node->GetNodeAttribute();
@@ -40,7 +44,7 @@ namespace fengine {
 			{
 			case FbxNodeAttribute::eMesh:
 			{
-				auto mesh = this->LoadMesh(node);
+				auto mesh = LoadMesh(node);
 				scene->Add(mesh);
 				current = std::static_pointer_cast<FEntity>(mesh);
 				break;
@@ -48,14 +52,14 @@ namespace fengine {
 			//TODO: LOD group need to be reconsidered
 			case FbxNodeAttribute::eLODGroup:
 			{
-				auto lod_group_mesh = this->LoadLodGroup(node);
+				auto lod_group_mesh = LoadLodGroup(node);
 				scene->Add(lod_group_mesh);
 				current = std::static_pointer_cast<FEntity>(lod_group_mesh);
 				return; // workaround for now
 			}		
 			case FbxNodeAttribute::eCamera:
 			{
-				auto camera = this->LoadCamera(node, scene);
+				auto camera = LoadCamera(node, scene);
 				scene->Add(camera);
 				current = std::static_pointer_cast<FEntity>(camera);
 				break;
@@ -93,15 +97,15 @@ namespace fengine {
 		auto node_ch_count = node->GetChildCount();
 		for (auto i = 0; i < node_ch_count; i++)
 		{
-			this->LoadComponent(scene, current, node->GetChild(i));
+			LoadComponent(scene, current, node->GetChild(i));
 		}
 	}
 
-	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node) const
+	FShared<FMesh> FResourceLoader::LoadMesh(FbxNode *node)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadMesh";
 		auto mesh = LoadEntityBase<FMesh>(node);
-		mesh->AddLod(this->LoadLod(node, FLT_MAX));
+		mesh->AddLod(LoadLod(node, FLT_MAX));
 		return mesh;
 	}
 
@@ -122,7 +126,7 @@ namespace fengine {
 		them "lods of the lod group")s. This method also doesn't take it into account and give a warning 
 		if any mesh contain children.
 	*/
-	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node) const
+	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLodGroup";
 		
@@ -138,14 +142,14 @@ namespace fengine {
 			LOG_IF(nodeChild->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eMesh, WARNING) << "Invalid element of LOD group. Must be mesh only";
 			LOG_IF(nodeChild->GetChildCount() != 0, WARNING) << "Lods of lod group must not contain children";
 			auto threshold = fbx_lod_group->RetrieveThreshold(i);
-			lods.push_back(this->LoadLod(nodeChild, threshold));
+			lods.push_back(LoadLod(nodeChild, threshold));
 		}
 		auto mesh = LoadEntityBase<FMesh>(node);
 		mesh->AddLods(lods);
 		return mesh;
 	}
 
-	FMeshLod FResourceLoader::LoadLod(FbxNode * node, float threshold) const
+	FMeshLod FResourceLoader::LoadLod(FbxNode * node, float threshold)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLod";
 		auto fbx_mesh = static_cast<FbxMeshLoader*>(node->GetNodeAttribute());
@@ -155,7 +159,7 @@ namespace fengine {
 			fbx_mesh->LoadUvs()));
 	}
 
-	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node, FShared<FScene>& scene) const
+	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node, FShared<FScene>& scene)
 	{
 		LOG_IF(!node, FATAL) << "Invalid node passed to LoadCamera";
 
@@ -168,11 +172,11 @@ namespace fengine {
 		auto camera_target = node->GetTarget();
 		if (camera_target)
 		{
-			camera->set_target(scene->FindEntityById(camera_target->GetParent()->GetUniqueID()));
+			camera->LookAt(scene->FindEntityById(camera_target->GetParent()->GetUniqueID()));
 		} 
 		else
 		{
-			camera->set_target(fbx_camera->GetTarget());
+			camera->LookAt(fbx_camera->GetTarget());
 		}	
 		camera->set_aperture(fbx_camera->GetApperture());
 		camera->set_aspect_ratio(static_cast<float>(fbx_camera->FilmAspectRatio.Get()));

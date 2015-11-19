@@ -21,7 +21,7 @@ namespace fengine
 
 	void FCamera::ResetSecondaryAttrToDefault()
 	{
-		set_target(nullptr);
+		LookAt(nullptr);
 		set_aperture(FPoint2f(0.0f, 0.0f));
 		set_film_aspect_ratio(0.0f);
 		set_focal_length(0.0f);
@@ -40,30 +40,22 @@ namespace fengine
 	void FCamera::LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up)
 	{
 		this->SetTransition(pos);
-		this->upVector = up;
+		this->up_vector_ = up;
 		LookAt(target);	
 	}
 
 	void FCamera::LookAt(const FPoint3f & target)
 	{
 		this->target_point_ = target;
-		auto position = this->GetTransition();
-		auto zaxis = (position - target_point_).normalized();
-		auto xaxis = (upVector.cross(zaxis)).normalized();
-		auto yaxis = zaxis.cross(xaxis);
-		this->view_ = Eigen::MatrixXf::Zero(4, 4);
-		FMatrix3f m;
-		m.col(0) = zaxis;
-		m.col(1) = xaxis;
-		m.col(2) = yaxis;
-		this->view_.topLeftCorner(3, 3) = m;
-		this->view_.col(3) = FPoint4f( 0.0f, 0.0f, 0.0f, 1.0f);
-		this->view_(3, 0) = -xaxis.dot(position);
-		this->view_(3, 1) = -yaxis.dot(position);
-		this->view_(3, 2) = -zaxis.dot(position);
-		this->view_(3, 3) = 1.0f;
 
-		updateViewProjectionMatrix();
+		UpdateViewMatrix();
+	}
+
+	void FCamera::LookAt(FShared<FEntity> target)
+	{
+		this->target_entity_ = target;
+		this->target_point_ = target != nullptr ? target->GetTransition() : FPoint3f(0.0f, 0.0f, 0.0f);
+		UpdateViewMatrix();
 	}
 
 	void FCamera::SetPerspective(const FAngle& fovy, float aspect, float z_near, float z_far)
@@ -156,19 +148,27 @@ namespace fengine
 		this->aspect_ratio_ = aspect_ratio;
 	}
 
-	void FCamera::set_target(const FPoint3f & target)
-	{
-		this->target_point_ = target;
-	}
-
-	void FCamera::set_target(FShared<FEntity> target)
-	{
-		this->target_entity_ = target;
-		this->target_point_ = target != nullptr ? target->GetTransition() : FPoint3f(0.0f, 0.0f, 0.0f);
-	}
-
 	void FCamera::updateViewProjectionMatrix()
 	{
-		this->view_projection_ =  projection_ * view_;
+		this->view_projection_ = view_ * projection_;
+	}
+
+	void FCamera::UpdateViewMatrix()
+	{
+		auto position = this->GetTransition();
+		auto zaxis = (position - target_point_).normalized();
+		auto xaxis = (up_vector_.cross(zaxis)).normalized();
+		auto yaxis = zaxis.cross(xaxis);
+		this->view_ = Eigen::MatrixXf::Zero(4, 4);
+		FMatrix3f m;
+		m.col(0) = zaxis;
+		m.col(1) = xaxis;
+		m.col(2) = yaxis;
+		this->view_.topLeftCorner(3, 3) = m;
+		this->view_.col(3) = FPoint4f(0.0f, 0.0f, 0.0f, 1.0f);
+		this->view_(3, 0) = -xaxis.dot(position);
+		this->view_(3, 1) = -yaxis.dot(position);
+		this->view_(3, 2) = -zaxis.dot(position);
+		this->view_(3, 3) = 1.0f;
 	}
 }
