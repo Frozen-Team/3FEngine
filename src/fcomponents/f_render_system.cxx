@@ -20,6 +20,7 @@ namespace fengine
 	void FRenderSystem::SetActiveScene(FShared<FScene> scene)
 	{
 		active_scene_ = scene;
+		renderer_->BufferizeScene(scene);
 	}
 
 	void FRenderSystem::SetActiveCamera(FShared<FCamera> camera)

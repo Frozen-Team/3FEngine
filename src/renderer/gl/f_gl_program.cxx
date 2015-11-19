@@ -7,7 +7,6 @@ namespace fengine
 {
 	FGlProgram::FGlProgram(): program_id_(0), ready_(false)
 	{
-		Create();
 	}
 
 	FGlProgram::~FGlProgram()
@@ -69,6 +68,25 @@ namespace fengine
 			DeleteProgram();
 			LOG(FATAL) << "Validate program error: \n" << FGlHelper::GetErrorsDescription();
 		}
+	}
+
+	void FGlProgram::Use()
+	{
+		glUseProgram(this->program_id_);
+	}
+
+	GLint FGlProgram::GetAtributeLocation(const FString& attrib)
+	{
+		GLint location = glGetAttribLocation(this->program_id_, attrib.c_str());
+		LOG_IF(location == -1, ERROR) << "Cannot get attribute location. Error: " << FGlHelper::GetErrorsDescription();
+		return location;
+	}
+
+	GLint FGlProgram::GetUniformLocation(const FString & uniform)
+	{
+		GLint location = glGetUniformLocation(this->program_id_, uniform.c_str());
+		LOG_IF(location == -1, ERROR) << "Cannot get uniform location. Error: " << FGlHelper::GetErrorsDescription();
+		return location;
 	}
 
 	void FGlProgram::Create()

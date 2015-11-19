@@ -3,14 +3,17 @@
 
 namespace fengine
 {
-	FCamera::FCamera()
+	FCamera::FCamera() : view_(Eigen::MatrixXf::Zero(4, 4)), projection_(Eigen::MatrixXf::Zero(4, 4)),
+		view_projection_(Eigen::MatrixXf::Zero(4, 4))
 	{
 		this->set_type(FEntityType::kCamera);
 		this->ResetSecondaryAttrToDefault();
 	}
-
+	// TODO: Fields init
 	FCamera::FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
-		: FEntity(id, name, FEntityType::kCamera, transition, rotation, scale)
+		: FEntity(id, name, FEntityType::kCamera, transition, rotation, scale), 
+		view_(Eigen::MatrixXf::Zero(4, 4)), projection_(Eigen::MatrixXf::Zero(4, 4)),
+		view_projection_(Eigen::MatrixXf::Zero(4, 4))
 	{
 		this->ResetSecondaryAttrToDefault();
 	}
@@ -59,6 +62,8 @@ namespace fengine
 		this->view_(3, 1) = -yaxis.dot(position);
 		this->view_(3, 2) = -zaxis.dot(position);
 		this->view_(3, 3) = 1.0f;
+
+		updateViewProjectionMatrix();
 	}
 
 	void FCamera::SetPerspective(const FAngle& fovy, float aspect, float z_near, float z_far)
@@ -148,7 +153,7 @@ namespace fengine
 
 	void FCamera::set_aspect_ratio(float aspect_ratio)
 	{
-		this->aspect_ratio_ = aspect_ratio_;
+		this->aspect_ratio_ = aspect_ratio;
 	}
 
 	void FCamera::set_target(const FPoint3f & target)
@@ -164,6 +169,6 @@ namespace fengine
 
 	void FCamera::updateViewProjectionMatrix()
 	{
-		this->view_projection_ = view_ * projection_;
+		this->view_projection_ =  projection_ * view_;
 	}
 }
