@@ -6,9 +6,20 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-// TODO: Make a debug flag for the OpenGL:
-// #define F_GL_DEBUG
-// with a macros for error checking
-// F_GL_CALL(statement)
+#include <fcomponents/f_logger.hpp>
+#include <renderer/gl/f_gl_helper.hpp>
+
+namespace fengine
+{
+#define F_GL_DEBUG
+
+#ifdef F_GL_DEBUG
+#define F_GL_CHECK(statement) statement; LOG_IF(FGlHelper::CheckErrors(), FATAL) << "OpenGL error:" << FGlHelper::GetErrorsDescription();
+#define F_GL_CHECK_M(statement, msg) statement; LOG_IF(FGlHelper::CheckErrors(), FATAL) << msg << " OpenGL error:" FGlHelper::GetErrorsDescription();
+#else
+#define F_GL_CHECK(statement) statement;
+#define F_GL_CHECK_M(statement, msg) statement;
+#endif
+}
 
 #endif // _3FENGINE_SRC_RENDERER_GL_F_GL_INCLUDE_HPP_

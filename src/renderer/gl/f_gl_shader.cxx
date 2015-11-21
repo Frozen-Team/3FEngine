@@ -25,7 +25,7 @@ namespace fengine
 	{
 		if (this->shader_id_ != 0)
 		{
-			glDeleteShader(this->shader_id_);
+			F_GL_CHECK(glDeleteShader(this->shader_id_));
 			this->shader_id_ = 0;
 		}
 	}
@@ -33,20 +33,20 @@ namespace fengine
 	void FGlShader::BindSource(const FString& src) const
 	{
 		auto source = src.c_str();
-		glShaderSource(this->shader_id_, 1, &source, nullptr);
+		F_GL_CHECK(glShaderSource(this->shader_id_, 1, &source, nullptr));
 	}
 
 	void FGlShader::Compile() const
 	{
-		glCompileShader(this->shader_id_);
+		F_GL_CHECK(glCompileShader(this->shader_id_));
 		auto compiled = GLint(0);
-		glGetShaderiv(this->shader_id_, GL_COMPILE_STATUS, &compiled);
+		F_GL_CHECK(glGetShaderiv(this->shader_id_, GL_COMPILE_STATUS, &compiled));
 		if (compiled == GL_FALSE)
 		{
 			auto log_length = GLint(0);
-			glGetShaderiv(this->shader_id_, GL_INFO_LOG_LENGTH, &log_length);
+			F_GL_CHECK(glGetShaderiv(this->shader_id_, GL_INFO_LOG_LENGTH, &log_length));
 			FString log_str(log_length, ' ');
-			glGetShaderInfoLog(this->shader_id_, log_length, &log_length, &log_str[0]);
+			F_GL_CHECK(glGetShaderInfoLog(this->shader_id_, log_length, &log_length, &log_str[0]));
 			LOG(FATAL) << "Shader object compilation error:\n" << log_str; 
 		}
 	}
@@ -54,12 +54,12 @@ namespace fengine
 	void FGlShader::Create()
 	{
 		LOG_IF(shader_id_ != 0, FATAL) << "Shader object is already created";
-		this->shader_id_ = glCreateShader(gl_shader_type_);
-		LOG_IF(this->shader_id_ == 0, FATAL) << "Cannot create shader object:\n" << (FGlHelper::CheckErrors() ? FGlHelper::GetLastErrors() : "No error description.");
+		F_GL_CHECK(this->shader_id_ = glCreateShader(gl_shader_type_));
+		LOG_IF(this->shader_id_ == 0, FATAL) << "Cannot create shader object.";
 		if (this->separable_)
 		{
 			// if GL_VERSION >= 4.1
-			glProgramParameteri(this->shader_id_, GL_PROGRAM_SEPARABLE, GL_TRUE);
+			F_GL_CHECK(glProgramParameteri(this->shader_id_, GL_PROGRAM_SEPARABLE, GL_TRUE));
 		}
 	}
 }

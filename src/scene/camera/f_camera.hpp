@@ -29,14 +29,20 @@ namespace fengine {
 		void set_fovy(const FAngle& angle);
 		void set_aspect_ratio(float aspect_ratio);
 
+		// TODO: A LOT OF TODOS!!
+		FPoint3f& target() { return this->target_point_; }
+
+		Eigen::Vector3f view_direction() { return Eigen::Vector3f(GetTransition() - target()).normalized(); }
+
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		FMatrix4f& view() noexcept { return view_; }
 		FMatrix4f& projection() noexcept { return projection_; }
 		FPoint2f& aperture() noexcept { return aperture_; }
 		float film_aspect_ratio() const noexcept { return film_aspect_ratio_; }
 
-	private:
 		void updateViewProjectionMatrix();
+	private:
+		
 		void UpdateViewMatrix();
 		void UpdateOrtho();
 

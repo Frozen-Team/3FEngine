@@ -3,7 +3,10 @@
 
 namespace fengine
 {
-	FCamera::FCamera() : view_(Eigen::MatrixXf::Zero(4, 4)), projection_(Eigen::MatrixXf::Zero(4, 4)),
+	FCamera::FCamera() 
+		: 
+		view_(Eigen::Matrix4f::Zero(4, 4)), 
+		projection_(Eigen::MatrixXf::Zero(4, 4)),
 		view_projection_(Eigen::MatrixXf::Zero(4, 4))
 	{
 		this->set_type(FEntityType::kCamera);
@@ -12,8 +15,9 @@ namespace fengine
 	// TODO: Fields init
 	FCamera::FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
 		: FEntity(id, name, FEntityType::kCamera, transition, rotation, scale), 
-		view_(Eigen::MatrixXf::Zero(4, 4)), projection_(Eigen::MatrixXf::Zero(4, 4)),
-		view_projection_(Eigen::MatrixXf::Zero(4, 4))
+		view_(Eigen::Matrix4f::Zero(4, 4)), 
+		projection_(Eigen::Matrix4f::Zero(4, 4)),
+		view_projection_(Eigen::Matrix4f::Zero(4, 4))
 	{
 		this->ResetSecondaryAttrToDefault();
 	}
@@ -150,25 +154,21 @@ namespace fengine
 
 	void FCamera::updateViewProjectionMatrix()
 	{
-		this->view_projection_ = view_ * projection_;
+		this->view_projection_ =  projection_ * view_;
 	}
 
 	void FCamera::UpdateViewMatrix()
 	{
 		auto position = this->GetTransition();
-		auto zaxis = (position - target_point_).normalized();
-		auto xaxis = (up_vector_.cross(zaxis)).normalized();
-		auto yaxis = zaxis.cross(xaxis);
-		this->view_ = Eigen::MatrixXf::Zero(4, 4);
-		FMatrix3f m;
-		m.col(0) = zaxis;
-		m.col(1) = xaxis;
-		m.col(2) = yaxis;
-		this->view_.topLeftCorner(3, 3) = m;
-		this->view_.col(3) = FPoint4f(0.0f, 0.0f, 0.0f, 1.0f);
-		this->view_(3, 0) = -xaxis.dot(position);
-		this->view_(3, 1) = -yaxis.dot(position);
-		this->view_(3, 2) = -zaxis.dot(position);
-		this->view_(3, 3) = 1.0f;
+
+		FMatrix3f R;
+		R.col(2) = (position - target_point_).normalized();
+		R.col(0) = up_vector_.cross(R.col(2)).normalized();
+		R.col(1) = R.col(2).cross(R.col(0));
+		view_.topLeftCorner<3, 3>() = R.transpose();
+		view_.topRightCorner<3, 1>() = -R.transpose() * position;
+		view_(3, 3) = 1.0f;
+
+		updateViewProjectionMatrix();
 	}
 }

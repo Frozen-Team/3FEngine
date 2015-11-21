@@ -26,11 +26,11 @@ namespace fengine
 
 		void Validate();
 
-		void Use();
+		void Use() const;
 
-		GLint GetAtributeLocation(const FString& attrib);
+		GLint GetAtributeLocation(const FString& attrib) const;
 
-		GLint GetUniformLocation(const FString& uniform);
+		GLint GetUniformLocation(const FString& uniform) const;
 
 		void Create();
 

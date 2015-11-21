@@ -61,9 +61,10 @@ namespace fengine {
 		uint64_t id_;
 		FString name_;
 		FEntityType type_;
+		// TODO: Fix circular dependency
 		FShared<FEntity> parent_;
 		FVector<FShared<FEntity>> children_;
-		FShared<FTransformationMatrix> transformation_matrix_;
+		FTransformationMatrix transform_;
 	};
 }
 #endif // _3FENGINE_SRC_SCENE_F_ENTITY_

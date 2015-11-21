@@ -33,6 +33,7 @@ namespace fengine
 
 		struct geometry_
 		{
+			GLuint vao;
 			GLuint vbo;
 			GLuint ibo;
 			GLuint cbo;
