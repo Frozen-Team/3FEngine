@@ -6,7 +6,7 @@
 #include "fcomponents/f_logger.hpp"
 
 namespace fengine {
-	class FEntity : public FTransformationMatrix
+	class FEntity 
 	{
 	public:
 		enum class FEntityType
@@ -42,6 +42,14 @@ namespace fengine {
 		auto id() const { return this->id_; }
 		auto name() const { return this->name_; }
 
+		void SetTransition(const FPoint3f& transition);
+		void SetScale(const FPoint3f& scale);
+		void SetRotation(const FPoint3f& rotation);
+
+		FPoint3f GetTransition() const;
+		FPoint3f GetScale() const;
+		FPoint3f GetRotation() const;
+
 		template<typename T>
 		static FShared<FEntity> FindEntityById(const FVector<FShared<T>>& entity_vec, uint64_t id)
 		{
@@ -55,7 +63,7 @@ namespace fengine {
 		FEntityType type_;
 		FShared<FEntity> parent_;
 		FVector<FShared<FEntity>> children_;
-
+		FShared<FTransformationMatrix> transformation_matrix_;
 	};
 }
 #endif // _3FENGINE_SRC_SCENE_F_ENTITY_

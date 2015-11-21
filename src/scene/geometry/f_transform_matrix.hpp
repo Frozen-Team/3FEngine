@@ -5,16 +5,16 @@
 
 namespace fengine
 {
-	// transition.x		transition.y	 transition.z	0
-	// rotation.x		rotation.y		 rotation.z		0
-	// scale.x			scale.y			 scale.z		0
-	//      0				 0				  0			1
+	// transition.x		transition.y	transition.z	0
+	// rotation.x		rotation.y		rotation.z		0
+	// scale.x			scale.y			scale.z			0
+	//	0				0				0				1
 	//
 	//FPoint3f is column vector, be careful
 	class FTransformationMatrix
 	{
 	public:
-		enum Attribute 
+		enum Attribute
 		{
 			kTransition,
 			kRotation,
@@ -22,27 +22,17 @@ namespace fengine
 		};
 
 		FTransformationMatrix();
-		FTransformationMatrix(const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		virtual ~FTransformationMatrix() = default;
-
-		void SetTransition(const FPoint3f& transition);
-		void SetScale(const FPoint3f& scale);
-		void SetRotation(const FPoint3f& rotation);
 		
-		FPoint3f GetTransition() const;
-		FPoint3f GetScale() const;
-		FPoint3f GetRotation() const;
-		/*
-			Set each element to zero and the element in right bottom conner to 1.0f
-		*/
+		//Set each element to zero and the element in right bottom conner to 1.0f
 		void Reset();
-		FMatrix4f& value() { return this->value_; }
-	private:
-		
+		FMatrix4f data() const noexcept { return this->data_; }
+
 		void SetPointRow(int row, const FPoint3f& row_to_set);
-		FPoint3f GetPointRow(int row) const;
+		FPoint3f GetPoint3fRow(int row) const;
+
 	private:
-		FMatrix4f value_;
+		FMatrix4f data_;
 	};
 }
 #endif // _3FENGINE_SRC_SCENE_GEOMETRY_F_TRANSFORMATION_MATRIX_HPP

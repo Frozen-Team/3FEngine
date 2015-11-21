@@ -2,7 +2,6 @@
 #define _3FENGINE_SRC_SCENE_MESH_F_MESH_LOD_HPP_
 
 #include "scene/geometry/f_geometry.hpp"
-#include "scene/mesh/f_range.hpp"
 #include "utils/f_typedefs.hpp"
 
 /*

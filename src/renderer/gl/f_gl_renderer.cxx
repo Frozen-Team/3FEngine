@@ -73,19 +73,19 @@ namespace fengine
 
 			auto geometry = mesh->GetGeometry(0.0f);
 
-			auto& v = geometry->vertices().vertices();
+			auto& v = geometry->vertices().data();
 
 			glGenBuffers(1, &vbo);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(float), v.data(), GL_STATIC_DRAW);
 			LOG_IF(FGlHelper::CheckErrors(), FATAL) << "OpenGL error: " << FGlHelper::GetLastErrors();
-			auto& i = geometry->indices().vertices();
+			auto& i = geometry->indices().data();
 
 			glGenBuffers(1, &ibo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, i.size() * sizeof(float), i.data(), GL_STATIC_DRAW);
 			LOG_IF(FGlHelper::CheckErrors(), FATAL) << "OpenGL error: " << FGlHelper::GetLastErrors();
-			auto& c = geometry->uvs().vertices();
+			auto& c = geometry->uvs().data();
 
 			glGenBuffers(1, &cbo);
 			glBindBuffer(GL_ARRAY_BUFFER, cbo);
