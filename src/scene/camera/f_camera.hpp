@@ -32,7 +32,7 @@ namespace fengine {
 		// TODO: A LOT OF TODOS!!
 		FPoint3f& target() { return this->target_point_; }
 
-		Eigen::Vector3f view_direction() { return Eigen::Vector3f(GetTransition() - target()).normalized(); }
+		Eigen::Vector3f view_direction() { return Eigen::Vector3f(view_.block<3, 1>(0, 3) - target()).normalized(); }
 
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		FMatrix4f& view() noexcept { return view_; }

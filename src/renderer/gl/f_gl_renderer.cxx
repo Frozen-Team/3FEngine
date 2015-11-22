@@ -67,42 +67,43 @@ namespace fengine
 		this->scene_ = scene;
 		for (auto mesh : scene_->GetMeshes())
 		{
-			GLuint vbo = 0;
-			GLuint ibo = 0;
-			GLuint cbo = 0;
+			GLuint vao = 0;
+			F_GL_CHECK(glGenVertexArrays(1, &vao));
+			F_GL_CHECK(glBindVertexArray(vao));
 
 			auto geometry = mesh->GetGeometry(0.0f);
 
 			auto& v = geometry->vertices().data();
 
+			GLuint vbo = 0;
+			GLuint ibo = 0;
+			GLuint cbo = 0;
+
 			F_GL_CHECK(glGenBuffers(1, &vbo));
 			F_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, vbo));
-			F_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(float), v.data(), GL_STATIC_DRAW));
-			auto& i = geometry->indices().data();
-
-			F_GL_CHECK(glGenBuffers(1, &ibo));
-			F_GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-			F_GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, i.size() * sizeof(float), i.data(), GL_STATIC_DRAW));
+			F_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(GLfloat), v.data(), GL_STATIC_DRAW));
+			F_GL_CHECK(glVertexAttribPointer(vertex_loc_, 3, GL_FLOAT, GL_FALSE, 0, 0));
+			F_GL_CHECK(glEnableVertexAttribArray(vertex_loc_));
+			
 			auto& c = geometry->uvs().data();
 
 			F_GL_CHECK(glGenBuffers(1, &cbo));
 			F_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, cbo));
-			F_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, c.size() * sizeof(float), c.data(), GL_STATIC_DRAW));
-
-			GLuint vao = 0;
-			F_GL_CHECK(glGenVertexArrays(1, &vao));
-			F_GL_CHECK(glBindVertexArray(vao));
-
-			F_GL_CHECK(glEnableVertexAttribArray(vertex_loc_));
-			F_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, vbo));
-			F_GL_CHECK(glVertexAttribPointer(vertex_loc_, 3, GL_FLOAT, GL_FALSE, 0, 0));
-
-			F_GL_CHECK(glEnableVertexAttribArray(vertex_color_loc_));
-			F_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, cbo));
+			F_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, c.size() * sizeof(GLfloat), c.data(), GL_STATIC_DRAW));
 			F_GL_CHECK(glVertexAttribPointer(vertex_color_loc_, 3, GL_FLOAT, GL_FALSE, 0, nullptr));
+			F_GL_CHECK(glEnableVertexAttribArray(vertex_color_loc_));
 
-			F_GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+			auto& i = geometry->indices().data();
 
+			//F_GL_CHECK(glGenBuffers(1, &ibo));
+			//F_GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+			//F_GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, i.size() * sizeof(GLuint), i.data(), GL_STATIC_DRAW));
+
+			glEnableVertexAttribArray(0);
+			glBindVertexArray(0);
+			//F_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, vbo));			
+			//F_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, cbo));
+			//F_GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
 
 			geometries_.push_back({ vao, vbo, ibo, cbo, geometry });
 		}
@@ -110,6 +111,7 @@ namespace fengine
 		F_GL_CHECK(glUniformMatrix4fv(mvp_loc_, 1, GL_FALSE, scene_->GetCameras().at(0)->view_projection().data()));
 		auto d = scene->GetCameras().at(0)->view_projection();
 		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		
 	}
 
 	void FGlRenderer::RenderFrame(float delta)
@@ -121,8 +123,12 @@ namespace fengine
 		for (auto it = geometries_.begin(); it != geometries_.end(); ++it)
 		{
 			F_GL_CHECK(glUniformMatrix4fv(mvp_loc_, 1, GL_FALSE, scene_->GetCameras().at(0)->view_projection().data()));
-			glBindVertexArray(it->vao);
-			glDrawArrays(GL_TRIANGLES, 0, 24);
+			F_GL_CHECK(glBindVertexArray(it->vao));
+			F_GL_CHECK(glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, it->geometry->indices().data().data()));
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->ibo);
+			//glDrawArrays(GL_TRIANGLES, 0, 12);
+
+			glBindVertexArray(0);
 			
 			/*int size;
 			F_GL_CHECK(glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size));
