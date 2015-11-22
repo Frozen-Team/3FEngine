@@ -1,6 +1,6 @@
 #include "cube_one.hpp"
 
-CubeOne::CubeOne()
+CubeOne::CubeOne() : fengine::FMesh(0, "")
 {
 	fengine::FVertices3f vertices;
 	vertices.Add({

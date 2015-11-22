@@ -2,7 +2,7 @@
 
 namespace fengine {
 	// TODO: Proper initialization!
-	FEntity::FEntity() : id_(0), type_(FEntityType::kNull) {}
+	FEntity::FEntity(const FEntityType& type, uint64_t id, const FString& name) : id_(id), type_(type), name_(name) {}
 
 	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
 		name_(name), type_(type), parent_(nullptr)

@@ -25,7 +25,7 @@ namespace fengine {
 		const_iterator cend() const { return children_.cend(); }
 
 		virtual ~FEntity() = default;
-		FEntity();
+		explicit FEntity(const FEntityType& type, uint64_t id, const FString& name);
 		FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		void AddChild(FShared<FEntity> child);
 
@@ -57,6 +57,8 @@ namespace fengine {
 			auto result = std::find_if(entity_vec.cbegin(), entity_vec.cend(), [id](FShared<T> el) { return el->id() == id; });
 			return (result == entity_vec.cend()) ? nullptr : std::static_pointer_cast<FEntity>(*result);
 		}
+	protected:
+		FMatrix4f view_;
 	private:
 		uint64_t id_;
 		FString name_;
