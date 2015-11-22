@@ -15,6 +15,7 @@ namespace fengine {
 		void ResetSecondaryAttrToDefault();
 		void LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up = { 0.0f, 1.0f, 0.0f });
 		void LookAt(const FPoint3f& target);
+		void LookAt(FShared<FEntity> target);
 		void SetPerspective(const FAngle& fovy, float aspect, float z_near, float z_far);
 		void UpdatePerspective();
 		void SetOrtho(float left, float right, float bottom, float top);
@@ -28,10 +29,6 @@ namespace fengine {
 		void set_fovy(const FAngle& angle);
 		void set_aspect_ratio(float aspect_ratio);
 
-
-		void set_target(const FPoint3f& target);
-		void set_target(FShared<FEntity> target);
-
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		FMatrix4f& view() noexcept { return view_; }
 		FMatrix4f& projection() noexcept { return projection_; }
@@ -39,16 +36,16 @@ namespace fengine {
 		float film_aspect_ratio() const noexcept { return film_aspect_ratio_; }
 
 	private:
+		void updateViewProjectionMatrix();
+		void UpdateViewMatrix();
 		void UpdateOrtho();
-
-		void updateViewProjectionMatrix();	
 
 	private:
 		FMatrix4f view_;
 		FMatrix4f projection_;
 		FMatrix4f view_projection_;
 
-		FPoint3f upVector;
+		FPoint3f up_vector_;
 
 		// if the camera has aim, bind an aimed entity to target_entity_ field
 		// in this case target_point_ will be set to a transition value of the target_entity_

@@ -1,3 +1,15 @@
+### 15.11.2015
+OlehGol260
+
+ - Make all load functions in Resource loader as static
+ - Add functionality to specify a scene where a content of fbx file will be stored
+
+### 14.11.2015
+OlehGol260
+
+ - Add functionality for aim cameras. Now camera can look at entity, not only at constant point
+ - Add restrictions for LOD groups
+
 ### 11.11.2015
 OlehGol260
 
