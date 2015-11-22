@@ -1,19 +1,19 @@
 #include "cube_one.hpp"
 
-CubeOne::CubeOne()
+CubeOne::CubeOne() : fengine::FMesh(0, "")
 {
 	fengine::FVertices3f vertices;
 	vertices.Add({
 		// front
-		-1.0, -1.0,  1.0,
-		1.0, -1.0,  1.0,
-		1.0,  1.0,  1.0,
-		-1.0,  1.0,  1.0,
+		-0.3f, -0.3f,  0.3f,
+		0.3f, -0.3f,  0.3f,
+		0.3f,  0.3f,  0.3f,
+		-0.3f,  0.3f,  0.3f,
 		// back
-		-1.0, -1.0, -1.0,
-		1.0, -1.0, -1.0,
-		1.0,  1.0, -1.0,
-		-1.0,  1.0, -1.0,
+		-0.3f, -0.3f, -0.3f,
+		0.3f, -0.3f, -0.3f,
+		0.3f,  0.3f, -0.3f,
+		-0.3f,  0.3f, -0.3f,
 	});
 	fengine::FIndices3 indices;
 	indices.Add(

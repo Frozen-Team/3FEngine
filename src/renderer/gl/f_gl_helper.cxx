@@ -12,45 +12,56 @@ namespace fengine {
 	FString FGlHelper::last_errors_;
 	FString FGlHelper::gl_vendor_;
 	FString FGlHelper::gl_renderer_;
+	int FGlHelper::major_ = 0;
+	int FGlHelper::minor_ = 0;
 	FString FGlHelper::gl_ver_;
 	FString FGlHelper::gl_shading_lang_ver_;
+	bool FGlHelper::was_error_ = false;
 
 	FGlHelper::FGlHelper()
 	{
+		LOG(INFO) << "FGlHelper ctor";
 		glewExperimental = GL_TRUE;
 		auto err = GLEW_OK;
+		// TODO: glew uses deprecated gl call glGetString(GL_EXTENSIONS). Update to newer version.
 		LOG_IF((err = glewInit()) != GLEW_OK, FATAL) << "GLEW initialization error: " << glewGetErrorString(err);
+		// ... workaround for now
+		auto swallow_err = glGetError();
 
 		last_errors_.reserve(256);
 		// TODO: Assert OpenGL version
-		glGetIntegerv(GL_MAJOR_VERSION, &this->major_);
-		glGetIntegerv(GL_MAJOR_VERSION, &this->minor_);
-		// TODO:Assign if not nullptr!
+		F_GL_CHECK(glGetIntegerv(GL_MAJOR_VERSION, &major_));
+		F_GL_CHECK(glGetIntegerv(GL_MAJOR_VERSION, &minor_));
+		LOG_IF(major_ < 4, FATAL) << "OpenGL 4.x required!";
 		// Get vendor string
-		auto vendor_str = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+		F_GL_CHECK(auto vendor_str = reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
 		LOG_IF(vendor_str == nullptr, ERROR);
 		gl_vendor_.assign(vendor_str);
 		// Get renderer string
-		auto renderer_str = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+		F_GL_CHECK(auto renderer_str = reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
 		LOG_IF(renderer_str == nullptr, ERROR);
 		gl_renderer_.assign(renderer_str);
 		// Get shading language version string
-		auto shading_lang_ver = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+		F_GL_CHECK(auto shading_lang_ver = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
 		LOG_IF(shading_lang_ver == nullptr, ERROR);
 		gl_shading_lang_ver_.assign(shading_lang_ver);
 		// Get OpenGL version string
-		auto gl_ver_str = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+		F_GL_CHECK(auto gl_ver_str = reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 		LOG_IF(gl_ver_str == nullptr, ERROR);
-		gl_ver_.assign(reinterpret_cast<const char*>(gl_ver_str));
 		auto num_extensions = 0;
-		glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
+		F_GL_CHECK(glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions));
 		this->exts_supported_.reserve(num_extensions);
 		for (auto i = 0; i < num_extensions; i++)
 		{
-			this->exts_supported_.push_back(futils::ToLower(reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i))));
+			F_GL_CHECK(this->exts_supported_.push_back(futils::ToLower(reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)))));
 		}
 		LOG(INFO) << "\tVendor:\t" << gl_vendor_ << "\n\tRenderer:\t" << gl_renderer_ << "\n\tGLSL ver.:\t" <<
 			gl_shading_lang_ver_ << "\n\tGL ver.:\t" << gl_ver_ << "\n\tExtensions:\t" << num_extensions;
+	}
+
+	FGlHelper::~FGlHelper()
+	{
+		LOG(INFO) << "FGlHelper dtor";
 	}
 
 	bool FGlHelper::IsExtensionSupported(const FString & ext_name)
@@ -74,18 +85,18 @@ namespace fengine {
 	{
 		last_errors_.clear();
 		GLenum err = GL_NO_ERROR;
-		auto was_error = false;
+		was_error_ = false;
 		while ((err = glGetError()) != GL_NO_ERROR)
 		{
-			was_error = true;
+			was_error_ = true;
 			last_errors_ += GetGlErrorDescription(err) + "\n";
 		}
-		return was_error;
+		return was_error_;
 	}
 
 	FString FGlHelper::GetErrorsDescription()
 	{
-		return CheckErrors() ? GetLastErrors() : "No error description.";
+		return was_error_ ? GetLastErrors() : "No error.";
 	}
 
 	FString FGlHelper::GetGlErrorDescription(GLenum err)
@@ -93,23 +104,23 @@ namespace fengine {
 		switch (err)
 		{
 		case GL_NO_ERROR:
-			return "OGL: No error.";
+			return "No error.";
 		case GL_INVALID_ENUM:
-			return "OGL: Invalid enum.";
+			return "Invalid enum.";
 		case GL_INVALID_VALUE:
-			return "OGL: Invalid value.";
+			return "Invalid value.";
 		case GL_INVALID_OPERATION:
-			return "OGL: Invalid operation.";
+			return "Invalid operation.";
 		case GL_STACK_OVERFLOW:
-			return "OGL: Stack overflow.";
+			return "Stack overflow.";
 		case GL_STACK_UNDERFLOW:
-			return "OGL: Stack underflow.";
+			return "Stack underflow.";
 		case GL_OUT_OF_MEMORY:
-			return "OGL: Out of memory.";
+			return "Out of memory.";
 		case GL_INVALID_FRAMEBUFFER_OPERATION:
-			return "OGL: Invalid framebuffer operation.";
+			return "Invalid framebuffer operation.";
 		case GL_CONTEXT_LOST:
-			return "OGL: Context lost due to a graphics card reset.";
+			return "Context lost due to a graphics card reset.";
 			//case GL_TABLE_TOO_LARGE:
 		default:
 			return "";

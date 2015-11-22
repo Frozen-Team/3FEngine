@@ -1,4 +1,4 @@
-#version 420
+#version 440
 in vec3 f_color;
 
 void main(void)

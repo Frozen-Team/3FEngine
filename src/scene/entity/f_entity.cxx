@@ -1,12 +1,16 @@
 #include "scene/entity/f_entity.hpp"
 
 namespace fengine {
-	FEntity::FEntity() : id_(0), type_(FEntityType::kNull) {}
+	// TODO: Proper initialization!
+	FEntity::FEntity(const FEntityType& type, uint64_t id, const FString& name) : id_(id), type_(type), name_(name) {}
 
 	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
-		FTransformationMatrix(transition, rotation, scale), name_(name), type_(type), parent_(nullptr)
+		name_(name), type_(type), parent_(nullptr)
 	{
 		this->set_id(id);
+		this->SetTransition(transition);
+		this->SetRotation(rotation);
+		this->SetScale(scale);
 	}
 
 	void FEntity::AddChild(FShared<FEntity> child)
@@ -59,4 +63,30 @@ namespace fengine {
 	{
 		this->type_ = type;
 	}
+
+	void FEntity::SetTransition(const FPoint3f & transition)
+	{
+		transform_.SetPointRow(FTransformationMatrix::Attribute::kTransition, transition);
+	}
+	void FEntity::SetRotation(const FPoint3f & rotation)
+	{
+		transform_.SetPointRow(FTransformationMatrix::Attribute::kRotation, rotation);
+	}
+	void FEntity::SetScale(const FPoint3f & scale)
+	{
+		transform_.SetPointRow(FTransformationMatrix::Attribute::kScale, scale);
+	}
+	FPoint3f FEntity::GetTransition() const
+	{
+		return transform_.GetPoint3fRow(FTransformationMatrix::Attribute::kTransition);
+	}
+	FPoint3f FEntity::GetRotation() const
+	{
+		return transform_.GetPoint3fRow(FTransformationMatrix::Attribute::kRotation);
+	}
+	FPoint3f FEntity::GetScale() const
+	{
+		return transform_.GetPoint3fRow(FTransformationMatrix::Attribute::kScale);
+	}
+
 }

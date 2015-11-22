@@ -7,7 +7,6 @@ namespace fengine
 {
 	FGlProgram::FGlProgram(): program_id_(0), ready_(false)
 	{
-		Create();
 	}
 
 	FGlProgram::~FGlProgram()
@@ -18,16 +17,15 @@ namespace fengine
 	void FGlProgram::AttachShader(const FGlShader& shader)
 	{
 		auto shader_id = shader.GetShaderId();
-		glAttachShader(this->program_id_, shader_id);
-		LOG_IF(FGlHelper::CheckErrors(), FATAL) << "Attach shader error:\n" << FGlHelper::GetErrorsDescription();
+		F_GL_CHECK(glAttachShader(this->program_id_, shader_id));
 		attached_shaders_.push_back(shader_id);
 	}
 
 	void FGlProgram::LinkProgram()
 	{
-		glLinkProgram(this->program_id_);
+		F_GL_CHECK(glLinkProgram(this->program_id_));
 		auto link_status = GLint(0);
-		glGetProgramiv(this->program_id_, GL_LINK_STATUS, &link_status);
+		F_GL_CHECK(glGetProgramiv(this->program_id_, GL_LINK_STATUS, &link_status));
 		if (link_status == GL_FALSE)
 		{
 			DeleteProgram();
@@ -39,10 +37,10 @@ namespace fengine
 	{
 		if (this->program_id_ != 0)
 		{
-			glDeleteProgram(this->program_id_);
+			F_GL_CHECK(glDeleteProgram(this->program_id_));
 			auto delete_status = GLint(0);
-			glGetProgramiv(this->program_id_, GL_DELETE_STATUS, &delete_status);
-			LOG_IF(delete_status == GL_FALSE, ERROR) << "Delete program object error:\n" << FGlHelper::GetErrorsDescription();
+			F_GL_CHECK(glGetProgramiv(this->program_id_, GL_DELETE_STATUS, &delete_status));
+			LOG_IF(delete_status == GL_FALSE, ERROR) << "Delete program object error";
 			this->program_id_ = 0;
 		}
 	}
@@ -51,7 +49,7 @@ namespace fengine
 	{
 		for (auto& shader : attached_shaders_)
 		{
-			glDetachShader(program_id_, shader);
+			F_GL_CHECK(glDetachShader(program_id_, shader));
 			if (FGlHelper::CheckErrors())
 			{
 				LOG(FATAL) << "Attach shader error:\n" << FGlHelper::GetErrorsDescription();
@@ -61,14 +59,33 @@ namespace fengine
 
 	void FGlProgram::Validate()
 	{
-		glValidateProgram(program_id_);
+		F_GL_CHECK(glValidateProgram(program_id_));
 		auto validate_status = GLint(0);
-		glGetProgramiv(this->program_id_, GL_VALIDATE_STATUS, &validate_status);
+		F_GL_CHECK(glGetProgramiv(this->program_id_, GL_VALIDATE_STATUS, &validate_status));
 		if (validate_status == GL_FALSE)
 		{
 			DeleteProgram();
 			LOG(FATAL) << "Validate program error: \n" << FGlHelper::GetErrorsDescription();
 		}
+	}
+
+	void FGlProgram::Use() const
+	{
+		F_GL_CHECK(glUseProgram(this->program_id_));
+	}
+
+	GLint FGlProgram::GetAtributeLocation(const FString& attrib) const
+	{
+		F_GL_CHECK(auto location = glGetAttribLocation(this->program_id_, attrib.c_str()));
+		LOG_IF(location == -1, ERROR) << "Cannot get attribute location. Error: " << FGlHelper::GetErrorsDescription();
+		return location;
+	}
+
+	GLint FGlProgram::GetUniformLocation(const FString & uniform) const
+	{
+		F_GL_CHECK(auto location = glGetUniformLocation(this->program_id_, uniform.c_str()));
+		LOG_IF(location == -1, ERROR) << "Cannot get uniform location. Error: " << FGlHelper::GetErrorsDescription();
+		return location;
 	}
 
 	void FGlProgram::Create()

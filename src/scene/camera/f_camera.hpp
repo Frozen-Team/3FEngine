@@ -8,17 +8,21 @@
 namespace fengine {
 	class FCamera : public FEntity
 	{
+		enum class ProjectionType
+		{
+			kOrtho,
+			kPerspective
+		};
 	public:
 		FCamera();
 		explicit FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 
-		void ResetSecondaryAttrToDefault();
 		void LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up = { 0.0f, 1.0f, 0.0f });
 		void LookAt(const FPoint3f& target);
 		void LookAt(FShared<FEntity> target);
-		void SetPerspective(const FAngle& fovy, float aspect, float z_near, float z_far);
+		void SetPerspective(const FAngle& fovy, float aspect, float znear, float zfar);
 		void UpdatePerspective();
-		void SetOrtho(float left, float right, float bottom, float top);
+		void SetOrtho(float left, float right, float bottom, float top, float zfar, float znear);
 
 		void set_aperture(const FPoint2f& apperture);
 		void set_aperture(float width, float height);
@@ -29,19 +33,24 @@ namespace fengine {
 		void set_fovy(const FAngle& angle);
 		void set_aspect_ratio(float aspect_ratio);
 
+		// TODO: A LOT OF TODOS!!
+		FPoint3f& target() { return this->target_point_; }
+
+		Eigen::Vector3f view_direction() { return Eigen::Vector3f(view_.block<3, 1>(0, 3) - target()).normalized(); }
+
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		FMatrix4f& view() noexcept { return view_; }
 		FMatrix4f& projection() noexcept { return projection_; }
 		FPoint2f& aperture() noexcept { return aperture_; }
 		float film_aspect_ratio() const noexcept { return film_aspect_ratio_; }
 
-	private:
 		void updateViewProjectionMatrix();
-		void UpdateViewMatrix();
+	private:
+
 		void UpdateOrtho();
 
 	private:
-		FMatrix4f view_;
+		ProjectionType proj_type_;
 		FMatrix4f projection_;
 		FMatrix4f view_projection_;
 

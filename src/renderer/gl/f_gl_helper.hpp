@@ -19,7 +19,7 @@ namespace fengine {
 	public:
 		FGlHelper();
 
-		virtual ~FGlHelper() = default;
+		virtual ~FGlHelper();
 		
 		static bool IsExtensionSupported(const FString& ext_name);
 
@@ -41,8 +41,9 @@ namespace fengine {
 		static FString gl_renderer_;
 		static FString gl_ver_;
 		static FString gl_shading_lang_ver_;
-		int major_;
-		int minor_;
+		static int major_;
+		static int minor_;
+		static bool was_error_;
 		static FString last_errors_;
 	};
 }

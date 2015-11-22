@@ -52,7 +52,7 @@ namespace fengine
 	using FVertices3f = FVertices<float, 3>;
 	using FVertex3f = FVertices3f::Vertex;	
 
-	using FIndices3 = FVertices<int, 3>;
+	using FIndices3 = FVertices<unsigned short, 3>;
 	using FUvsf = FVertices<float, 2>;
 
 	template<typename T>

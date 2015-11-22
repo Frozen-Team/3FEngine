@@ -15,7 +15,7 @@ namespace fengine
 	{
 	public:
 		F_DEFAULT_CTOR_V_DTOR(FScene)
-
+		// TODO: Make EntityId class for storing entity id.
 		FShared<FEntity> FindEntityById(uint64_t id) const;
 
 		void Add(FShared<FMesh> mesh) { this->meshes_.push_back(move(mesh)); }
@@ -25,6 +25,7 @@ namespace fengine
 		// Workaround
 		FVector<FShared<FCamera> >& GetCameras() { return cameras_; }
 		FVector<FShared<FMesh> >& GetMeshes() { return meshes_; }
+		
 		//void set_busy() { is_loaded_.store(false); }
 		//void set_free() { is_loaded_.store(true); }
 		//bool is_loaded() const { return is_loaded_.load(); }

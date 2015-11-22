@@ -26,8 +26,16 @@ namespace fengine
 
 		void Validate();
 
-	private:
+		void Use() const;
+
+		GLint GetAtributeLocation(const FString& attrib) const;
+
+		GLint GetUniformLocation(const FString& uniform) const;
+
 		void Create();
+
+	private:
+		
 
 	private:
 		GLuint program_id_;

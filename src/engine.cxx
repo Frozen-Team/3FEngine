@@ -56,6 +56,8 @@ namespace fengine
 
 	Engine::~Engine()
 	{
+		FRenderSystem::Release();
+		FScenesManager::Release();
 		FResourceLoader::Release();
 		FEventsManager::Release();
 		FSdlHelper::Release();
