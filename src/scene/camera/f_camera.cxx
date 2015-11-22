@@ -1,15 +1,16 @@
 #include "f_camera.hpp"
 #include <limits>
 #include "utils/f_utils.hpp"
+#include <utils/f_entity_id_manager.hpp>
 
 namespace fengine
 {
 	// TODO: Retrieve id, name
-	FCamera::FCamera() : FCamera(0, "", FPoint3f::Zero(), FPoint3f::Zero(), FPoint3f(1.0f, 1.0f, 1.0f))
+	FCamera::FCamera(const FEntityId& id) : FCamera(id, FPoint3f::Zero(), FPoint3f::Zero(), FPoint3f(1.0f, 1.0f, 1.0f))
 	{}
 
-	FCamera::FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
-		: FEntity(id, name, FEntityType::kCamera, transition, rotation, scale)
+	FCamera::FCamera(const FEntityId& id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale)
+		: FEntity(id, FEntityType::kCamera, transition, rotation, scale)
 	{
 		view_ = Eigen::Matrix4f::Zero(4, 4);
 		this->proj_type_ = ProjectionType::kPerspective;

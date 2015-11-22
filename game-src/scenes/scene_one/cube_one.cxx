@@ -1,6 +1,7 @@
 #include "cube_one.hpp"
+#include "utils/f_entity_id_manager.hpp"
 
-CubeOne::CubeOne() : fengine::FMesh(0, "")
+CubeOne::CubeOne() : fengine::FMesh(fengine::FEntityIdManager::GenerateId())
 {
 	fengine::FVertices3f vertices;
 	vertices.Add({
@@ -52,6 +53,6 @@ CubeOne::CubeOne() : fengine::FMesh(0, "")
 		1.0, 1.0, 1.0,
 	});
 
-	auto geometry = std::make_unique<fengine::FGeometry>(vertices, indices, colors);
+	auto geometry = std::make_unique<fengine::FGeometry>(vertices, indices, colors, fengine::FVertices3f());
 	AddLod(0.1f, std::move(geometry));
 }

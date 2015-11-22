@@ -73,7 +73,7 @@ namespace fengine
 
 			auto geometry = mesh->GetGeometry(0.0f);
 
-			auto& v = geometry->vertices().data();
+			auto& v = geometry->vertices().vec();
 
 			GLuint vbo = 0;
 			GLuint ibo = 0;
@@ -93,7 +93,7 @@ namespace fengine
 			//F_GL_CHECK(glVertexAttribPointer(vertex_color_loc_, 3, GL_FLOAT, GL_FALSE, 0, nullptr));
 			//F_GL_CHECK(glEnableVertexAttribArray(vertex_color_loc_));
 
-			auto& i = geometry->indices().data();
+			auto& i = geometry->indices().vec();
 
 			//F_GL_CHECK(glGenBuffers(1, &ibo));
 			//F_GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
@@ -121,7 +121,7 @@ namespace fengine
 		{
 			F_GL_CHECK(glUniformMatrix4fv(mvp_loc_, 1, GL_FALSE, scene_->GetCameras().at(0)->view_projection().data()));
 			F_GL_CHECK(glBindVertexArray(it->vao));
-			F_GL_CHECK(glDrawElements(GL_TRIANGLES, it->geometry->indices().data().size(), GL_UNSIGNED_SHORT, it->geometry->indices().data().data()));
+			F_GL_CHECK(glDrawElements(GL_TRIANGLES, it->geometry->indices().vec().size(), GL_UNSIGNED_SHORT, it->geometry->indices().vec().data()));
 			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, it->ibo);
 			//glDrawArrays(GL_TRIANGLES, 0, 12);
 

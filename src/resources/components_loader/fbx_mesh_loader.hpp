@@ -15,7 +15,8 @@ namespace fengine
 
 		FVertices3f LoadVertices() const;
 		FIndices3 LoadIndices() const;
-		FUvsf LoadUvs();
+		FUvsf LoadUvs() const;
+		FVertices3f LoadNormals() const;
 	};
 }
 

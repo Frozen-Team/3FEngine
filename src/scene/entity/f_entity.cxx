@@ -1,13 +1,14 @@
 #include "scene/entity/f_entity.hpp"
+#include <utils/f_entity_id_manager.hpp>
 
 namespace fengine {
-	// TODO: Proper initialization!
-	FEntity::FEntity(const FEntityType& type, uint64_t id, const FString& name) : id_(id), type_(type), name_(name) {}
 
-	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
-		name_(name), type_(type), parent_(nullptr)
+	// TODO: Proper initialization!
+	FEntity::FEntity(const FEntityId& id, const FEntityType& type) : id_(id), type_(type) {}
+
+	FEntity::FEntity(const FEntityId& id, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) : id_(id),
+		 type_(type), parent_(nullptr)
 	{
-		this->set_id(id);
 		this->SetTransition(transition);
 		this->SetRotation(rotation);
 		this->SetScale(scale);
@@ -16,7 +17,7 @@ namespace fengine {
 	void FEntity::AddChild(FShared<FEntity> child)
 	{
 		LOG_IF(child == nullptr, FATAL) << "Attempt to set an invalid child";
-		LOG_IF(!child->HasParent() || child->parent()->id() != id_, FATAL) << "Invalid parent of a child. Parent has to be set before passing to AddChild";
+		LOG_IF(!child->HasParent() || child->parent()->id() != id_.data(), FATAL) << "Invalid parent of a child. Parent has to be set before passing to AddChild";
 		this->children_.push_back(child);
 	}
 
@@ -42,21 +43,10 @@ namespace fengine {
 		return this->parent_ != nullptr;
 	}
 
-	void FEntity::set_name(const FString& name)
-	{
-		this->name_ = name;
-	}
-
 	void FEntity::set_parent(FShared<FEntity> parent)
 	{
 		LOG_IF(parent == nullptr, FATAL) << "Attempt to set an invalid parent";
 		this->parent_ = parent;
-	}
-
-	void FEntity::set_id(uint64_t id)
-	{
-		LOG_IF(id < 0, FATAL) << "Unique id must be >= 0";
-		this->id_ = id;
 	}
 
 	void FEntity::set_type(FEntityType type)

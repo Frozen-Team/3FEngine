@@ -4,6 +4,7 @@
 #include "utils/f_typedefs.hpp"
 #include "scene/geometry/f_transform_matrix.hpp"
 #include "fcomponents/f_logger.hpp"
+#include <utils/f_entity_id.hpp>
 
 namespace fengine {
 	class FEntity 
@@ -13,7 +14,7 @@ namespace fengine {
 		{
 			kMesh,
 			kCamera,
-			kNull, // neither known, nor set type
+			kUnknown, // neither known, nor set type
 		};
 		typedef FVector<FShared<FEntity>>::iterator iterator;
 		typedef FVector<FShared<FEntity>>::const_iterator const_iterator;
@@ -25,8 +26,8 @@ namespace fengine {
 		const_iterator cend() const { return children_.cend(); }
 
 		virtual ~FEntity() = default;
-		explicit FEntity(const FEntityType& type, uint64_t id, const FString& name);
-		FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+		explicit FEntity(const FEntityId& id, const FEntityType& type);
+		explicit FEntity(const FEntityId& id, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 		void AddChild(FShared<FEntity> child);
 
 		FShared<FEntity> SearchInHierarchy(uint64_t id) const;
@@ -35,12 +36,10 @@ namespace fengine {
 
 		void set_name(const FString& name);
 		void set_parent(FShared<FEntity> parent);
-		void set_id(uint64_t id);
 		void set_type(FEntityType type);
 		auto parent() const	{ return this->parent_; }
 		auto children() const { return this->children_; }
-		auto id() const { return this->id_; }
-		auto name() const { return this->name_; }
+		auto id() const { return this->id_.data(); }
 
 		void SetTransition(const FPoint3f& transition);
 		void SetScale(const FPoint3f& scale);
@@ -60,8 +59,7 @@ namespace fengine {
 	protected:
 		FMatrix4f view_;
 	private:
-		uint64_t id_;
-		FString name_;
+		const FEntityId id_;
 		FEntityType type_;
 		// TODO: Fix circular dependency
 		FShared<FEntity> parent_;
