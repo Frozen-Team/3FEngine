@@ -36,7 +36,7 @@ namespace fengine {
 
 		FPoint3f& target() { return this->target_point_; }
 
-		Eigen::Vector3f view_direction() { return Eigen::Vector3f((transform()).block<3, 1>(0, 3)).normalized(); }
+		Eigen::Vector3f view_direction() const { return Eigen::Vector3f(transform().block<3, 1>(0, 3)).normalized(); }
 
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
 		const FMatrix4f& view() const noexcept { return transform().matrix(); }

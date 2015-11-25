@@ -53,10 +53,10 @@ namespace fengine {
 		void rotate(const Eigen::Vector3f& dr);
 		void scale(const FScale3f& ds);
 
-		const FPos3f& position() const { return this->position_; } 
+		FPos3f position() const { return this->transform_.block<3, 1>(0, 3); }
 		const FPoint3f& rotation() const { return this->rotation_; }
 		const FScale3f& scale() const { return this->scale_; }
-		const FMatrix4f& transform() const { return this->transform_old.matrix(); }
+		const FMatrix4f& transform() const { return this->transform_; }
 
 		template<typename T>
 		static FShared<FEntity> FindEntityById(const FVector<FShared<T>>& entity_vec, uint64_t id)
@@ -67,13 +67,10 @@ namespace fengine {
 		}
 		void UpdateTransform();
 	protected:
-		
 
-		Eigen::Affine3f transform_old;
 		FMatrix4f transform_;
 		
 	private:
-		FPos3f position_;
 		FPoint3f rotation_;
 		FScale3f scale_;
 

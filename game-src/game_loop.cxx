@@ -17,7 +17,7 @@ void GameLoop::OnInit()
 {
 	LOG(INFO) << "GameLoop init";
 	scene_one_ = std::make_shared<SceneOne>();
-	fengine::FResourceLoader::LoadScene("scenes/test1.fbx", scene_one_);
+	fengine::FResourceLoader::LoadScene("scenes/camera_test.fbx", scene_one_);
 	fengine::FRenderSystem::SetActiveScene(scene_one_);
 	fengine::FRenderSystem::SetActiveCamera(scene_one_->GetCameras().at(0));
 }

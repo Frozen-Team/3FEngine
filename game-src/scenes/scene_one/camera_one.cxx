@@ -4,33 +4,43 @@ void CameraOne::OnKeyPressed(fengine::FKeyboardEvent& e)
 {
 	if (e.key() == fengine::fevents::kKeyW)
 	{
-		view_test_ = view_direction() / 5;
-		std::cout << view_test_ << std::endl;
-		move(view_test_);
-		updateViewProjectionMatrix();
+		velocity_.z() = 0.3f;
 	}
 	if (e.key() == fengine::fevents::kKeyS)
 	{
-		view_test_ = -view_direction() / 5;
-		std::cout << view_test_ << std::endl;
-		move(view_test_);
-		updateViewProjectionMatrix();
+		velocity_.z() = -0.3f;
 	}
-
 	if (e.key() == fengine::fevents::kKeyA)
 	{
-		move({ 0.1f, 0.0f, 0.0f });
-		updateViewProjectionMatrix();
+		velocity_.x() = 0.3f;
 	}
 	if (e.key() == fengine::fevents::kKeyD)
 	{
-		move({ -0.1f, 0.0f, 0.0f });
-		updateViewProjectionMatrix();
+		velocity_.x() = -0.3f;
 	}
+	move(velocity_);
+	updateViewProjectionMatrix();
 }
 
 void CameraOne::OnKeyReleased(fengine::FKeyboardEvent& e)
 {
+	if (e.key() == fengine::fevents::kKeyW)
+	{
+		velocity_.z() = 0.0f;
+	}
+	if (e.key() == fengine::fevents::kKeyS)
+	{
+		velocity_.z() = 0.0f;
+	}
+
+	if (e.key() == fengine::fevents::kKeyA)
+	{
+		velocity_.x() = 0.0f;
+	}
+	if (e.key() == fengine::fevents::kKeyD)
+	{
+		velocity_.x() = 0.0f;
+	}
 }
 
 void CameraOne::OnMouseButtonPressed(fengine::FMouseEvent& e)
@@ -56,7 +66,7 @@ void CameraOne::OnMouseMove(fengine::FMouseEvent& e)
 			mouse_prev_pos_ = e.pos();
 		}
 
-		rotate({ 0.0f, static_cast<float>((e.pos() - mouse_prev_pos_).x()) / 500, static_cast<float>((e.pos() - mouse_prev_pos_).y()) / 500 });
+		rotate({ static_cast<float>((e.pos() - mouse_prev_pos_).y()) / 500, static_cast<float>((e.pos() - mouse_prev_pos_).x()) / 500, 0.0f });
 		
 		/*Eigen::Affine3f transform = Eigen::Affine3f::Identity();
 		transform.rotate(Eigen::AngleAxis<float>(static_cast<float>((e.pos() - mouse_prev_pos_).y()) / 500, Eigen::Vector3f::UnitX()));
@@ -69,10 +79,10 @@ void CameraOne::OnMouseMove(fengine::FMouseEvent& e)
 	}
 }
 
-CameraOne::CameraOne() : fengine::FCamera(fengine::FEntityIdManager::GenerateId()), view_test_(0.0, 0.0, 0.0), mouse_pressed_(false)
+CameraOne::CameraOne() : fengine::FCamera(fengine::FEntityIdManager::GenerateId()), mouse_pressed_(false), velocity_{0.0f, 0.0f, 0.0f}
 {
 	// TODO: Get aspect ratio
 	auto aspect_ration = 1.0f;
 	SetPerspective(fengine::FAngle::Degrees(45.0f), aspect_ration, 0.1f, 10000.0f);
-	LookAt({ 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0 });
+	LookAt({ 10.0, 10.0, 10.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0 });
 }

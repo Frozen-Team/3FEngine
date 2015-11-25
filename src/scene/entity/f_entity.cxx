@@ -8,17 +8,17 @@ namespace fengine {
 
 	FEntity::FEntity(const FEntityId& id, const FEntityType& type, const FPos3f& pos, const FPoint3f& rotation, const FScale3f& scale) 
 		:
+		transform_(FMatrix4f::Identity()),
+		rotation_(rotation),
+		scale_(scale), 
 		id_(id),
 		type_(type),
-		position_(pos), 
-		rotation_(rotation), 
-		scale_(scale),
-		transform_old(Eigen::Matrix3f::Identity()),
 		parent_(nullptr)
 	{
 		this->set_position(pos);
 		this->set_rotation(rotation);
 		this->set_scale(scale);
+		UpdateTransform();
 	}
 
 	void FEntity::AddChild(FShared<FEntity> child)
@@ -57,36 +57,29 @@ namespace fengine {
 		this->parent_ = parent;
 	}
 
-
 	void FEntity::set_type(FEntityType type)
 	{
 		this->type_ = type;
 	}
 
-
 	void FEntity::set_position(const FPos3f& position)
 	{
-		this->position_ = position;
-		UpdateTransform();
+		this->transform_.block<3, 1>(0, 3) = position;
 	}
 
 	void FEntity::set_scale(const FScale3f& scale)
 	{
 		this->scale_ = scale;
-		UpdateTransform();
 	}
 
 	void FEntity::set_rotation(const FPoint3f& rotation)
 	{
 		this->rotation_ = rotation;
-		UpdateTransform();
 	}
 
 	void FEntity::move(const FPos3f& dp)
 	{
-		this->position_ += dp;
-		this->transform_old.translate(dp);
-		UpdateTransform();
+		this->transform_.block<3, 1>(0, 3) += dp;
 	}
 
 	void FEntity::rotate(const FQuaternionf& dr)
@@ -98,15 +91,21 @@ namespace fengine {
 	{
 		this->rotation_ += dr;
 
-		this->rotation_.x() = -std::remainderf(this->rotation_.x(), static_cast<float>(2 * M_PI));
-		this->rotation_.y() = -std::remainderf(this->rotation_.y(), static_cast<float>(2 * M_PI));
-		this->rotation_.z() = -std::remainderf(this->rotation_.z(), static_cast<float>(2 * M_PI));
+		this->rotation_.x() = std::fmod(this->rotation_.x(), static_cast<float>(2 * M_PI));
+		this->rotation_.y() = std::fmod(this->rotation_.y(), static_cast<float>(2 * M_PI));
+		this->rotation_.z() = std::fmod(this->rotation_.z(), static_cast<float>(2 * M_PI));
 
-		this->transform_old.rotate(Eigen::AngleAxisf(dr.z(), Eigen::Vector3f::UnitZ()));
-		this->transform_old.rotate(Eigen::AngleAxisf(dr.y(), Eigen::Vector3f::UnitY()));
-		this->transform_old.rotate(Eigen::AngleAxisf(dr.x(), Eigen::Vector3f::UnitX()));
+		Eigen::Affine3f rot(Eigen::Matrix3f::Identity());
+
+		rot.rotate(Eigen::AngleAxisf(dr.z(), Eigen::Vector3f::UnitZ()));
+		rot.rotate(Eigen::AngleAxisf(dr.y(), Eigen::Vector3f::UnitY()));
+		rot.rotate(Eigen::AngleAxisf(dr.x(), Eigen::Vector3f::UnitX()));
+
+		//this->transform_ = rot.matrix() * this->transform_;
 	}
 
+	// TODO:
+	// Rotate around point: scale * point_translation * rotation * object_translation.
 	void FEntity::scale(const FScale3f& ds)
 	{
 		/*FMatrix3f m3(FMatrix3f::Identity());
@@ -118,5 +117,12 @@ namespace fengine {
 
 	void FEntity::UpdateTransform()
 	{
+		// TODO: scale
+		auto rot = this->rotation_;
+		auto pos = position();
+		this->rotation_ = FPoint3f::Zero();
+		this->transform_ = FMatrix4f::Identity();
+		rotate(rot);
+		set_position(pos);
 	}
 }

@@ -24,7 +24,7 @@ public:
 
 private:
 
-	Eigen::Vector3f view_test_;
+	Eigen::Vector3f velocity_;
 
 	fengine::FPoint2i mouse_prev_pos_;
 
