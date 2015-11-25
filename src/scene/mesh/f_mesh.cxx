@@ -4,11 +4,11 @@
 #include "fcomponents/f_logger.hpp"
 
 namespace fengine {
-	FMesh::FMesh(uint64_t id, const FString& name) : FMesh(id, name, FPoint3f::Zero(), FPoint3f::Zero(), FPoint3f::Zero())
+	FMesh::FMesh(const FEntityId& id) : FMesh(id, FPoint3f::Zero(), FPoint3f::Zero(), FPoint3f::Zero())
 	{}
 
-	FMesh::FMesh(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
-		FEntity(id, name, FEntityType::kMesh, transition, rotation, scale)
+	FMesh::FMesh(const FEntityId& id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
+		FEntity(id, FEntityType::kMesh, transition, rotation, scale)
 	{}
 
 	FShared<FGeometry> FMesh::GetGeometry(float distance) const

@@ -29,20 +29,19 @@ namespace fengine
 		return FIndices3(indices);
 	}
 
-	FUvsf FbxMeshLoader::LoadUvs()
+	FUvsf FbxMeshLoader::LoadUvs() const
 	{
 		FUvsf uvs;
 		FbxStringList uv_set_name_list;
 		this->GetUVSetNames(uv_set_name_list);
 
 		std::string uv_set_name;
-		FbxGeometryElementUV* uv_element = nullptr;
 		//iterating over all uv sets
 		auto uv_set_names_count = uv_set_name_list.GetCount();
 		for (auto lUVSetIndex = 0; lUVSetIndex < uv_set_names_count; lUVSetIndex++)
 		{
 			uv_set_name = uv_set_name_list.GetStringAt(lUVSetIndex);
-			uv_element = this->GetElementUV(uv_set_name.c_str());
+			auto uv_element = GetElementUV(uv_set_name.c_str());
 
 			if (!uv_element)
 				continue;
@@ -89,5 +88,43 @@ namespace fengine
 			}
 		}
 		return uvs;
+	}
+
+	FVertices3f FbxMeshLoader::LoadNormals() const
+	{
+		FVertices3f normals;
+
+		auto l_normal_el = GetElementNormal();
+		auto reference_mode = l_normal_el->GetReferenceMode();
+		auto lNormalIndex = 0;
+		FbxVector4 normal;
+		if (l_normal_el)
+		{
+			//get normals of each vertex, since the mapping mode of normal element is by control point
+			for (auto lVertexIndex = 0; lVertexIndex < GetControlPointsCount(); lVertexIndex++)
+			{
+				switch(reference_mode)
+				{
+				case FbxGeometryElement::eDirect :
+					lNormalIndex = lVertexIndex;
+					break;
+				case FbxGeometryElement::eIndexToDirect:
+					lNormalIndex = l_normal_el->GetIndexArray().GetAt(lVertexIndex);
+					break;
+				default: 
+					lNormalIndex = 0; 
+					break;
+				}
+				//Got normals of each vertex.
+				normal = l_normal_el->GetDirectArray().GetAt(lNormalIndex);
+				normal.Normalize();
+				normals.Add({
+					static_cast<float>(normal.mData[0]),
+					static_cast<float>(normal.mData[1]),
+					static_cast<float>(normal.mData[2]),
+				});
+			}
+		}
+		return normals;
 	}
 }

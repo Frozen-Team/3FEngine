@@ -9,7 +9,7 @@ namespace fengine {
 	class FGeometry
 	{
 	public:
-		FGeometry(const FVertices3f& vertices, const FIndices3& indices, const FUvsf& uvs);
+		FGeometry(const FVertices3f& vertices, const FIndices3& indices, const FUvsf& uvs, const FVertices3f& normals);
 		FGeometry() = default;
 		virtual ~FGeometry() = default;
 		FIndices3& indices() { return indices_; }
@@ -20,9 +20,10 @@ namespace fengine {
 		void set_vertices(const FVertices3f& vertices) { vertices_ = vertices; }
 		void set_uvs(const FUvsf& uvs) { uvs_ = uvs; }
 	private:
-		FIndices3 indices_;
-		FVertices3f vertices_;
-		FUvsf uvs_;
+		FIndices3 indices_; // polygon vertices
+		FVertices3f vertices_; // control points
+		FUvsf uvs_; // uvs
+		FVertices3f normals_; //
 	};
 	
 }

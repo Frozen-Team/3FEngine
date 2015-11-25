@@ -14,8 +14,8 @@ namespace fengine {
 			kPerspective
 		};
 	public:
-		FCamera();
-		explicit FCamera(uint64_t id, const FString& name, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+		explicit FCamera(const FEntityId& id);
+		explicit FCamera(const FEntityId& id, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
 
 		void LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up = { 0.0f, 1.0f, 0.0f });
 		void LookAt(const FPoint3f& target);

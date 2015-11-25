@@ -1,5 +1,5 @@
 #include "camera_one.hpp"
-
+#include "utils/f_entity_id_manager.hpp"
 void CameraOne::OnKeyPressed(fengine::FKeyboardEvent& e)
 {
 	if (e.key() == fengine::fevents::kKeyW)
@@ -69,7 +69,7 @@ void CameraOne::OnMouseMove(fengine::FMouseEvent& e)
 	}
 }
 
-CameraOne::CameraOne() : view_test_(0.0, 0.0, 0.0), mouse_pressed_(false)
+CameraOne::CameraOne() : fengine::FCamera(fengine::FEntityIdManager::GenerateId()), view_test_(0.0, 0.0, 0.0), mouse_pressed_(false)
 {
 	// TODO: Get aspect ratio
 	auto aspect_ration = 1.0f;

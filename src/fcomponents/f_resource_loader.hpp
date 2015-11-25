@@ -18,6 +18,8 @@
 	Unnecessary to wrap raw pointers into smart pointers for now
 */
 namespace fengine {
+	class FEntityId;
+
 	class FResourceLoader : public FFbxLoader, private futils::FSingleton<FResourceLoader> 
 	{
 		friend class Engine;
@@ -45,8 +47,7 @@ namespace fengine {
 		static FShared<FCamera> LoadCamera(FbxNode* node, FShared<FScene>& scene);
 		static FShared<FMesh> LoadMesh(FbxNode* node);
 
-		static uint64_t LoadUniqueId(FbxNode* node);
-		static FString	LoadName(FbxNode* node);
+		static FEntityId LoadUniqueId(FbxNode* node);
 		static FPoint3f LoadTransition(FbxNode* node);
 		static FPoint3f LoadRotation(FbxNode* node);
 		static FPoint3f LoadScale(FbxNode* node);
@@ -56,7 +57,6 @@ namespace fengine {
 		{
 			return std::make_shared<T>(
 				LoadUniqueId(base_node),
-				LoadName(base_node),
 				LoadTransition(base_node),
 				LoadRotation(base_node),
 				LoadScale(base_node)

@@ -27,19 +27,19 @@ namespace fengine
 			auto to_insert_size = to_insert.size();
 			assert(to_insert_size % base == 0);
 
-			this->data_.reserve(this->data_.size() + to_insert_size);
-			this->data_.insert(this->data_.end(), to_insert.cbegin(), to_insert.cend());
+			this->vec_.reserve(this->vec_.size() + to_insert_size);
+			this->vec_.insert(this->vec_.end(), to_insert.cbegin(), to_insert.cend());
 
-			this->points_count_ = to_insert_size / base;
+			this->points_count_ = vec_.size() / base;
 		}
 
-		const Vector& data() const noexcept { return data_; }
+		const Vector& vec() const noexcept { return vec_; }
 
 		int points_count() const noexcept { return points_count_; }
 
 		Vertex GetVerticeByIndex(int index) const
 		{
-			auto verticesSize = data_.size();
+			auto verticesSize = vec_.size();
 			if (index < 0 || index >= verticesSize)
 			{ 
 				LOG(FATAL) << "Index out of range";
@@ -48,13 +48,13 @@ namespace fengine
 
 			Vertex result;
 			for (auto i = 0; i < base; i++) {
-				result(i) = data_.at(fromIndex + i);
+				result(i) = vec_.at(fromIndex + i);
 			}
 			return result;
 		}
 
 	private:
-		Vector data_;
+		Vector vec_;
 		size_t points_count_;
 	};
 	

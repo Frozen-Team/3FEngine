@@ -6,15 +6,16 @@
 #include <resources/components_loader/fbx_mesh_loader.hpp>
 #include <resources/components_loader/fbx_lod_group_loader.hpp>
 #include <resources/components_loader/fbx_camera_loader.hpp>
+#include <utils/f_entity_id_manager.hpp>
 
 namespace fengine {
-	
-	FShared<FScene> FResourceLoader::LoadScene(const FString& fbx_file, FShared<FScene> scene )
+
+	FShared<FScene> FResourceLoader::LoadScene(const FString& fbx_file, FShared<FScene> scene)
 	{
 		if (!scene)
 		{
 			scene = std::make_shared<FScene>();
-		}	
+		}
 		//scene->set_busy();
 		LOG_IF(!ImportScene(fbx_file), FATAL) << "Failed to import the scene from file: " << fbx_file;
 
@@ -56,7 +57,7 @@ namespace fengine {
 				scene->Add(lod_group_mesh);
 				current = std::static_pointer_cast<FEntity>(lod_group_mesh);
 				return; // workaround for now
-			}		
+			}
 			case FbxNodeAttribute::eCamera:
 			{
 				auto camera = LoadCamera(node, scene);
@@ -64,7 +65,7 @@ namespace fengine {
 				current = std::static_pointer_cast<FEntity>(camera);
 				break;
 			}
-				
+
 			case FbxNodeAttribute::eUnknown: break;
 			case FbxNodeAttribute::eNull: break;
 			case FbxNodeAttribute::eMarker: break;
@@ -109,27 +110,22 @@ namespace fengine {
 		return mesh;
 	}
 
-	uint64_t FResourceLoader::LoadUniqueId(FbxNode* node)
+	FEntityId FResourceLoader::LoadUniqueId(FbxNode* node)
 	{
-		return static_cast<uint64_t>(node->GetUniqueID());
-	}
-
-	FString FResourceLoader::LoadName(FbxNode* node)
-	{
-		return FString(node->GetName());
+		return FEntityIdManager::GenerateId(static_cast<uint64_t>(node->GetUniqueID()));
 	}
 
 	/*
 		Lod group of fbx can contain any object
-		For us it's not relevant to handle any object as we need to load only meshes. If not mesh is met, a warning will be given. 
+		For us it's not relevant to handle any object as we need to load only meshes. If not mesh is met, a warning will be given.
 		Moreover, Maya allows to attach children to meshes of the lod group(in our case we call
-		them "lods of the lod group")s. This method also doesn't take it into account and give a warning 
+		them "lods of the lod group")s. This method also doesn't take it into account and give a warning
 		if any mesh contain children.
 	*/
 	FShared<FMesh> FResourceLoader::LoadLodGroup(FbxNode * node)
 	{
 		LOG_IF(!node, FATAL) << "nullptr node passed to LoadLodGroup";
-		
+
 		auto fbx_lod_group = static_cast<FbxLodGroupLoader*>(node->GetNodeAttribute());
 		LOG_IF(!fbx_lod_group, FATAL) << "Failed to cast to FbxLodGroupLoader";
 
@@ -155,8 +151,11 @@ namespace fengine {
 		auto fbx_mesh = static_cast<FbxMeshLoader*>(node->GetNodeAttribute());
 		return FMeshLod(threshold, std::make_shared<FGeometry>(
 			fbx_mesh->LoadVertices(),
-			fbx_mesh->LoadIndices(),			
-			fbx_mesh->LoadUvs()));
+			fbx_mesh->LoadIndices(),
+			fbx_mesh->LoadUvs(),
+			fbx_mesh->LoadNormals()
+			)
+		);
 	}
 
 	FShared<FCamera> FResourceLoader::LoadCamera(FbxNode * node, FShared<FScene>& scene)
@@ -173,11 +172,11 @@ namespace fengine {
 		if (camera_target)
 		{
 			camera->LookAt(scene->FindEntityById(camera_target->GetParent()->GetUniqueID()));
-		} 
+		}
 		else
 		{
 			camera->LookAt(fbx_camera->GetTarget());
-		}	
+		}
 		camera->set_aperture(fbx_camera->GetApperture());
 		camera->set_aspect_ratio(static_cast<float>(fbx_camera->FilmAspectRatio.Get()));
 		camera->set_focal_length(static_cast<float>(fbx_camera->FocalLength.Get()));

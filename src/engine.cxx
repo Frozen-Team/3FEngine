@@ -7,6 +7,7 @@
 #include <fcomponents/f_scenes_manager.hpp>
 #include <fcomponents/f_resource_loader.hpp>
 #include "fcomponents/f_render_system.hpp"
+#include "utils/f_entity_id_manager.hpp"
 
 
 namespace fengine
@@ -34,6 +35,8 @@ namespace fengine
 
 		// Construct Events Manager
 		FEventsManager::GetInstance();
+		// Construct Entity id system
+		FEntityIdManager::GetInstance();
 		// Construct resource loader
 		FResourceLoader::GetInstance();
 		// Construct scenes manager
