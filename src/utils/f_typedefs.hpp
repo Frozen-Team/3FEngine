@@ -40,6 +40,10 @@ namespace fengine
 	using FMatrix4f = Eigen::Matrix4f;
 	using FMatrix3f = Eigen::Matrix3f;
 
+	using FQuaternionf = Eigen::Quaternion<float>;
+	using FPos3f = FPoint3f;
+	using FScale3f = FPoint3f;
+
 	template<class T>
 	using FShared = std::shared_ptr<T>;
 	template<class T>

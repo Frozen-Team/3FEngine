@@ -26,7 +26,7 @@ namespace fengine {
 
 		virtual ~FEntity() = default;
 		explicit FEntity(const FEntityType& type, uint64_t id, const FString& name);
-		FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale);
+		explicit FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPos3f& pos, const FPoint3f& rotation, const FScale3f& scale);
 		void AddChild(FShared<FEntity> child);
 
 		FShared<FEntity> SearchInHierarchy(uint64_t id) const;
@@ -36,19 +36,24 @@ namespace fengine {
 		void set_name(const FString& name);
 		void set_parent(FShared<FEntity> parent);
 		void set_id(uint64_t id);
-		void set_type(FEntityType type);
 		auto parent() const	{ return this->parent_; }
 		auto children() const { return this->children_; }
 		auto id() const { return this->id_; }
 		auto name() const { return this->name_; }
 
-		void SetTransition(const FPoint3f& transition);
-		void SetScale(const FPoint3f& scale);
-		void SetRotation(const FPoint3f& rotation);
+		void set_position(const FPos3f& position);
+		void set_scale(const FScale3f& scale);
+		void set_rotation(const FPoint3f& rotation);
 
-		FPoint3f GetTransition() const;
-		FPoint3f GetScale() const;
-		FPoint3f GetRotation() const;
+		void move(const FPos3f& dp);
+		void rotate(const FQuaternionf& dr);
+		void rotate(const Eigen::Vector3f& dr);
+		void scale(const FScale3f& ds);
+
+		const FPos3f& position() const { return this->position_; } 
+		const FPoint3f& rotation() const { return this->rotation_; }
+		const FScale3f& scale() const { return this->scale_; }
+		const FMatrix4f& transform() const { return this->transform_old.matrix(); }
 
 		template<typename T>
 		static FShared<FEntity> FindEntityById(const FVector<FShared<T>>& entity_vec, uint64_t id)
@@ -57,16 +62,27 @@ namespace fengine {
 			auto result = std::find_if(entity_vec.cbegin(), entity_vec.cend(), [id](FShared<T> el) { return el->id() == id; });
 			return (result == entity_vec.cend()) ? nullptr : std::static_pointer_cast<FEntity>(*result);
 		}
+		void UpdateTransform();
 	protected:
-		FMatrix4f view_;
+		
+
+		Eigen::Affine3f transform_old;
+		FMatrix4f transform_;
+		
 	private:
+		FPos3f position_;
+		FPoint3f rotation_;
+		FScale3f scale_;
+		
+
+		//FQuaternionf rot_;
+
 		uint64_t id_;
 		FString name_;
 		FEntityType type_;
 		// TODO: Fix circular dependency
 		FShared<FEntity> parent_;
 		FVector<FShared<FEntity>> children_;
-		FTransformationMatrix transform_;
 	};
 }
 #endif // _3FENGINE_SRC_SCENE_F_ENTITY_

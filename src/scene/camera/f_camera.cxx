@@ -34,9 +34,9 @@ namespace fengine
 	/*
 		Move camera at position \param pos and set target \param target
 	*/
-	void FCamera::LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up)
+	void FCamera::LookAt(const FPos3f& pos, const FPoint3f& target, const FPoint3f& up)
 	{
-		this->SetTransition(pos);
+		this->set_position(pos);
 		this->up_vector_ = up;
 		LookAt(target);	
 	}
@@ -45,15 +45,15 @@ namespace fengine
 	{
 		this->target_point_ = target;
 
-		auto position = this->GetTransition();
+		auto position = this->position();
 
 		FMatrix3f R;
 		R.col(2) = (position - target_point_).normalized();
 		R.col(0) = up_vector_.cross(R.col(2)).normalized();
 		R.col(1) = R.col(2).cross(R.col(0));
-		view_.topLeftCorner<3, 3>() = R.transpose();
-		view_.topRightCorner<3, 1>() = -R.transpose() * position;
-		view_(3, 3) = 1.0f;
+		transform_.topLeftCorner<3, 3>() = R.transpose();
+		transform_.topRightCorner<3, 1>() = -R.transpose() * position;
+		transform_(3, 3) = 1.0f;
 
 		updateViewProjectionMatrix();
 	}
@@ -61,7 +61,7 @@ namespace fengine
 	void FCamera::LookAt(FShared<FEntity> target)
 	{
 		this->target_entity_ = target;
-		LookAt(target != nullptr ? target->GetTransition() : FPoint3f(0.0f, 0.0f, 0.0f));
+		LookAt(target != nullptr ? target->position() : FPoint3f(0.0f, 0.0f, 0.0f));
 	}
 
 	void FCamera::SetPerspective(const FAngle& fovy, float aspect, float znear, float zfar)
@@ -104,7 +104,7 @@ namespace fengine
 	void FCamera::UpdateOrtho()
 	{
 		this->projection_ = FMatrix4f::Identity();
-
+		// TODO: Assert division
 		projection_(0, 0) = 2.0f / (this->ortho_right_ - this->ortho_left_);
 		projection_(1, 1) = 2.0f / (this->ortho_top_ - this->ortho_bottom_);
 		projection_(2, 2) = -2.0f / (zfar_ - znear_);
@@ -162,6 +162,8 @@ namespace fengine
 
 	void FCamera::updateViewProjectionMatrix()
 	{
-		this->view_projection_ =  projection_ * view_;
+		//std::cout << "Transform:" << std::endl;
+		std::cout << transform() << std::endl;
+		this->view_projection_ =  projection_ * transform();
 	}
 }

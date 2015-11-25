@@ -1,16 +1,21 @@
 #include "scene/entity/f_entity.hpp"
 
 namespace fengine {
-	// TODO: Proper initialization!
-	FEntity::FEntity(const FEntityType& type, uint64_t id, const FString& name) : id_(id), type_(type), name_(name) {}
 
-	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPoint3f& transition, const FPoint3f& rotation, const FPoint3f& scale) :
-		name_(name), type_(type), parent_(nullptr)
+	FEntity::FEntity(const FEntityType& type, uint64_t id, const FString& name) : 
+		FEntity(id, name, type, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f}, { 1.0f, 1.0f, 1.0f }) {}
+
+	FEntity::FEntity(uint64_t id, const FString& name, const FEntityType& type, const FPos3f& pos, const FPoint3f& rotation, const FScale3f& scale) 
+		:
+		position_(pos), 
+		rotation_(rotation), 
+		scale_(scale),
+		transform_old(Eigen::Matrix3f::Identity()),
+		name_(name),
+		type_(type),
+		parent_(nullptr)
 	{
 		this->set_id(id);
-		this->SetTransition(transition);
-		this->SetRotation(rotation);
-		this->SetScale(scale);
 	}
 
 	void FEntity::AddChild(FShared<FEntity> child)
@@ -21,6 +26,7 @@ namespace fengine {
 	}
 
 	//TODO: need tests
+	// TODO: FEntity Id storage class, FEntity id manager
 	FShared<FEntity> FEntity::SearchInHierarchy(uint64_t id) const
 	{
 		auto result = this->GetChild(id);
@@ -59,34 +65,59 @@ namespace fengine {
 		this->id_ = id;
 	}
 
-	void FEntity::set_type(FEntityType type)
+	void FEntity::set_position(const FPos3f& position)
 	{
-		this->type_ = type;
+		this->position_ = position;
+		UpdateTransform();
 	}
 
-	void FEntity::SetTransition(const FPoint3f & transition)
+	void FEntity::set_scale(const FScale3f& scale)
 	{
-		transform_.SetPointRow(FTransformationMatrix::Attribute::kTransition, transition);
-	}
-	void FEntity::SetRotation(const FPoint3f & rotation)
-	{
-		transform_.SetPointRow(FTransformationMatrix::Attribute::kRotation, rotation);
-	}
-	void FEntity::SetScale(const FPoint3f & scale)
-	{
-		transform_.SetPointRow(FTransformationMatrix::Attribute::kScale, scale);
-	}
-	FPoint3f FEntity::GetTransition() const
-	{
-		return transform_.GetPoint3fRow(FTransformationMatrix::Attribute::kTransition);
-	}
-	FPoint3f FEntity::GetRotation() const
-	{
-		return transform_.GetPoint3fRow(FTransformationMatrix::Attribute::kRotation);
-	}
-	FPoint3f FEntity::GetScale() const
-	{
-		return transform_.GetPoint3fRow(FTransformationMatrix::Attribute::kScale);
+		this->scale_ = scale;
+		UpdateTransform();
 	}
 
+	void FEntity::set_rotation(const FPoint3f& rotation)
+	{
+		this->rotation_ = rotation;
+		UpdateTransform();
+	}
+
+	void FEntity::move(const FPos3f& dp)
+	{
+		this->position_ += dp;
+		this->transform_old.translate(dp);
+		UpdateTransform();
+	}
+
+	void FEntity::rotate(const FQuaternionf& dr)
+	{
+		rotate(FPoint3f(dr.vec()));
+	}
+
+	void FEntity::rotate(const Eigen::Vector3f& dr)
+	{
+		this->rotation_ += dr;
+
+		this->rotation_.x() = -std::remainderf(this->rotation_.x(), static_cast<float>(2 * M_PI));
+		this->rotation_.y() = -std::remainderf(this->rotation_.y(), static_cast<float>(2 * M_PI));
+		this->rotation_.z() = -std::remainderf(this->rotation_.z(), static_cast<float>(2 * M_PI));
+
+		this->transform_old.rotate(Eigen::AngleAxisf(dr.z(), Eigen::Vector3f::UnitZ()));
+		this->transform_old.rotate(Eigen::AngleAxisf(dr.y(), Eigen::Vector3f::UnitY()));
+		this->transform_old.rotate(Eigen::AngleAxisf(dr.x(), Eigen::Vector3f::UnitX()));
+	}
+
+	void FEntity::scale(const FScale3f& ds)
+	{
+		/*FMatrix3f m3(FMatrix3f::Identity());
+		FMatrix3f m3_scale(FMatrix3f::Zero());
+		m3_scale.col(2) = ds;
+		this->scale_ = m3 * m3_scale * this->scale_;
+		this->transform_old.scale(this->scale_);*/
+	}
+
+	void FEntity::UpdateTransform()
+	{
+	}
 }

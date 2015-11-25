@@ -20,8 +20,9 @@ namespace fengine {
 		void LookAt(const FPoint3f& pos, const FPoint3f& target, const FPoint3f& up = { 0.0f, 1.0f, 0.0f });
 		void LookAt(const FPoint3f& target);
 		void LookAt(FShared<FEntity> target);
+
 		void SetPerspective(const FAngle& fovy, float aspect, float znear, float zfar);
-		void UpdatePerspective();
+		
 		void SetOrtho(float left, float right, float bottom, float top, float zfar, float znear);
 
 		void set_aperture(const FPoint2f& apperture);
@@ -33,24 +34,26 @@ namespace fengine {
 		void set_fovy(const FAngle& angle);
 		void set_aspect_ratio(float aspect_ratio);
 
-		// TODO: A LOT OF TODOS!!
 		FPoint3f& target() { return this->target_point_; }
 
-		Eigen::Vector3f view_direction() { return Eigen::Vector3f(view_.block<3, 1>(0, 3) - target()).normalized(); }
+		Eigen::Vector3f view_direction() { return Eigen::Vector3f((transform()).block<3, 1>(0, 3)).normalized(); }
 
 		FMatrix4f& view_projection() noexcept { return view_projection_; }
-		FMatrix4f& view() noexcept { return view_; }
+		const FMatrix4f& view() const noexcept { return transform().matrix(); }
 		FMatrix4f& projection() noexcept { return projection_; }
 		FPoint2f& aperture() noexcept { return aperture_; }
 		float film_aspect_ratio() const noexcept { return film_aspect_ratio_; }
 
 		void updateViewProjectionMatrix();
 	private:
-
+		void UpdatePerspective();
 		void UpdateOrtho();
+		
 
 	private:
 		ProjectionType proj_type_;
+
+		//FMatrix4f view_;	
 		FMatrix4f projection_;
 		FMatrix4f view_projection_;
 
@@ -60,7 +63,7 @@ namespace fengine {
 		// in this case target_point_ will be set to a transition value of the target_entity_
 		FShared<FEntity> target_entity_;
 		
-		// if its an ordinar camera, target_entity_ is set to nullptr, and target_point_ to a certain position
+		// if its an ordinary camera, target_entity_ is set to nullptr, and target_point_ to a certain position
 		FPoint3f target_point_;
 		
 		FPoint2f aperture_; // in meters
@@ -77,7 +80,6 @@ namespace fengine {
 		float ortho_right_;
 		float ortho_bottom_;
 		float ortho_top_;
-		
 	};
 }
 #endif // _3FENGINE_SRC_SCENE_CAMERA_F_CAMERA_HPP_

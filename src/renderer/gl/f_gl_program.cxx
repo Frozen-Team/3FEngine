@@ -77,7 +77,7 @@ namespace fengine
 	GLint FGlProgram::GetAtributeLocation(const FString& attrib) const
 	{
 		F_GL_CHECK(auto location = glGetAttribLocation(this->program_id_, attrib.c_str()));
-		LOG_IF(location == -1, ERROR) << "Cannot get attribute location. Error: " << FGlHelper::GetErrorsDescription();
+		LOG_IF(location == -1, ERROR) << "Cannot get attribute location. Attribute: " << attrib.c_str();
 		return location;
 	}
 

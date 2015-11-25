@@ -23,6 +23,7 @@ public:
 	virtual ~CameraOne() = default;
 
 private:
+
 	Eigen::Vector3f view_test_;
 
 	fengine::FPoint2i mouse_prev_pos_;

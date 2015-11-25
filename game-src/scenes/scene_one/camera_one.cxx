@@ -2,36 +2,29 @@
 
 void CameraOne::OnKeyPressed(fengine::FKeyboardEvent& e)
 {
-	bool update = false;
 	if (e.key() == fengine::fevents::kKeyW)
 	{
-		update = true;
-		view_test_ = view_direction() / 10;
+		view_test_ = view_direction() / 5;
+		std::cout << view_test_ << std::endl;
+		move(view_test_);
+		updateViewProjectionMatrix();
 	}
 	if (e.key() == fengine::fevents::kKeyS)
 	{
-		update = true;
-		view_test_ = -view_direction() / 10;
+		view_test_ = -view_direction() / 5;
+		std::cout << view_test_ << std::endl;
+		move(view_test_);
+		updateViewProjectionMatrix();
 	}
-	std::cout << view_test_ << std::endl;
 
 	if (e.key() == fengine::fevents::kKeyA)
 	{
-		update = true;
-		view_test_ = {0.1f, 0.0f, 0.0f};
+		move({ 0.1f, 0.0f, 0.0f });
+		updateViewProjectionMatrix();
 	}
 	if (e.key() == fengine::fevents::kKeyD)
 	{
-		update = true;
-		view_test_ = { -0.1f, 0.0f, 0.0f };
-	}
-
-	if (update)
-	{
-		Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-		transform.translation() = view_test_;
-		Eigen::Matrix4f matrix = transform.matrix();
-		view() = view() * matrix;
+		move({ -0.1f, 0.0f, 0.0f });
 		updateViewProjectionMatrix();
 	}
 }
@@ -40,19 +33,16 @@ void CameraOne::OnKeyReleased(fengine::FKeyboardEvent& e)
 {
 }
 
-// TODO: Mouse move
 void CameraOne::OnMouseButtonPressed(fengine::FMouseEvent& e)
 {
 	mouse_pressed_ = true;
 	init_ = false;
-	//LOG(INFO) << "OnMouseButtonPressed";
 }
 
 void CameraOne::OnMouseButtonReleased(fengine::FMouseEvent& e)
 {
 	mouse_pressed_ = false;
 	init_ = false;
-	//LOG(INFO) << "OnMouseButtonReleased";
 }
 
 
@@ -65,11 +55,14 @@ void CameraOne::OnMouseMove(fengine::FMouseEvent& e)
 			init_ = true;
 			mouse_prev_pos_ = e.pos();
 		}
-		Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+
+		rotate({ 0.0f, static_cast<float>((e.pos() - mouse_prev_pos_).x()) / 500, static_cast<float>((e.pos() - mouse_prev_pos_).y()) / 500 });
+		
+		/*Eigen::Affine3f transform = Eigen::Affine3f::Identity();
 		transform.rotate(Eigen::AngleAxis<float>(static_cast<float>((e.pos() - mouse_prev_pos_).y()) / 500, Eigen::Vector3f::UnitX()));
 		transform.rotate(Eigen::AngleAxis<float>(static_cast<float>((e.pos() - mouse_prev_pos_).x()) / 500, Eigen::Vector3f::UnitY()));
 		Eigen::Matrix4f matrix = transform.matrix();
-		view() = matrix * view();
+		view() = matrix * view();*/
 		updateViewProjectionMatrix();
 
 		mouse_prev_pos_ = e.pos();
